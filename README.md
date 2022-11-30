@@ -1,4 +1,4 @@
-# VampiresVsWerewolves
+# Vampires Vs Werewolves
 
 Created by:
   - Dimitris Anagnostopoulos (sdi2100002), sdi2100002@di.uoa.gr, 2nd year
