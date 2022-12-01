@@ -9,9 +9,10 @@ public:
 	~Map();
 	void Show() const;
 	void UpdateEntityPosition( int oldRow, int oldColumn, int newRow, int newColumn,MapCellType entity);
+	void UpdateEntityPosition(int newRow, int newColumn, MapCellType entity);
 	bool IsGroundCell( int row,  int column) const ;
-	 int GetRow() const;
-	 int GetColumn() const;
+	int GetRow() const;
+	int GetColumn() const;
 private:
 	const  int treeDensity=5;
 	const  int waterDensity =5;

@@ -6,7 +6,7 @@
 #include "Avatar.h"
 #include "Utils.h"
 
-Game::Game( int row,  int column): werewolvesCount(row*column/15), vampiresCount(row*column/15), avatar(1, 1)
+Game::Game( int row,  int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
 {
 	//TODO CHECK IF THE ROW,COLUMN ARE VALID
 	//TODO FIX AVATAR'S INITIALIZATION
@@ -20,6 +20,7 @@ Game::Game( int row,  int column): werewolvesCount(row*column/15), vampiresCount
 
 		Werewolf* werewolf = new Werewolf(row,column);
 
+		map->UpdateEntityPosition(row, column,MapCellType::werewolf);
 
 		werewolves.push_back(werewolf);
 	}
@@ -31,8 +32,18 @@ Game::Game( int row,  int column): werewolvesCount(row*column/15), vampiresCount
 
 		Vampire* vampire = new Vampire(row, column);
 
+		map->UpdateEntityPosition(row, column, MapCellType::vampire);
+
 		vampires.push_back(vampire);
 	}
+
+	int newRow, newColumn;
+
+	getValidRandomCoordinates(newRow, newColumn);
+
+	avatar = new Avatar(newRow, newColumn);
+
+	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
 
 	//TEMP
 	//map->Show();
@@ -51,6 +62,7 @@ Game::~Game()
 	}
 
 	delete map;
+	delete avatar;
 }
 
 void Game::Update()
@@ -88,14 +100,14 @@ void Game::Update()
 	}
 
 	 int oldRow, oldColumn;
-	oldRow = avatar.getRow();
-	oldColumn = avatar.getColumn();
+	oldRow = avatar->getRow();
+	oldColumn = avatar->getColumn();
 
-	avatar.update();
+	avatar->update();
 
 	 int row, column;
-	row = avatar.getRow();
-	column = avatar.getColumn();
+	row = avatar->getRow();
+	column = avatar->getColumn();
 
 
 	map->UpdateEntityPosition(oldRow, oldColumn, row, column, MapCellType::avatar);

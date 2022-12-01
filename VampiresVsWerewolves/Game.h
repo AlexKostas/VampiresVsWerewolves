@@ -21,7 +21,7 @@ private:
 	Map* map;
 	vector<Werewolf*> werewolves;
 	vector<Vampire*> vampires;
-	Avatar avatar;
+	Avatar* avatar;
 	
 	void getValidRandomCoordinates( int& row,  int& column);
 };

@@ -49,6 +49,11 @@ void Map::UpdateEntityPosition( int oldRow,  int oldColumn,  int newRow,  int ne
 	board[newRow][newColumn] = entity;
 }
 
+void Map::UpdateEntityPosition(int newRow, int newColumn, MapCellType entity)
+{
+	board[newRow][newColumn] = entity;
+}
+
 bool Map::IsGroundCell( int row,  int column) const
 {
 	
