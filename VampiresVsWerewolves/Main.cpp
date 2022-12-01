@@ -2,12 +2,11 @@
 //
 
 #include <iostream>
-#include "Map.h"
+#include "Game.h"
 
 int main()
 {
-	Map map(3, 5);
-	map.Show();
+	Game game(3, 5);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
