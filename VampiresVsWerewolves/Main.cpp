@@ -2,10 +2,12 @@
 //
 
 #include <iostream>
+#include "Map.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	Map map(3, 5);
+	map.Show();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
