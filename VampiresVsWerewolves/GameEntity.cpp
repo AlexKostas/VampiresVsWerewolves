@@ -1,11 +1,11 @@
 #include "GameEntity.h"
 
-unsigned int GameEntity::getRow() const
+ int GameEntity::getRow() const
 {
     return row;
 }
 
-unsigned int GameEntity::getColumn() const
+ int GameEntity::getColumn() const
 {
     return column;
 }

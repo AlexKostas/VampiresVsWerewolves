@@ -6,7 +6,7 @@
 
 int main()
 {
-	Game game(3, 5);
+	Game game(10, 10);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

@@ -4,7 +4,7 @@
 
 class Vampire : public GameEntity {
 public:
-	Vampire(unsigned int row, unsigned int column);
+	Vampire( int row,  int column);
 	virtual void update();
 
 

@@ -10,17 +10,18 @@ using namespace std;
 
 class Game {
 public:
-	Game(unsigned int row,unsigned column);
+	Game(int row, int column);
 	~Game();
 	void Update();
 
 
 private:
-	const unsigned int werewolvesCount;
-	const unsigned int vampiresCount;
-
+	const  int werewolvesCount;
+	const  int vampiresCount;
 	Map* map;
 	vector<Werewolf*> werewolves;
 	vector<Vampire*> vampires;
 	Avatar avatar;
+	
+	void getValidRandomCoordinates( int& row,  int& column);
 };

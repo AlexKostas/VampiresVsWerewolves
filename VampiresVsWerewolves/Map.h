@@ -5,19 +5,21 @@ enum MapCellType{ground,tree,water,vampire,werewolf,avatar};
 
 class Map {
 public:
-	Map(unsigned int rows, unsigned int columns);
+	Map( int rows,  int columns);
 	~Map();
 	void Show() const;
-	void UpdateEntityPosition(unsigned int oldRow,unsigned int oldColumn,unsigned int newRow,unsigned int newColumn,MapCellType entity);
-
-
+	void UpdateEntityPosition( int oldRow, int oldColumn, int newRow, int newColumn,MapCellType entity);
+	bool IsGroundCell( int row,  int column) const ;
+	 int GetRow() const;
+	 int GetColumn() const;
 private:
-	const unsigned int treeDensity=5;
-	const unsigned int waterDensity =5;
-	unsigned int rows, columns;
+	const  int treeDensity=5;
+	const  int waterDensity =5;
+	 int rows, columns;
 	MapCellType** board;       
 	void populateMap();
 	void printBorderRow() const;
 	void printCellRow(int row) const;
 	void placeElements(int elementCount, MapCellType element);
+
 };

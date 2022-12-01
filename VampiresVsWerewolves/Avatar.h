@@ -5,6 +5,7 @@
 
 class Avatar : public GameEntity {
 public:
+	Avatar( int row,  int column);
 	virtual void update();
 
 

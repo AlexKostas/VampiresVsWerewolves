@@ -4,27 +4,38 @@
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Avatar.h"
+#include "Utils.h"
 
-Game::Game(unsigned int row, unsigned column): werewolvesCount(row*column/15), vampiresCount(row*column/15)
+Game::Game( int row,  int column): werewolvesCount(row*column/15), vampiresCount(row*column/15), avatar(1, 1)
 {
 	//TODO CHECK IF THE ROW,COLUMN ARE VALID
+	//TODO FIX AVATAR'S INITIALIZATION
 
 	map = new Map(row, column);
 
 	for (int i = 0;i < werewolvesCount;i++) {
-		Werewolf* werewolf = new Werewolf(0, 0);
+		 int row,column;
+
+		getValidRandomCoordinates(row, column);
+
+		Werewolf* werewolf = new Werewolf(row,column);
+
 
 		werewolves.push_back(werewolf);
 	}
 
 	for (int i = 0;i < vampiresCount;i++) {
-		Vampire* vampire = new Vampire(1, 2);
+		 int row, column;
+		
+		getValidRandomCoordinates(row, column);
+
+		Vampire* vampire = new Vampire(row, column);
 
 		vampires.push_back(vampire);
 	}
 
 	//TEMP
-
+	//map->Show();
 	Update();
 }
 
@@ -44,15 +55,16 @@ Game::~Game()
 
 void Game::Update()
 {
+	//TODO clean this up
 	for (int i = 0;i < werewolvesCount;i++) {
 
-		unsigned int oldRow, oldColumn;
+		 int oldRow, oldColumn;
 		oldRow = werewolves[i]->getRow();
 		oldColumn = werewolves[i]->getColumn();
 
 		werewolves[i]->update();
 
-		unsigned int row, column;
+		int row, column;
 		row = werewolves[i]->getRow();
 		column = werewolves[i]->getColumn();
 
@@ -61,15 +73,13 @@ void Game::Update()
 	}
 
 	for (int i = 0;i < vampiresCount;i++) {
-		vampires[i]->update();
-
-		unsigned int oldRow, oldColumn;
+		 int oldRow, oldColumn;
 		oldRow = vampires[i]->getRow();
 		oldColumn = vampires[i]->getColumn();
 
 		vampires[i]->update();
 
-		unsigned int row, column;
+		 int row, column;
 		row = vampires[i]->getRow();
 		column = vampires[i]->getColumn();
 
@@ -77,5 +87,31 @@ void Game::Update()
 		map->UpdateEntityPosition(oldRow, oldColumn, row, column, vampire);
 	}
 
+	 int oldRow, oldColumn;
+	oldRow = avatar.getRow();
+	oldColumn = avatar.getColumn();
+
+	avatar.update();
+
+	 int row, column;
+	row = avatar.getRow();
+	column = avatar.getColumn();
+
+
+	map->UpdateEntityPosition(oldRow, oldColumn, row, column, MapCellType::avatar);
+
 	map->Show();
+}
+
+void Game::getValidRandomCoordinates(int& row,  int& column)
+{
+	 int tempRow, tempColumn;
+
+	do {
+		Utils::GetRandomCoordinates(map->GetRow(), map->GetColumn(), tempRow, tempColumn);	
+
+	}while(!map->IsGroundCell(tempRow,tempColumn));
+
+	row = tempRow;
+	column = tempColumn;
 }

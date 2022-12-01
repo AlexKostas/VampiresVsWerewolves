@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Map::Map(unsigned int x, unsigned int y) {
+Map::Map( int x,  int y) {
 	this->rows = x;
 	this->columns = y;
 
@@ -42,11 +42,27 @@ void Map::Show() const {
 	printBorderRow();
 }
 
-void Map::UpdateEntityPosition(unsigned int oldRow, unsigned int oldColumn, unsigned int newRow, unsigned int newColumn, MapCellType entity)
+void Map::UpdateEntityPosition( int oldRow,  int oldColumn,  int newRow,  int newColumn, MapCellType entity)
 {
 	board[oldRow][oldColumn] = ground;
 
 	board[newRow][newColumn] = entity;
+}
+
+bool Map::IsGroundCell( int row,  int column) const
+{
+	
+	return board[row][column]==ground;
+}
+
+ int Map::GetRow() const
+{
+	return rows;
+}
+
+ int Map::GetColumn() const
+{
+	return columns;
 }
 
 void Map::populateMap()
@@ -102,7 +118,7 @@ void Map::printCellRow(int row) const {
 void Map::placeElements(int elementCount, MapCellType element)
 {
 	for (int i = 0;i < elementCount;i++) {
-		int x, y;
+		 int x, y;
 		do {
 			Utils::GetRandomCoordinates(rows, columns, x, y);
 		} while (board[x][y] != ground);

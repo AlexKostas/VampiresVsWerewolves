@@ -5,12 +5,12 @@
 class GameEntity {
 public:
 	virtual void update()=0;
-	unsigned int getRow() const;
-	unsigned int getColumn() const;
+	 int getRow() const;
+	 int getColumn() const;
 	
 
 protected:
-	unsigned int row, column;
-	unsigned int health, attack, defence;
+	 int row, column;
+	 int health, attack, defence;
 };
 

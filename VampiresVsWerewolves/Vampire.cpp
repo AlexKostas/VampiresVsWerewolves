@@ -1,6 +1,6 @@
 #include "Vampire.h"
 
-Vampire::Vampire(unsigned int row, unsigned int column)
+Vampire::Vampire( int row,  int column)
 {
 	this->row = row;
 	this->column = column;

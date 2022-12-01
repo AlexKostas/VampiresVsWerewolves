@@ -4,7 +4,7 @@
 
 class Werewolf : public GameEntity {
 public:
-	Werewolf(unsigned int row, unsigned int column);
+	Werewolf( int row,  int column);
 	virtual void update();
 
 
