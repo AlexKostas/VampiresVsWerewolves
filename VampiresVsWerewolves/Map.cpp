@@ -1,5 +1,8 @@
 #include <iostream>
+#include <cstdlib>
+#include <math.h>
 #include "Map.h"
+
 
 using namespace std;
 
@@ -18,6 +21,8 @@ Map::Map(unsigned int x, unsigned int y) {
 			board[i][j] = ground;
 		}
 	}
+
+	populateMap();
 }
 
 Map::~Map() {
@@ -35,6 +40,15 @@ void Map::Show() const {
 		printCellRow(row);
 	}
 	printBorderRow();
+}
+
+void Map::populateMap()
+{
+	int numberOfTrees = round((rows * columns) * (treeDensity / 100.0));
+	int numberOfWaterCells = round((rows * columns) * (waterDensity / 100.0));
+
+	placeElements(numberOfTrees, tree);
+	placeElements(numberOfWaterCells, water);
 }
 
 void Map::printBorderRow() const {
@@ -76,4 +90,22 @@ void Map::printCellRow(int row) const {
 		cout << " ";
 	}
 	cout << "|" << endl;
+}
+
+void Map::placeElements(int elementCount, MapCellType element)
+{
+	for (int i = 0;i < elementCount;i++) {
+		int x, y;
+		do {
+			getRandomCoordinates(rows, columns, x, y);
+		} while (board[x][y] != ground);
+
+		board[x][y] = element;
+	}
+}
+
+void Map::getRandomCoordinates(int maxX, int maxY, int& x, int& y)
+{
+	x = rand() % maxX;
+	y = rand() % maxY;
 }
