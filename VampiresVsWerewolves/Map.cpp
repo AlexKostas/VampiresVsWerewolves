@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <cassert>
 #include "Utils.h"
 #include "Map.h"
 
@@ -12,24 +13,19 @@ Map::Map( int x,  int y) {
 
 	board = new MapCellType* [x];
 
-	for (int i = 0;i < x;i++) {
+	for (int i = 0;i < x;i++)
 		board[i] = new MapCellType[y];
-	}
 
-	for (int i = 0;i < x;i++) {
-		for (int j = 0;j < y;j++) {
+	for (int i = 0;i < x;i++)
+		for (int j = 0;j < y;j++)
 			board[i][j] = ground;
-		}
-	}
 
 	populateMap();
 }
 
 Map::~Map() {
-
-	for (int i = 0;i < rows;i++) {
+	for (int i = 0;i < rows;i++)
 		delete[] board[i];
-	}
 
 	delete[] board;
 }
@@ -42,10 +38,9 @@ void Map::Show() const {
 	printBorderRow();
 }
 
-void Map::UpdateEntityPosition( int oldRow,  int oldColumn,  int newRow,  int newColumn, MapCellType entity)
+void Map::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
 {
 	board[oldRow][oldColumn] = ground;
-
 	board[newRow][newColumn] = entity;
 }
 
@@ -54,18 +49,17 @@ void Map::UpdateEntityPosition(int newRow, int newColumn, MapCellType entity)
 	board[newRow][newColumn] = entity;
 }
 
-bool Map::IsGroundCell( int row,  int column) const
+bool Map::IsGroundCell(int row, int column) const
 {
-	
 	return board[row][column]==ground;
 }
 
- int Map::GetRow() const
+int Map::GetRow() const
 {
 	return rows;
 }
 
- int Map::GetColumn() const
+int Map::GetColumn() const
 {
 	return columns;
 }
@@ -80,9 +74,9 @@ void Map::populateMap()
 }
 
 void Map::printBorderRow() const {
-	for (int col = 0; col < columns; col++) {
+	for (int col = 0; col < columns; col++)
 		cout << "+" << "===";		
-	}
+
 	cout << "+" << endl;
 }
 
@@ -90,30 +84,8 @@ void Map::printCellRow(int row) const {
 	for (int col = 0; col < columns; col++) {
 		cout << "|" << " ";
 
-		switch (board[row][col])
-		{
-		case ground:
-			cout << " ";
-			break;
-		case tree:
-			cout << "T";
-			break;
-		case water:
-			cout << "~";
-			break;
-		case vampire:
-			cout << "V";
-			break;
-		case werewolf:
-			cout << "W";
-			break;
-		case avatar:
-			cout << "A";
-			break;
-		default:
-			//TODO: throw exception
-			break;
-		}
+		char cellChar = getCellChar(row, col);
+		cout << cellChar;
 
 		cout << " ";
 	}
@@ -130,4 +102,40 @@ void Map::placeElements(int elementCount, MapCellType element)
 
 		board[x][y] = element;
 	}
+}
+
+char Map::getCellChar(int row, int column) const
+{
+	assert(row >= 0 && row < rows);
+	assert(column >= 0 && column < columns);
+
+	char result = 0;
+
+	switch (board[row][column])
+	{
+		case ground:
+			result = ' ';
+			break;
+		case tree:
+			result = 'T';
+			break;
+		case water:
+			result = '~';
+			break;
+		case vampire:
+			result = 'V';
+			break;
+		case werewolf:
+			result = 'W';
+			break;
+		case avatar:
+			result = 'A';
+			break;
+		default:
+			//TODO: throw exception
+			break;
+	}
+
+	assert(result != 0);
+	return result;
 }
