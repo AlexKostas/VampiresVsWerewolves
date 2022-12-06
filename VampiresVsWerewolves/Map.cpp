@@ -41,7 +41,7 @@ void Map::Show() const {
 void Map::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
 {
 	board[oldRow][oldColumn] = ground;
-	board[newRow][newColumn] = entity;
+	UpdateEntityPosition(newRow, newColumn, entity);
 }
 
 void Map::UpdateEntityPosition(int newRow, int newColumn, MapCellType entity)
