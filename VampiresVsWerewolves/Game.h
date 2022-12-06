@@ -18,11 +18,15 @@ public:
 private:
 	const int werewolvesCount;
 	const int vampiresCount;
+	const int turnsToDay = 15;
+	int turnsElapsed = 0;
+	bool isDay = true;
+
 	Map* map;
 	vector<Werewolf*> werewolves;
 	vector<Vampire*> vampires;
 	vector<GameEntity*> entities;
 	Avatar* avatar;
 	
-	void getValidRandomCoordinates( int& row, int& column);
+	void getValidRandomCoordinates(int& row, int& column);
 };

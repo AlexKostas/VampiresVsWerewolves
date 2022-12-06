@@ -64,7 +64,6 @@ Game::~Game()
 
 void Game::Update()
 {
-	//TODO: change this to iterator
 	for (auto& entity : entities) {
 		int oldRow, oldColumn;
 		oldRow = entity->getRow();
@@ -77,6 +76,12 @@ void Game::Update()
 		column = entity->getColumn();
 
 		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entity->GetCellType());
+	}
+
+	turnsElapsed++;
+	if (turnsElapsed >= turnsToDay) {
+		turnsElapsed = 0;
+		isDay = !isDay;
 	}
 
 	map->Show();
