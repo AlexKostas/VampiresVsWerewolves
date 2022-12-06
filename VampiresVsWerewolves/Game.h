@@ -13,6 +13,7 @@ public:
 	Game(int row, int column);
 	~Game();
 	void Update();
+	bool IsOver();
 	vector<pair<int, int>> GetAvailableNeighboringCells(int row, int col) const;
 
 private:

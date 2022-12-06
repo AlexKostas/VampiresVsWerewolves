@@ -5,29 +5,48 @@
 
 using namespace std;
 
+void initializeGame(Game* game);
+
 const int frameRate=2;
 
 int main()
 {	
-	//TODO GET DIMENSIONS FROM USER
-	Game game(10, 10);
+	Game* game = NULL;
+	initializeGame(game);
+	assert(game != NULL);
 	
 	float frameTime = (1.0 / frameRate) * CLOCKS_PER_SEC;
 	assert(frameTime >= 0);
 
-
-	//TODO WHILE THE GAME IS NOT OVER
-	while (true) {
-
-		clock_t now = clock();//this gets the time in sec.
+	while (!game->IsOver()) {
+		clock_t now = clock();
 		while (true) 
 		{
 			while (clock() - now < frameTime);
-			//call your function
+
 			now = clock();
 			system("cls");
-			game.Update();
+			game->Update();
 		}
-	}
-	
+	}	
+
+	delete game;
+}
+
+void initializeGame(Game* game) {
+	do {
+		cout << "Give row and column" << endl;
+		int row, column;
+		cin >> row >> column;
+		try {
+			game = new Game(row, column);
+			break;
+		}
+		catch (invalid_argument) {
+			cout << "Invalid board size. Try again..." << endl;
+		}
+		catch (...) {
+			cout << "An error occured. Please try again" << endl;
+		}
+	} while (true);
 }

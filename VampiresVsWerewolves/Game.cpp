@@ -1,4 +1,5 @@
 #include <vector>
+#include <stdexcept>
 #include <cassert>
 #include "Game.h"
 #include "Map.h"
@@ -10,6 +11,9 @@
 Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
 {
 	//TODO CHECK IF THE ROW,COLUMN ARE VALID
+	if (row < 2 || column < 2)
+		throw invalid_argument("Invalid Board Size\n");
+	
 	//TODO FIX AVATAR'S INITIALIZATION
 
 	map = new Map(row, column);
@@ -85,6 +89,11 @@ void Game::Update()
 	}
 
 	map->Show();
+}
+
+bool Game::IsOver()
+{
+	return vampires.size() == 0 || werewolves.size() == 0;
 }
 
 vector<pair<int, int>> Game::GetAvailableNeighboringCells(int row, int col) const
