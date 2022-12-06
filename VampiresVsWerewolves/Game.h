@@ -16,13 +16,13 @@ public:
 
 
 private:
-	const  int werewolvesCount;
-	const  int vampiresCount;
+	const int werewolvesCount;
+	const int vampiresCount;
 	Map* map;
 	vector<Werewolf*> werewolves;
 	vector<Vampire*> vampires;
 	vector<GameEntity*> entities;
 	Avatar* avatar;
 	
-	void getValidRandomCoordinates( int& row,  int& column);
+	void getValidRandomCoordinates( int& row, int& column);
 };

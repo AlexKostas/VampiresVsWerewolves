@@ -1,7 +1,7 @@
 #include <cassert>
 #include "Avatar.h"
 
-Avatar::Avatar(int row,  int column)
+Avatar::Avatar(int row, int column)
 {
 	assert(row >= 0);
 	assert(column >= 0);

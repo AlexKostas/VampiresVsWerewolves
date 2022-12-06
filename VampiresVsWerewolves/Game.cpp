@@ -7,7 +7,7 @@
 #include "Avatar.h"
 #include "Utils.h"
 
-Game::Game(int row,  int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
+Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
 {
 	//TODO CHECK IF THE ROW,COLUMN ARE VALID
 	//TODO FIX AVATAR'S INITIALIZATION

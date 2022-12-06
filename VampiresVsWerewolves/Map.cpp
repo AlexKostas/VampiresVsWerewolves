@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Map::Map( int x,  int y) {
+Map::Map( int x, int y) {
 	this->rows = x;
 	this->columns = y;
 
