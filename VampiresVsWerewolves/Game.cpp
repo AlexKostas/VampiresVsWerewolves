@@ -64,19 +64,18 @@ Game::~Game()
 
 void Game::Update()
 {
-	//TODO: change this to iterator
-	for (int i = 0; i < entities.size(); i++) {
+	for (auto& entity : entities) {
 		int oldRow, oldColumn;
-		oldRow = entities[i]->getRow();
-		oldColumn = entities[i]->getColumn();
+		oldRow = entity->getRow();
+		oldColumn = entity->getColumn();
 
-		entities[i]->update();
+		entity->update();
 
 		int row, column;
-		row = entities[i]->getRow();
-		column = entities[i]->getColumn();
+		row = entity->getRow();
+		column = entity->getColumn();
 
-		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entities[i]->GetCellType());
+		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entity->GetCellType());
 	}
 
 	map->Show();
