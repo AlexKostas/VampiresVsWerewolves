@@ -24,6 +24,7 @@ Game::Game(int row,  int column): werewolvesCount((row*column)/15), vampiresCoun
 		map->UpdateEntityPosition(row, column,MapCellType::werewolf);
 
 		werewolves.push_back(werewolf);
+		entities.push_back(werewolf);
 	}
 
 	for (int i = 0;i < vampiresCount;i++) {
@@ -36,6 +37,7 @@ Game::Game(int row,  int column): werewolvesCount((row*column)/15), vampiresCoun
 		map->UpdateEntityPosition(row, column, MapCellType::vampire);
 
 		vampires.push_back(vampire);
+		entities.push_back(vampire);
 	}
 
 	int newRow, newColumn;
@@ -43,6 +45,7 @@ Game::Game(int row,  int column): werewolvesCount((row*column)/15), vampiresCoun
 	getValidRandomCoordinates(newRow, newColumn);
 
 	avatar = new Avatar(newRow, newColumn);
+	entities.push_back(avatar);
 
 	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
 }
@@ -61,49 +64,21 @@ Game::~Game()
 
 void Game::Update()
 {
-	//TODO clean this up
-	for (int i = 0;i < werewolvesCount;i++) {
-
+	//TODO: change this to iterator
+	for (int i = 0; i < entities.size(); i++) {
 		int oldRow, oldColumn;
-		oldRow = werewolves[i]->getRow();
-		oldColumn = werewolves[i]->getColumn();
+		oldRow = entities[i]->getRow();
+		oldColumn = entities[i]->getColumn();
 
-		werewolves[i]->update();
+		entities[i]->update();
 
 		int row, column;
-		row = werewolves[i]->getRow();
-		column = werewolves[i]->getColumn();
+		row = entities[i]->getRow();
+		column = entities[i]->getColumn();
 
-
-		map->UpdateEntityPosition(oldRow, oldColumn, row, column, werewolf);
+		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entities[i]->GetCellType());
 	}
 
-	for (int i = 0;i < vampiresCount;i++) {
-		int oldRow, oldColumn;
-		oldRow = vampires[i]->getRow();
-		oldColumn = vampires[i]->getColumn();
-
-		vampires[i]->update();
-
-		int row, column;
-		row = vampires[i]->getRow();
-		column = vampires[i]->getColumn();
-
-		map->UpdateEntityPosition(oldRow, oldColumn, row, column, vampire);
-	}
-
-	int oldRow, oldColumn;
-	oldRow = avatar->getRow();
-	oldColumn = avatar->getColumn();
-
-	avatar->update();
-
-	int row, column;
-	row = avatar->getRow();
-	column = avatar->getColumn();
-
-
-	map->UpdateEntityPosition(oldRow, oldColumn, row, column, MapCellType::avatar);
 	map->Show();
 }
 

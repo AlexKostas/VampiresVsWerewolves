@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const int frameRate=5;
+const int frameRate=2;
 
 int main()
 {	

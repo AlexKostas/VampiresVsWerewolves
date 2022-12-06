@@ -14,3 +14,7 @@ Werewolf::Werewolf(int row, int column)
 void Werewolf::update() {
 
 }
+
+MapCellType Werewolf::GetCellType() {
+	return MapCellType::werewolf;
+}

@@ -13,3 +13,7 @@ Vampire::Vampire(int row, int column)
 void Vampire::update(){
 
 }
+
+MapCellType Vampire::GetCellType() {
+	return MapCellType::vampire;
+}

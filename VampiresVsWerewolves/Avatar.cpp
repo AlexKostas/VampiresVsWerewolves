@@ -13,3 +13,7 @@ Avatar::Avatar(int row,  int column)
 void Avatar::update() {
 
 }
+
+MapCellType Avatar::GetCellType() {
+	return MapCellType::avatar;
+}
