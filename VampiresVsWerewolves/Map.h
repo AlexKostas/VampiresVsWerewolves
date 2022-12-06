@@ -1,5 +1,9 @@
 #pragma once
+#include <utility>
+#include <vector>
 #include "Enums.h"
+
+using namespace std;
 
 class Map {
 public:
@@ -8,17 +12,24 @@ public:
 	void Show() const;
 	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);
 	void UpdateEntityPosition(int newRow, int newColumn, MapCellType entity);
-	bool IsGroundCell(int row, int column) const ;
+	vector<pair<int, int>> GetLegalNeighborCells(int row, int col) const;
+	bool IsGroundCell(int row, int column) const;
 	int GetRow() const;
 	int GetColumn() const;
 private:
 	const int treeDensity=5;
 	const int waterDensity =5;
 	int rows, columns;
-	MapCellType** board;       
+	MapCellType** board; 
+
 	void populateMap();
 	void printBorderRow() const;
 	void printCellRow(int row) const;
 	void placeElements(int elementCount, MapCellType element);
 	char getCellChar(int row, int column) const;
+
+	bool cellAboveIsAvailable(int row, int column) const;
+	bool cellBelowIsAvailable(int row, int column) const;
+	bool cellLeftIsAvailable(int row, int column) const;
+	bool cellRightIsAvailable(int row, int column) const;
 };

@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
+#include <utility>
 #include "Map.h"
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Avatar.h"
-
 
 using namespace std;
 
@@ -13,7 +13,7 @@ public:
 	Game(int row, int column);
 	~Game();
 	void Update();
-
+	vector<pair<int, int>> GetAvailableNeighboringCells() const;
 
 private:
 	const int werewolvesCount;

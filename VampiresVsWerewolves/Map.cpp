@@ -1,9 +1,9 @@
 #include <iostream>
 #include <math.h>
 #include <cassert>
+#include <utility>
 #include "Utils.h"
 #include "Map.h"
-
 
 using namespace std;
 
@@ -47,6 +47,33 @@ void Map::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newCol
 void Map::UpdateEntityPosition(int newRow, int newColumn, MapCellType entity)
 {
 	board[newRow][newColumn] = entity;
+}
+
+vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
+{
+	assert(row >= 0 && row < rows);
+	assert(col >= 0 && col < columns);
+
+	vector<pair<int, int>> result;
+
+	if (cellAboveIsAvailable(row, col)) {
+		pair<int, int> coords(row + 1, col);
+		result.push_back(coords);
+	}
+	else if (cellBelowIsAvailable(row, col)) {
+		pair<int, int> coords(row - 1, col);
+		result.push_back(coords);
+	}
+	else if (cellLeftIsAvailable(row, col)) {
+		pair<int, int> coords(row, col - 1);
+		result.push_back(coords);
+	}
+	else if(cellRightIsAvailable(row, col)) {
+		pair<int, int> coords(row, col + 1);
+		result.push_back(coords);
+	}
+
+	return result;
 }
 
 bool Map::IsGroundCell(int row, int column) const
@@ -138,4 +165,36 @@ char Map::getCellChar(int row, int column) const
 
 	assert(result != 0);
 	return result;
+}
+
+bool Map::cellAboveIsAvailable(int row, int column) const
+{
+	if (row + 1 >= rows) return false;
+	assert(column >= 0 && column < columns);
+
+	return (board[row+1][column] == ground);
+}
+
+bool Map::cellBelowIsAvailable(int row, int column) const
+{
+	if (row - 1 < 0) return false;
+	assert(columns >= 0 && column < columns);
+
+	return (board[row-1][column] == ground);
+}
+
+bool Map::cellLeftIsAvailable(int row, int column) const
+{
+	if (column - 1 < 0) return false;
+	assert(row >= 0 && row < rows);
+
+	return (board[row][column-1] == ground);
+}
+
+bool Map::cellRightIsAvailable(int row, int column) const
+{
+	if (column +1>= columns) return false;
+	assert(row >= 0 && row < rows);
+
+	return (board[row][column+1] == ground);
 }
