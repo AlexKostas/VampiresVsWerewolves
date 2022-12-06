@@ -13,7 +13,7 @@ public:
 	Game(int row, int column);
 	~Game();
 	void Update();
-	vector<pair<int, int>> GetAvailableNeighboringCells() const;
+	vector<pair<int, int>> GetAvailableNeighboringCells(int row, int col) const;
 
 private:
 	const int werewolvesCount;

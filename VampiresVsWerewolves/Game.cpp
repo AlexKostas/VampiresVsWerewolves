@@ -19,7 +19,7 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 
 		getValidRandomCoordinates(row, column);
 
-		Werewolf* werewolf = new Werewolf(row,column);
+		Werewolf* werewolf = new Werewolf(row,column, this);
 
 		map->UpdateEntityPosition(row, column,MapCellType::werewolf);
 
@@ -32,7 +32,7 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 		
 		getValidRandomCoordinates(row, column);
 
-		Vampire* vampire = new Vampire(row, column);
+		Vampire* vampire = new Vampire(row, column, this);
 
 		map->UpdateEntityPosition(row, column, MapCellType::vampire);
 
@@ -44,7 +44,7 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 
 	getValidRandomCoordinates(newRow, newColumn);
 
-	avatar = new Avatar(newRow, newColumn);
+	avatar = new Avatar(newRow, newColumn, this);
 	entities.push_back(avatar);
 
 	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
@@ -64,6 +64,7 @@ Game::~Game()
 
 void Game::Update()
 {
+	//TODO: change this to iterator
 	for (auto& entity : entities) {
 		int oldRow, oldColumn;
 		oldRow = entity->getRow();
@@ -79,6 +80,11 @@ void Game::Update()
 	}
 
 	map->Show();
+}
+
+vector<pair<int, int>> Game::GetAvailableNeighboringCells(int row, int col) const
+{
+	return map->GetLegalNeighborCells(row, col);
 }
 
 void Game::getValidRandomCoordinates(int& row, int& column)

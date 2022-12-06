@@ -1,4 +1,5 @@
 #pragma once
+#include "Game.h"
 #include "Enums.h"
 
 class GameEntity {
@@ -12,4 +13,5 @@ public:
 protected:
 	int row, column;
 	int health, attack, defence;
+	Game* game;
 };

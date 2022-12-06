@@ -3,7 +3,7 @@
 
 class Vampire : public GameEntity {
 public:
-	Vampire(int row, int column);
+	Vampire(int row, int column, Game* game);
 	virtual void update();
 	virtual MapCellType GetCellType();
 

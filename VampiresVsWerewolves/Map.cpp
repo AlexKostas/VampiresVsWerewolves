@@ -197,4 +197,4 @@ bool Map::cellRightIsAvailable(int row, int column) const
 	assert(row >= 0 && row < rows);
 
 	return (board[row][column+1] == ground);
-}
+} 
