@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void initializeGame(Game* game);
+void initializeGame(Game*& game);
 
 const int frameRate=2;
 
@@ -33,7 +33,7 @@ int main()
 	delete game;
 }
 
-void initializeGame(Game* game) {
+void initializeGame(Game*& game) {
 	do {
 		cout << "Give row and column" << endl;
 		int row, column;
