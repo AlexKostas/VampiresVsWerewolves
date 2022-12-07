@@ -18,6 +18,8 @@ int main()
 	float frameTime = (1.0 / frameRate) * CLOCKS_PER_SEC;
 	assert(frameTime >= 0);
 
+	//srand(time(nullptr));
+
 	while (!game->IsOver()) {
 		clock_t now = clock();
 		while (true) 

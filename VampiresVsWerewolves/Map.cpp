@@ -60,15 +60,15 @@ vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
 		pair<int, int> coords(row + 1, col);
 		result.push_back(coords);
 	}
-	else if (cellBelowIsAvailable(row, col)) {
+	if (cellBelowIsAvailable(row, col)) {
 		pair<int, int> coords(row - 1, col);
 		result.push_back(coords);
 	}
-	else if (cellLeftIsAvailable(row, col)) {
+	if (cellLeftIsAvailable(row, col)) {
 		pair<int, int> coords(row, col - 1);
 		result.push_back(coords);
 	}
-	else if(cellRightIsAvailable(row, col)) {
+	if(cellRightIsAvailable(row, col)) {
 		pair<int, int> coords(row, col + 1);
 		result.push_back(coords);
 	}
@@ -193,7 +193,7 @@ bool Map::cellLeftIsAvailable(int row, int column) const
 
 bool Map::cellRightIsAvailable(int row, int column) const
 {
-	if (column +1>= columns) return false;
+	if (column +1 >= columns) return false;
 	assert(row >= 0 && row < rows);
 
 	return (board[row][column+1] == ground);
