@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "Enums.h"
 
+class Game;
+
 class GameEntity {
 public:
 	virtual void update()=0;

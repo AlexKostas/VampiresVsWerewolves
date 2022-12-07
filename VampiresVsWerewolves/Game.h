@@ -2,11 +2,13 @@
 #include <vector>
 #include <utility>
 #include "Map.h"
-#include "Vampire.h"
-#include "Werewolf.h"
-#include "Avatar.h"
 
 using namespace std;
+
+class GameEntity;
+class Avatar;
+class Vampire;
+class Werewolf;
 
 class Game {
 public:

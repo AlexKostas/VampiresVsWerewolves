@@ -11,3 +11,13 @@ void Utils::GetRandomCoordinates(int maxX, int maxY, int& x, int& y)
 	assert(x >= 0 && x <= maxX);
 	assert(y >= 0 && y <= maxY);
 }
+
+int Utils::GetRandomNumberInRange(int lowBound, int highBound) {
+	int range = highBound - lowBound + 1;
+	int num = rand() % range + lowBound;
+
+	assert(num >= lowBound);
+	assert(num < highBound);
+
+	return num;
+}
