@@ -1,12 +1,23 @@
 #include <vector>
+#include <iostream>
 #include <stdexcept>
 #include <cassert>
+#include <ctime>
+#include <conio.h>
 #include "Game.h"
 #include "Map.h"
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Avatar.h"
 #include "Utils.h"
+
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+
+using std::cout;
+using std::endl;
 
 Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
 {
@@ -64,6 +75,54 @@ Game::~Game()
 
 	delete map;
 	delete avatar;
+}
+
+void Game::Run()
+{
+
+	float frameTime = (1.0 / frameRate) * CLOCKS_PER_SEC;
+	assert(frameTime >= 0);
+
+
+	clock_t now = clock();
+	while (!IsOver())
+	{
+		while (clock() - now < frameTime);
+
+		now = clock();
+		system("cls");
+		Update();
+
+		if (!_kbhit()) continue;
+
+		int c;
+		switch ((c = _getch())) {
+
+		case KEY_UP:
+
+			cout << endl << "Up" << endl;//key up
+
+			break;
+
+		case KEY_DOWN:
+
+			cout << endl << "Down" << endl; // key down
+
+			break;
+
+		case KEY_LEFT:
+
+			cout << endl << "Left" << endl; // key left
+
+			break;
+
+		case KEY_RIGHT:
+
+			cout << endl << "Right" << endl; // key right
+
+			break;
+		}
+	}
 }
 
 void Game::Update()
