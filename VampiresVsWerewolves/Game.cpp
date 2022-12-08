@@ -19,7 +19,7 @@
 using std::cout;
 using std::endl;
 
-Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
+Game::Game(int row, int column)
 {
 	//TODO CHECK IF THE ROW,COLUMN ARE VALID
 	if (row < 2 || column < 2)
@@ -29,7 +29,7 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 
 	map = new Map(row, column);
 
-	for (int i = 0;i < werewolvesCount;i++) {
+	/*for (int i = 0;i < werewolvesCount;i++) {
 		int row,column;
 
 		getValidRandomCoordinates(row, column);
@@ -62,27 +62,25 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 	avatar = new Avatar(newRow, newColumn, this);
 	entities.push_back(avatar);
 
-	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
+	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);*/
 }
 
 Game::~Game()
 {
-	for (int i = 0;i < werewolvesCount;i++)
+	/*for (int i = 0;i < werewolvesCount;i++)
 		delete werewolves[i];	
 
 	for (int i = 0;i < vampiresCount;i++)
 		delete vampires[i];
 
 	delete map;
-	delete avatar;
+	delete avatar;*/
 }
 
 void Game::Run()
 {
-
 	float frameTime = (1.0 / frameRate) * CLOCKS_PER_SEC;
 	assert(frameTime >= 0);
-
 
 	clock_t now = clock();
 	while (!IsOver())
@@ -93,6 +91,7 @@ void Game::Run()
 		system("cls");
 		Update();
 
+		//TODO: add to separate function
 		if (!_kbhit()) continue;
 
 		int c;
@@ -101,25 +100,21 @@ void Game::Run()
 		case KEY_UP:
 
 			cout << endl << "Up" << endl;//key up
-
 			break;
 
 		case KEY_DOWN:
 
 			cout << endl << "Down" << endl; // key down
-
 			break;
 
 		case KEY_LEFT:
 
 			cout << endl << "Left" << endl; // key left
-
 			break;
 
 		case KEY_RIGHT:
 
 			cout << endl << "Right" << endl; // key right
-
 			break;
 		}
 	}
@@ -127,32 +122,19 @@ void Game::Run()
 
 void Game::Update()
 {
-	for (auto& entity : entities) {
-		int oldRow, oldColumn;
-		oldRow = entity->getRow();
-		oldColumn = entity->getColumn();
-
-		entity->update();
-
-		int row, column;
-		row = entity->getRow();
-		column = entity->getColumn();
-
-		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entity->GetCellType());
-	}
-
 	turnsElapsed++;
 	if (turnsElapsed >= turnsToDay) {
 		turnsElapsed = 0;
 		isDay = !isDay;
 	}
 
-	map->Show();
+	map->Update();
 }
 
 bool Game::IsOver()
 {
-	return vampires.size() == 0 || werewolves.size() == 0;
+	return false;
+	//return vampires.size() == 0 || werewolves.size() == 0;
 }
 
 vector<pair<int, int>> Game::GetAvailableNeighboringCells(int row, int col) const
@@ -162,12 +144,12 @@ vector<pair<int, int>> Game::GetAvailableNeighboringCells(int row, int col) cons
 
 void Game::getValidRandomCoordinates(int& row, int& column)
 {
-	int tempRow, tempColumn;
+	/*int tempRow, tempColumn;
 
 	do {
 		Utils::GetRandomCoordinates(map->GetRow(), map->GetColumn(), tempRow, tempColumn);	
 	}while(!map->IsGroundCell(tempRow,tempColumn));
 
 	row = tempRow;
-	column = tempColumn;
+	column = tempColumn;*/
 }

@@ -1,13 +1,13 @@
 #pragma once
-#include "Game.h"
-#include "Enums.h"
 
-class Game;
+class Map;
 
 class GameEntity {
 public:
-	virtual void update()=0;
-	virtual MapCellType GetCellType() = 0;
+	GameEntity(int row, int col, Map* map);
+	virtual void update() = 0;
+	virtual void print() = 0;
+	virtual bool IsGround() = 0;
 
 	int getRow() const;
 	int getColumn() const;
@@ -15,5 +15,5 @@ public:
 protected:
 	int row, column;
 	int health, attack, defence;
-	Game* game;
+	Map* game;
 };

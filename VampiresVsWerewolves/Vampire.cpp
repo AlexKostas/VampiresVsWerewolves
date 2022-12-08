@@ -1,34 +1,35 @@
 #include <cassert>
+#include <iostream>
 #include <vector>
 #include <utility>
 #include "Vampire.h"
 #include "Utils.h"
 
-Vampire::Vampire(int row, int column, Game* game)
-{
-	assert(row >= 0);
-	assert(column >= 0);
+using std::cout;
 
-	this->row = row;
-	this->column = column;
-	this->game = game;
-}
+Vampire::Vampire(int row, int column, Map* game) : GameEntity(row, column, game) {}
 
 void Vampire::update(){
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-	int legalCellCount = legalCells.size();
+	//vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+	//int legalCellCount = legalCells.size();
 
-	if (legalCellCount == 0) //TODO: attack
-		return;
+	//if (legalCellCount == 0) //TODO: attack
+	//	return;
 
-	int randomIndex = Utils::GetRandomNumberInRange(0, legalCellCount);
-	assert(randomIndex >= 0 && randomIndex < legalCellCount);
-	pair<int, int> coords = legalCells[randomIndex];
+	//int randomIndex = Utils::GetRandomNumberInRange(0, legalCellCount);
+	//assert(randomIndex >= 0 && randomIndex < legalCellCount);
+	//pair<int, int> coords = legalCells[randomIndex];
 
-	row = coords.first;
-	column = coords.second;
+	//row = coords.first;
+	//column = coords.second;
 }
 
-MapCellType Vampire::GetCellType() {
-	return MapCellType::vampire;
+void Vampire::print()
+{
+	cout << "V";
+}
+
+bool Vampire::IsGround()
+{
+	return false;
 }

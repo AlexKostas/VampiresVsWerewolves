@@ -18,20 +18,13 @@ public:
 	vector<pair<int, int>> GetAvailableNeighboringCells(int row, int col) const;
 
 private:
-	const int werewolvesCount;
-	const int vampiresCount;
 	const int turnsToDay = 15;
 	const int frameRate = 2;
 	int turnsElapsed = 0;
 	bool isDay = true;
 
 	Map* map;
-	vector<Werewolf*> werewolves;
-	vector<Vampire*> vampires;
-	vector<GameEntity*> entities;
-	Avatar* avatar;
 	
-	void getValidRandomCoordinates(int& row, int& column);
 	void Update();
 	bool IsOver();
 };

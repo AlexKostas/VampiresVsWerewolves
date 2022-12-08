@@ -3,9 +3,8 @@
 
 class Vampire : public GameEntity {
 public:
-	Vampire(int row, int column, Game* game);
+	Vampire(int row, int column, Map* game);
 	virtual void update();
-	virtual MapCellType GetCellType();
-
-private:
+	virtual void print();
+	virtual bool IsGround();
 };

@@ -4,23 +4,35 @@
 #include <utility>
 #include "Utils.h"
 #include "Map.h"
+#include "Tree.h"
+#include "Ground.h"
+#include "WaterCell.h"
+#include "Avatar.h"
+#include "Werewolf.h"
+#include "Vampire.h"
+#include "GameEntity.h"
 
 using namespace std;
 
-Map::Map( int x, int y) {
+Map::Map(int x, int y) : werewolvesCount((x * y) / 15), vampiresCount((x * y) / 15) {
 	this->rows = x;
 	this->columns = y;
 
-	board = new MapCellType* [x];
+	board = new GameEntity** [x];
 
 	for (int i = 0;i < x;i++)
-		board[i] = new MapCellType[y];
+		board[i] = new GameEntity*[y];
 
 	for (int i = 0;i < x;i++)
 		for (int j = 0;j < y;j++)
-			board[i][j] = ground;
+			board[i][j] = NULL;
 
 	populateMap();
+
+	for (int i = 0;i < x;i++)
+		for (int j = 0;j < y;j++)
+			if(board[i][j] == NULL)
+				board[i][j] = new Ground(x, y, this);
 }
 
 Map::~Map() {
@@ -30,23 +42,20 @@ Map::~Map() {
 	delete[] board;
 }
 
+void Map::Update()
+{
+	for (int i = 0;i < rows;i++)
+		for (int j = 0;j < columns;j++)
+			board[i][j]->update();
+	Show();
+}
+
 void Map::Show() const {	
 	for (int row = 0; row < rows; row++) {
 		printBorderRow();
 		printCellRow(row);
 	}
 	printBorderRow();
-}
-
-void Map::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
-{
-	board[oldRow][oldColumn] = ground;
-	UpdateEntityPosition(newRow, newColumn, entity);
-}
-
-void Map::UpdateEntityPosition(int newRow, int newColumn, MapCellType entity)
-{
-	board[newRow][newColumn] = entity;
 }
 
 vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
@@ -76,11 +85,6 @@ vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
 	return result;
 }
 
-bool Map::IsGroundCell(int row, int column) const
-{
-	return board[row][column]==ground;
-}
-
 int Map::GetRow() const
 {
 	return rows;
@@ -96,8 +100,54 @@ void Map::populateMap()
 	int numberOfTrees = round((rows * columns) * (treeDensity / 100.0));
 	int numberOfWaterCells = round((rows * columns) * (waterDensity / 100.0));
 
-	placeElements(numberOfTrees, tree);
-	placeElements(numberOfWaterCells, water);
+	//TODO: split into functions
+
+	for (int i = 0;i < numberOfTrees;i++) {
+		int x, y;
+		do {
+			Utils::GetRandomCoordinates(rows, columns, x, y);
+		} while (board[x][y] != NULL);
+
+		board[x][y] = new Tree(x, y, this);
+	}
+
+	for (int i = 0;i < numberOfWaterCells;i++) {
+		int x, y;
+		do {
+			Utils::GetRandomCoordinates(rows, columns, x, y);
+		} while (board[x][y] != NULL);
+
+		board[x][y] = new WaterCell(x, y, this);
+	}
+
+	for (int i = 0;i < vampiresCount;i++) {
+		int x, y;
+		do {
+			Utils::GetRandomCoordinates(rows, columns, x, y);
+		} while (board[x][y] != NULL);
+
+		Vampire* vampire = new Vampire(x, y, this);
+		vampires.push_back(vampire);
+		board[x][y] = vampire;
+	}
+
+	for (int i = 0;i < werewolvesCount;i++) {
+		int x, y;
+		do {
+			Utils::GetRandomCoordinates(rows, columns, x, y);
+		} while (board[x][y] != NULL);
+
+		Werewolf* werewolf = new Werewolf(x, y, this);
+		werewolves.push_back(werewolf);
+		board[x][y] = werewolf;
+	}
+
+	int x, y;
+	do {
+		Utils::GetRandomCoordinates(rows, columns, x, y);
+	} while (board[x][y] != NULL);
+
+	board[x][y] = new Avatar(x, y, this);
 }
 
 void Map::printBorderRow() const {
@@ -111,60 +161,11 @@ void Map::printCellRow(int row) const {
 	for (int col = 0; col < columns; col++) {
 		cout << "|" << " ";
 
-		char cellChar = getCellChar(row, col);
-		cout << cellChar;
+		board[row][col]->print();
 
 		cout << " ";
 	}
 	cout << "|" << endl;
-}
-
-void Map::placeElements(int elementCount, MapCellType element)
-{
-	for (int i = 0;i < elementCount;i++) {
-		 int x, y;
-		do {
-			Utils::GetRandomCoordinates(rows, columns, x, y);
-		} while (board[x][y] != ground);
-
-		board[x][y] = element;
-	}
-}
-
-char Map::getCellChar(int row, int column) const
-{
-	assert(row >= 0 && row < rows);
-	assert(column >= 0 && column < columns);
-
-	char result = 0;
-
-	switch (board[row][column])
-	{
-		case ground:
-			result = ' ';
-			break;
-		case tree:
-			result = 'T';
-			break;
-		case water:
-			result = '~';
-			break;
-		case vampire:
-			result = 'V';
-			break;
-		case werewolf:
-			result = 'W';
-			break;
-		case avatar:
-			result = 'A';
-			break;
-		default:
-			//TODO: throw exception
-			break;
-	}
-
-	assert(result != 0);
-	return result;
 }
 
 bool Map::cellAboveIsAvailable(int row, int column) const
@@ -172,7 +173,7 @@ bool Map::cellAboveIsAvailable(int row, int column) const
 	if (row + 1 >= rows) return false;
 	assert(column >= 0 && column < columns);
 
-	return (board[row+1][column] == ground);
+	return (board[row+1][column]->IsGround());
 }
 
 bool Map::cellBelowIsAvailable(int row, int column) const
@@ -180,7 +181,7 @@ bool Map::cellBelowIsAvailable(int row, int column) const
 	if (row - 1 < 0) return false;
 	assert(columns >= 0 && column < columns);
 
-	return (board[row-1][column] == ground);
+	return (board[row-1][column]->IsGround());
 }
 
 bool Map::cellLeftIsAvailable(int row, int column) const
@@ -188,7 +189,7 @@ bool Map::cellLeftIsAvailable(int row, int column) const
 	if (column - 1 < 0) return false;
 	assert(row >= 0 && row < rows);
 
-	return (board[row][column-1] == ground);
+	return (board[row][column-1]->IsGround());
 }
 
 bool Map::cellRightIsAvailable(int row, int column) const
@@ -196,5 +197,5 @@ bool Map::cellRightIsAvailable(int row, int column) const
 	if (column +1 >= columns) return false;
 	assert(row >= 0 && row < rows);
 
-	return (board[row][column+1] == ground);
+	return (board[row][column+1]->IsGround());
 } 

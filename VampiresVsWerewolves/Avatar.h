@@ -1,12 +1,12 @@
 #pragma once
 #include "GameEntity.h"
-#include "Game.h"
 
 class Avatar : public GameEntity {
 public:
-	Avatar(int row, int column, Game* game);
+	Avatar(int row, int column, Map* game);
 	virtual void update();
-	virtual MapCellType GetCellType();
+	virtual void print();
+	virtual bool IsGround();
 
 private:
 	//TODO POTION

@@ -1,7 +1,11 @@
 #pragma once
 #include <utility>
 #include <vector>
-#include "Enums.h"
+
+class GameEntity;
+class Werewolf;
+class Vampire;
+class Avatar;
 
 using namespace std;
 
@@ -9,27 +13,29 @@ class Map {
 public:
 	Map(int rows, int columns);
 	~Map();
-	void Show() const;
-	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);
-	void UpdateEntityPosition(int newRow, int newColumn, MapCellType entity);
+	void Update();
 	vector<pair<int, int>> GetLegalNeighborCells(int row, int col) const;
-	bool IsGroundCell(int row, int column) const;
 	int GetRow() const;
 	int GetColumn() const;
 private:
+	const int werewolvesCount;
+	const int vampiresCount;
 	const int treeDensity=5;
 	const int waterDensity =5;
 	int rows, columns;
-	MapCellType** board; 
+	GameEntity*** board; 
+
+	vector<Werewolf*> werewolves;
+	vector<Vampire*> vampires;
+	Avatar* avatar;
 
 	void populateMap();
 	void printBorderRow() const;
 	void printCellRow(int row) const;
-	void placeElements(int elementCount, MapCellType element);
-	char getCellChar(int row, int column) const;
 
 	bool cellAboveIsAvailable(int row, int column) const;
 	bool cellBelowIsAvailable(int row, int column) const;
 	bool cellLeftIsAvailable(int row, int column) const;
 	bool cellRightIsAvailable(int row, int column) const;
+	void Show() const;
 };
