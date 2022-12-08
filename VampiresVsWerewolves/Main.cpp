@@ -20,18 +20,16 @@ int main()
 
 	//srand(time(nullptr));
 
-	while (!game->IsOver()) {
-		clock_t now = clock();
-		while (true) 
-		{
-			while (clock() - now < frameTime);
+	clock_t now = clock();
+	while (!game->IsOver()) 
+	{
+		while (clock() - now < frameTime);
 
-			now = clock();
-			system("cls");
-			game->Update();
-		}
-	}	
-
+		now = clock();
+		system("cls");
+		game->Update();
+	}
+	
 	delete game;
 }
 
