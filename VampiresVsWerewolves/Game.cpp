@@ -80,11 +80,11 @@ void Game::Run()
 		string input;
 		cin >> input;
 
-		if (input == "V") {
+		if (input == "V" || input=="v") {
 			supportsWerewolf = false;
 			break;
 		}
-		else if (input == "W") {
+		else if (input == "W"|| input=="w") {
 			supportsWerewolf = true;
 			break;
 		}
