@@ -15,6 +15,7 @@
 #define KEY_DOWN 80
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
+#define ESC 27
 
 using std::cout;
 using std::endl;
@@ -107,6 +108,7 @@ void Game::Run()
 
 		now = clock();
 		
+		bool gameTerminatedByPlayer = false;
 		if (_kbhit()) {
 			int c;
 			switch ((c = _getch())) {
@@ -127,18 +129,24 @@ void Game::Run()
 				avatar->GoRight();
 				break;
 
+			case ESC:
+				gameTerminatedByPlayer = true;
+				break;
+
 			case '\t':
 				isPaused = !isPaused;
-				cout << "\nGAME IS PAUSED! Press Tab to continue" << endl;
+				cout << "\nGAME IS PAUSED! Press Tab to continue..." << endl;
 
 				string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
 
-				cout << "You support " <<  team << endl;
+				cout << "You support " <<  team << "!" << endl;
 				cout << "Number of Vampires: " << vampires.size() << endl;
 				cout << "Number of Werewolves: " << werewolves.size() << endl;
 				break;
 			}
 		}
+
+		if (gameTerminatedByPlayer) break;
 
 		if (!isPaused) { 
 			system("cls");
@@ -149,11 +157,13 @@ void Game::Run()
 	if (werewolves.size() == 0 && vampires.size() == 0) {
 		cout << "\nITS A DRAW!!";
 	}
-	else if (werewolves.size() == 0) {
-		cout << "\nVAMPIRES WON!!"<<endl;
+	else if (vampires.size() == 0) {
+		cout << "\nVAMPIRES WON!!" << endl;
 	}
+	else if (werewolves.size() == 0)
+		cout << "\nWEREWOLVES WON!!" << endl;
 	else
-		cout << "\nWEREWOLVES WON!!"<<endl;
+		cout << "GAME TERMINATED EARLY" << endl;
 }
 
 void Game::Update()
@@ -189,7 +199,9 @@ void Game::Update()
 		cout << "Turns to day: " << turnsToDay - turnsElapsed << endl;
 	}
 
-	cout << "Potions: " << avatar->GetAmountOfPotions() << endl;
+	cout << "Potions: " << avatar->GetAmountOfPotions() << endl << endl;
+
+	cout << "Press Tab to pause or ESC to exit" << endl;
 	
 }
 
