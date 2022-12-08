@@ -13,12 +13,15 @@ public:
 	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);
 	void UpdateEntityPosition(int newRow, int newColumn, MapCellType entity);
 	vector<pair<int, int>> GetLegalNeighborCells(int row, int col) const;
+	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col) const;
 	bool IsGroundCell(int row, int column) const;
 	int GetRow() const;
 	int GetColumn() const;
+	bool HasPotion(int row,int col) const;
 private:
 	const int treeDensity=5;
 	const int waterDensity =5;
+	const int amountOfPotions = 1;
 	int rows, columns;
 	MapCellType** board; 
 
@@ -32,4 +35,9 @@ private:
 	bool cellBelowIsAvailable(int row, int column) const;
 	bool cellLeftIsAvailable(int row, int column) const;
 	bool cellRightIsAvailable(int row, int column) const;
+
+	bool cellAboveRightIsAvailable(int row, int column) const;
+	bool cellAboveLeftIsAvailable(int row, int column) const;
+	bool cellBelowRightIsAvailable(int row, int column) const;
+	bool cellBelowLeftIsAvailable(int row, int column) const;
 };

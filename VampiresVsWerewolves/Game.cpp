@@ -91,37 +91,42 @@ void Game::Run()
 
 		now = clock();
 		system("cls");
-		Update();
+		
 
-		if (!_kbhit()) continue;
+		if (_kbhit()) {
+			int c;
+			switch ((c = _getch())) {
 
-		int c;
-		switch ((c = _getch())) {
+			case KEY_UP:
 
-		case KEY_UP:
+				//cout << endl << "Up" << endl;//key up
+				avatar->GoUp();
 
-			cout << endl << "Up" << endl;//key up
+				break;
 
-			break;
+			case KEY_DOWN:
 
-		case KEY_DOWN:
+				//cout << endl << "Down" << endl; // key down
+				avatar->GoDown();
 
-			cout << endl << "Down" << endl; // key down
+				break;
 
-			break;
+			case KEY_LEFT:
 
-		case KEY_LEFT:
+				//cout << endl << "Left" << endl; // key left
+				avatar->GoLeft();
+				break;
 
-			cout << endl << "Left" << endl; // key left
+			case KEY_RIGHT:
 
-			break;
+				//cout << endl << "Right" << endl; // key right
+				avatar->GoRight();
 
-		case KEY_RIGHT:
-
-			cout << endl << "Right" << endl; // key right
-
-			break;
+				break;
+			}
 		}
+
+		Update();
 	}
 }
 
@@ -148,6 +153,13 @@ void Game::Update()
 	}
 
 	map->Show();
+	cout << endl;
+	if (isDay) {
+		cout << "Day" << endl;
+	}
+	else {
+		cout << "Night" << endl;
+	}
 }
 
 bool Game::IsOver()
@@ -158,6 +170,33 @@ bool Game::IsOver()
 vector<pair<int, int>> Game::GetAvailableNeighboringCells(int row, int col) const
 {
 	return map->GetLegalNeighborCells(row, col);
+}
+
+vector<pair<int, int>> Game::GetAvailableDiagonalNeighboringCells(int row, int col) const
+{
+	return map->GetAvailableDiagonalNeighboringCells(row, col);
+}
+
+int Game::GetRows()
+{
+
+	return map->GetRow();
+}
+
+int Game::GetColumns()
+{
+	return map->GetColumn();
+}
+
+void Game::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
+{
+	map->UpdateEntityPosition(oldRow, oldColumn, newRow, newColumn, entity);
+}
+
+bool Game::HasPotion(int row, int col) const
+{
+	
+	return map->HasPotion(row,col);
 }
 
 void Game::getValidRandomCoordinates(int& row, int& column)

@@ -15,20 +15,96 @@ Avatar::Avatar(int row, int column, Game* game)
 }
 
 void Avatar::update() {
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-	int legalCellCount = legalCells.size();
-
-	if (legalCellCount == 0) //TODO: attack
-		return;
-
-	int randomIndex = Utils::GetRandomNumberInRange(0, legalCellCount);
-	assert(randomIndex >= 0 && randomIndex < legalCellCount);
-	pair<int, int> coords = legalCells[randomIndex];
-
-	row = coords.first;
-	column = coords.second;
+	
 }
 
 MapCellType Avatar::GetCellType() {
 	return MapCellType::avatar;
+}
+
+void Avatar::GoDown()
+{
+	if (row >= game->GetRows()) return;
+
+	if (game->HasPotion(row + 1, column)) {
+		gotPotion();
+		game->UpdateEntityPosition(row, column, row + 1, column, avatar);
+		row++;
+	}
+
+	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+
+	
+
+	for (auto pair : legalCells) {
+		if(row+1 == pair.first && column == pair.second){
+			row++;
+			game->UpdateEntityPosition(row - 1, column, row, column, avatar);
+		}
+	}
+		
+}
+
+void Avatar::GoUp()
+{
+	if (row == 0) return;
+
+	if (game->HasPotion(row -1, column)) {
+		gotPotion();
+		game->UpdateEntityPosition(row, column, row -1, column, avatar);
+		row--;
+	}
+	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+
+	for (auto pair : legalCells) {
+		if (row - 1 == pair.first && column == pair.second) {
+			row--;
+			game->UpdateEntityPosition(row + 1, column, row, column, avatar);
+		}
+	}
+}
+
+void Avatar::GoRight()
+{
+	if (column >= game->GetColumns()) return;
+
+	if (game->HasPotion(row , column+1)) {
+		gotPotion();
+		game->UpdateEntityPosition(row, column, row, column+1, avatar);
+		column++;
+	}
+	
+	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+
+	for (auto pair : legalCells) {
+		if (row == pair.first && column+1 == pair.second) {
+			column++;
+			game->UpdateEntityPosition(row , column-1, row, column, avatar);
+		}
+	}
+	
+}
+
+void Avatar::GoLeft()
+{
+	if (column == 0) return;
+
+	if (game->HasPotion(row , column-1)) {
+		gotPotion();
+		game->UpdateEntityPosition(row, column, row , column-1, avatar);
+		column--;
+	}
+	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+
+	for (auto pair : legalCells) {
+		if (row == pair.first && column -1 == pair.second) {
+			column--;
+			game->UpdateEntityPosition(row, column+1, row, column, avatar);
+		}
+	}
+}
+
+void Avatar::gotPotion()
+{
+	potions++;
 }

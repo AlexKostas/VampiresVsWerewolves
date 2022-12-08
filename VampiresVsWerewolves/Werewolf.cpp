@@ -20,8 +20,11 @@ void Werewolf::update() {
 	if (legalCellCount == 0) //TODO: attack
 		return;
 
-	int randomIndex = Utils::GetRandomNumberInRange(0, legalCellCount);
-	assert(randomIndex >= 0 && randomIndex < legalCellCount);
+	int randomIndex = Utils::GetRandomNumberInRange(0, legalCellCount+1);
+	assert(randomIndex >= 0 && randomIndex <= legalCellCount);
+
+	if (randomIndex == legalCellCount) return;
+
 	pair<int, int> coords = legalCells[randomIndex];
 
 	row = coords.first;

@@ -2,13 +2,9 @@
 #include <cassert>
 #include "Game.h"
 
-
-
 using namespace std;
 
 void initializeGame(Game*& game);
-
-
 
 int main()
 {	

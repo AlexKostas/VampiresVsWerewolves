@@ -7,7 +7,12 @@ public:
 	Avatar(int row, int column, Game* game);
 	virtual void update();
 	virtual MapCellType GetCellType();
+	void GoUp();
+	void GoDown();
+	void GoRight();
+	void GoLeft();
 
 private:
-	//TODO POTION
+	int potions=1;
+	void gotPotion();
 };

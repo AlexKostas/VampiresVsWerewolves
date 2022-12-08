@@ -57,11 +57,11 @@ vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
 	vector<pair<int, int>> result;
 
 	if (cellAboveIsAvailable(row, col)) {
-		pair<int, int> coords(row + 1, col);
+		pair<int, int> coords(row - 1, col);
 		result.push_back(coords);
 	}
 	if (cellBelowIsAvailable(row, col)) {
-		pair<int, int> coords(row - 1, col);
+		pair<int, int> coords(row + 1, col);
 		result.push_back(coords);
 	}
 	if (cellLeftIsAvailable(row, col)) {
@@ -70,6 +70,33 @@ vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
 	}
 	if(cellRightIsAvailable(row, col)) {
 		pair<int, int> coords(row, col + 1);
+		result.push_back(coords);
+	}
+
+	return result;
+}
+
+vector<pair<int, int>> Map::GetAvailableDiagonalNeighboringCells(int row, int col) const
+{
+	assert(row >= 0 && row < rows);
+	assert(col >= 0 && col < columns);
+
+	vector<pair<int, int>> result;
+
+	if (cellAboveLeftIsAvailable(row, col)){
+		pair<int,int> coords(row-1,col-1);
+		result.push_back(coords);
+	}
+	if (cellAboveRightIsAvailable(row, col)) {
+		pair<int, int> coords(row - 1, col +1);
+		result.push_back(coords);
+	}
+	if (cellBelowLeftIsAvailable(row, col)) {
+		pair<int, int> coords(row +1, col - 1);
+		result.push_back(coords);
+	}
+	if (cellBelowRightIsAvailable(row, col)) {
+		pair<int, int> coords(row + 1, col +1);
 		result.push_back(coords);
 	}
 
@@ -91,6 +118,15 @@ int Map::GetColumn() const
 	return columns;
 }
 
+bool Map::HasPotion(int row, int col) const
+{
+	assert(row >= 0 && row < rows);
+	assert(col >= 0 && col < columns);
+
+	return board[row][col]==potion;
+}
+
+
 void Map::populateMap()
 {
 	int numberOfTrees = round((rows * columns) * (treeDensity / 100.0));
@@ -98,6 +134,7 @@ void Map::populateMap()
 
 	placeElements(numberOfTrees, tree);
 	placeElements(numberOfWaterCells, water);
+	placeElements(amountOfPotions, potion);
 }
 
 void Map::printBorderRow() const {
@@ -158,8 +195,11 @@ char Map::getCellChar(int row, int column) const
 		case avatar:
 			result = 'A';
 			break;
+		case potion:
+			result = 'P';
+			break;
 		default:
-			//TODO: throw exception
+			assert(false);
 			break;
 	}
 
@@ -167,7 +207,7 @@ char Map::getCellChar(int row, int column) const
 	return result;
 }
 
-bool Map::cellAboveIsAvailable(int row, int column) const
+bool Map::cellBelowIsAvailable(int row, int column) const
 {
 	if (row + 1 >= rows) return false;
 	assert(column >= 0 && column < columns);
@@ -175,7 +215,7 @@ bool Map::cellAboveIsAvailable(int row, int column) const
 	return (board[row+1][column] == ground);
 }
 
-bool Map::cellBelowIsAvailable(int row, int column) const
+bool Map::cellAboveIsAvailable(int row, int column) const
 {
 	if (row - 1 < 0) return false;
 	assert(columns >= 0 && column < columns);
@@ -196,5 +236,31 @@ bool Map::cellRightIsAvailable(int row, int column) const
 	if (column +1 >= columns) return false;
 	assert(row >= 0 && row < rows);
 
-	return (board[row][column+1] == ground);
-} 
+	return board[row][column+1] == ground;
+}
+
+bool Map::cellAboveRightIsAvailable(int row, int column) const
+{
+	if(row<=0 || column >= columns-1) return false;
+
+	return board[row - 1][column + 1] == ground;
+}
+
+bool Map::cellAboveLeftIsAvailable(int row, int column) const
+{
+	if (row <= 0 || column <= 0) return false;
+
+	return board[row-1][column-1]==ground;
+}
+
+bool Map::cellBelowRightIsAvailable(int row, int column) const
+{
+	if (row >= rows - 1 || column >= columns - 1) return false;
+	return board[row+1][column+1]==ground;
+}
+
+bool Map::cellBelowLeftIsAvailable(int row, int column) const
+{
+	if (row >= rows - 1 || column <= 0) return false;
+	return board[row+1][column-1]==ground;
+}
