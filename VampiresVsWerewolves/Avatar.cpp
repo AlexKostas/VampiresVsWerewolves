@@ -30,6 +30,7 @@ void Avatar::GoDown()
 		gotPotion();
 		game->UpdateEntityPosition(row, column, row + 1, column, avatar);
 		row++;
+		return;
 	}
 
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
@@ -53,6 +54,7 @@ void Avatar::GoUp()
 		gotPotion();
 		game->UpdateEntityPosition(row, column, row -1, column, avatar);
 		row--;
+		return;
 	}
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
 
@@ -72,6 +74,7 @@ void Avatar::GoRight()
 		gotPotion();
 		game->UpdateEntityPosition(row, column, row, column+1, avatar);
 		column++;
+		return;
 	}
 	
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
@@ -93,6 +96,7 @@ void Avatar::GoLeft()
 		gotPotion();
 		game->UpdateEntityPosition(row, column, row , column-1, avatar);
 		column--;
+		return;
 	}
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
 
@@ -102,6 +106,11 @@ void Avatar::GoLeft()
 			game->UpdateEntityPosition(row, column+1, row, column, avatar);
 		}
 	}
+}
+
+int Avatar::GetAmountOfPotions()
+{
+	return potions;
 }
 
 void Avatar::gotPotion()

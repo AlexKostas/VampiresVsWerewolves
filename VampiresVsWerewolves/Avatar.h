@@ -11,7 +11,7 @@ public:
 	void GoDown();
 	void GoRight();
 	void GoLeft();
-
+	int GetAmountOfPotions();
 private:
 	int potions=1;
 	void gotPotion();

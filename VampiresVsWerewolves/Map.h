@@ -21,7 +21,7 @@ public:
 private:
 	const int treeDensity=5;
 	const int waterDensity =5;
-	const int amountOfPotions = 1;
+	const int amountOfPotions = 2;
 	int rows, columns;
 	MapCellType** board; 
 

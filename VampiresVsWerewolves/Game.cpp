@@ -160,6 +160,8 @@ void Game::Update()
 	else {
 		cout << "Night" << endl;
 	}
+
+	cout << "Potions: " << avatar->GetAmountOfPotions() << endl;
 }
 
 bool Game::IsOver()
