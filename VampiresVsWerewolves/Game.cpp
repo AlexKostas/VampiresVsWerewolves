@@ -128,6 +128,14 @@ void Game::Run()
 
 		Update();
 	}
+	if (werewolves.size() == 0 && vampires.size() == 0) {
+		cout << "\nITS A DRAW!!";
+	}
+	else if (werewolves.size() == 0) {
+		cout << "\nVAMPIRES WON!!"<<endl;
+	}
+	else
+		cout << "\nWEREWOLVES WON!!"<<endl;
 }
 
 void Game::Update()
