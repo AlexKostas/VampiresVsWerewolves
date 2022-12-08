@@ -29,6 +29,7 @@ private:
 	const int frameRate = 2;
 	int turnsElapsed = 0;
 	bool isDay = true;
+	bool isPaused = false;
 
 	Map* map;
 	vector<Werewolf*> werewolves;

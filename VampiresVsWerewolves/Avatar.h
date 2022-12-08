@@ -4,7 +4,7 @@
 
 class Avatar : public GameEntity {
 public:
-	Avatar(int row, int column, Game* game);
+	Avatar(int row, int column, Game* game, bool supportsWerewolves);
 	virtual void update();
 	virtual MapCellType GetCellType();
 	void GoUp();
@@ -12,7 +12,9 @@ public:
 	void GoRight();
 	void GoLeft();
 	int GetAmountOfPotions();
+	bool SupportsWerewolves();
 private:
 	int potions=1;
+	const bool supportsWerewolves;
 	void gotPotion();
 };

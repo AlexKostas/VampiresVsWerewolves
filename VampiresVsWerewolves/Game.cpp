@@ -25,8 +25,6 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 	if (row < 2 || column < 2)
 		throw invalid_argument("Invalid Board Size\n");
 	
-	//TODO FIX AVATAR'S INITIALIZATION
-
 	map = new Map(row, column);
 
 	for (int i = 0;i < werewolvesCount;i++) {
@@ -54,15 +52,6 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 		vampires.push_back(vampire);
 		entities.push_back(vampire);
 	}
-
-	int newRow, newColumn;
-
-	getValidRandomCoordinates(newRow, newColumn);
-
-	avatar = new Avatar(newRow, newColumn, this);
-	entities.push_back(avatar);
-
-	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
 }
 
 Game::~Game()
@@ -83,51 +72,80 @@ void Game::Run()
 	float frameTime = (1.0 / frameRate) * CLOCKS_PER_SEC;
 	assert(frameTime >= 0);
 
+	bool supportsWerewolf;
+	do {
+		cout << "Choose your team. V for vampires or W for werewolves" << endl;
+
+		string input;
+		cin >> input;
+
+		if (input == "V") {
+			supportsWerewolf = false;
+			break;
+		}
+		else if (input == "W") {
+			supportsWerewolf = true;
+			break;
+		}
+	} while (true);
+
+	int newRow, newColumn;
+
+	getValidRandomCoordinates(newRow, newColumn);
+
+	avatar = new Avatar(newRow, newColumn, this, supportsWerewolf);
+	entities.push_back(avatar);
+
+	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
+
 
 	clock_t now = clock();
+	// GAME LOOP
 	while (!IsOver())
 	{
 		while (clock() - now < frameTime);
 
 		now = clock();
-		system("cls");
 		
-
 		if (_kbhit()) {
 			int c;
 			switch ((c = _getch())) {
 
 			case KEY_UP:
-
-				//cout << endl << "Up" << endl;//key up
 				avatar->GoUp();
-
 				break;
 
 			case KEY_DOWN:
-
-				//cout << endl << "Down" << endl; // key down
 				avatar->GoDown();
-
 				break;
 
 			case KEY_LEFT:
-
-				//cout << endl << "Left" << endl; // key left
 				avatar->GoLeft();
 				break;
 
 			case KEY_RIGHT:
-
-				//cout << endl << "Right" << endl; // key right
 				avatar->GoRight();
+				break;
 
+			case '\t':
+				isPaused = !isPaused;
+				cout << "\nGAME IS PAUSED! Press Tab to continue" << endl;
+
+				string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
+
+				cout << "You support " <<  team << endl;
+				cout << "Number of Vampires: " << vampires.size() << endl;
+				cout << "Number of Werewolves: " << werewolves.size() << endl;
 				break;
 			}
 		}
 
-		Update();
+		if (!isPaused) { 
+			system("cls");
+			Update(); 
+		}
 	}
+	
 	if (werewolves.size() == 0 && vampires.size() == 0) {
 		cout << "\nITS A DRAW!!";
 	}
@@ -164,12 +182,15 @@ void Game::Update()
 	cout << endl;
 	if (isDay) {
 		cout << "Day" << endl;
+		cout << "Turns to night: " << turnsToDay - turnsElapsed << endl;
 	}
 	else {
 		cout << "Night" << endl;
+		cout << "Turns to day: " << turnsToDay - turnsElapsed << endl;
 	}
 
 	cout << "Potions: " << avatar->GetAmountOfPotions() << endl;
+	
 }
 
 bool Game::IsOver()

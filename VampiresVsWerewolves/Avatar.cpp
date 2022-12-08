@@ -3,8 +3,7 @@
 #include "Game.h"
 #include "Utils.h"
 
-Avatar::Avatar(int row, int column, Game* game)
-{
+Avatar::Avatar(int row, int column, Game* game, bool _supportsWerewolves) : supportsWerewolves(_supportsWerewolves) {
 	assert(row >= 0);
 	assert(column >= 0);
 	assert(game != NULL);
@@ -111,6 +110,11 @@ void Avatar::GoLeft()
 int Avatar::GetAmountOfPotions()
 {
 	return potions;
+}
+
+bool Avatar::SupportsWerewolves()
+{
+	return supportsWerewolves;
 }
 
 void Avatar::gotPotion()
