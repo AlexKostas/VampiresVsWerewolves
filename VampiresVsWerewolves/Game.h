@@ -17,6 +17,8 @@ public:
 	void Run();
 	vector<pair<int, int>> GetAvailableNeighboringCells(int row, int col) const;
 	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col) const;
+	vector<Werewolf*> GetNeighboringWerewolves(int row, int col);
+	vector<Vampire*> GetNeighboringVampires(int row, int col);
 	int GetRows() const;
 	int GetColumns() const;
 	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);

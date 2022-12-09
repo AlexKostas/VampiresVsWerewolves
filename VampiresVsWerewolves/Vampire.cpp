@@ -2,11 +2,32 @@
 #include <vector>
 #include <utility>
 #include "Vampire.h"
+#include "Werewolf.h"
 #include "Utils.h"
 
 Vampire::Vampire(int row, int column, Game* game) : GameEntity(row, column, game){}
 
 void Vampire::update(){
+	vector<Vampire*> allies = game->GetNeighboringVampires(row, column);
+	vector<Werewolf*> enemies = game->GetNeighboringWerewolves(row, column);
+
+	if (allies.size() > 0) {
+		// HEAL RANDOM ALLY
+		
+		return;
+	}
+	else if (enemies.size() > 0) {
+		int enemyIndex = Utils::GetRandomNumberInRange(0, enemies.size());
+		Werewolf* enemyToAttack = enemies[enemyIndex];
+
+		if (enemyToAttack->CanAttack(attack)) {
+			DoDamage();
+			return;
+		}
+
+	}
+
+	// Try to move
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
 	vector<pair<int, int>> diagonalCells = game->GetAvailableDiagonalNeighboringCells(row, column);
 
@@ -16,7 +37,7 @@ void Vampire::update(){
 
 	int legalCellCount = possibleMovementCells.size();
 
-	if (legalCellCount == 0) //TODO: attack
+	if (legalCellCount == 0)
 		return;
 
 	int randomIndex = Utils::GetRandomNumberInRange(0, legalCellCount+1);

@@ -176,6 +176,32 @@ vector<pair<int, int>> Game::GetAvailableDiagonalNeighboringCells(int row, int c
 	return map->GetAvailableDiagonalNeighboringCells(row, col);
 }
 
+vector<Werewolf*> Game::GetNeighboringWerewolves(int row, int col)
+{
+	assert(row >= 0 && row < map->GetRow());
+	assert(col >= 0 && col < map->GetColumn());
+	vector<Werewolf*> result;
+
+	for (Werewolf* werewolf : werewolves)
+		if (Utils::ManhattanDistance(werewolf->getRow(), row, werewolf->getColumn(), col) == 1)
+			result.push_back(werewolf);
+	
+	return result;
+}
+
+vector<Vampire*> Game::GetNeighboringVampires(int row, int col)
+{
+	assert(row >= 0 && row < map->GetRow());
+	assert(col >= 0 && col < map->GetColumn());
+	vector<Vampire*> result;
+
+	for (Vampire* vampire : vampires)
+		if (Utils::ManhattanDistance(vampire->getRow(), row, vampire->getColumn(), col) == 1)
+			result.push_back(vampire);
+
+	return result;
+}
+
 int Game::GetRows() const
 {
 	return map->GetRow();
