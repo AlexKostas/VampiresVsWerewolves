@@ -23,7 +23,7 @@ MapCellType Avatar::GetCellType() {
 
 void Avatar::GoDown()
 {
-	if (row >= game->GetRows()) return;
+	if (row >= game->GetRows() - 1) return;
 
 	if (game->HasPotion(row + 1, column)) {
 		gotPotion();
@@ -65,7 +65,7 @@ void Avatar::GoUp()
 
 void Avatar::GoRight()
 {
-	if (column >= game->GetColumns()) return;
+	if (column >= game->GetColumns() - 1) return;
 
 	if (game->HasPotion(row , column+1)) {
 		gotPotion();
