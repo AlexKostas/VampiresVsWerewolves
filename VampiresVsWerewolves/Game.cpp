@@ -35,14 +35,10 @@ Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount
 
 Game::~Game()
 {
-	for (int i = 0;i < werewolvesCount;i++)
-		delete werewolves[i];	
-
-	for (int i = 0;i < vampiresCount;i++)
-		delete vampires[i];
+	for (GameEntity* entity : entities)
+		delete entity;
 
 	delete map;
-	delete avatar;
 }
 
 void Game::Run()
@@ -154,6 +150,11 @@ bool Game::handleInput()
 			cout << "You support " << team << "!" << endl;
 			cout << "Number of Vampires: " << vampires.size() << endl;
 			cout << "Number of Werewolves: " << werewolves.size() << endl;
+
+			for (GameEntity* gameEntity : entities) {
+				gameEntity->DisplayHealth();
+			}
+
 			break;
 		}
 	}
@@ -215,6 +216,27 @@ int Game::GetColumns() const
 void Game::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
 {
 	map->UpdateEntityPosition(oldRow, oldColumn, newRow, newColumn, entity);
+}
+
+void Game::OnEntityDied(GameEntity* self)
+{
+	for (auto entity = entities.begin(); entity != entities.end(); entity++)
+		if (*entity == self) {
+			entities.erase(entity);
+			break;
+		}
+
+	for (auto entity = vampires.begin(); entity != vampires.end(); entity++)
+		if (*entity == self) {
+			vampires.erase(entity);
+			break;
+		}
+
+	for (auto entity = werewolves.begin(); entity != werewolves.end(); entity++)
+		if (*entity == self) {
+			werewolves.erase(entity);
+			break;
+		}
 }
 
 bool Game::HasPotion(int row, int col) const
@@ -285,9 +307,9 @@ void Game::displayEndOfGameMessages() const
 	if (werewolves.size() == 0 && vampires.size() == 0)
 		cout << endl << "ITS A DRAW!!";
 	else if (vampires.size() == 0)
-		cout << endl << "VAMPIRES WON!!" << endl;
-	else if (werewolves.size() == 0)
 		cout << endl << "WEREWOLVES WON!!" << endl;
+	else if (werewolves.size() == 0)
+		cout << endl << "VAMPIRES WON!!" << endl;
 	else
 		cout << endl << "GAME TERMINATED EARLY" << endl;
 }

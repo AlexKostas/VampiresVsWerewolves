@@ -11,17 +11,19 @@ void Vampire::update(){
 	vector<Vampire*> allies = game->GetNeighboringVampires(row, column);
 	vector<Werewolf*> enemies = game->GetNeighboringWerewolves(row, column);
 
-	if (allies.size() > 0) {
-		// HEAL RANDOM ALLY
-		
-		return;
+	if (allies.size() > 0 && healthKits > 0) {
+		int allyIndex = Utils::GetRandomNumberInRange(0, allies.size());
+		if (allies[allyIndex]->TryToApplyHealthkit()) {
+			healthKits--;
+			return;
+		}
 	}
 	else if (enemies.size() > 0) {
 		int enemyIndex = Utils::GetRandomNumberInRange(0, enemies.size());
 		Werewolf* enemyToAttack = enemies[enemyIndex];
 
 		if (enemyToAttack->CanAttack(attack)) {
-			DoDamage();
+			DoDamage(attack);
 			return;
 		}
 

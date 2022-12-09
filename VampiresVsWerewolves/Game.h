@@ -22,13 +22,14 @@ public:
 	int GetRows() const;
 	int GetColumns() const;
 	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);
+	void OnEntityDied(GameEntity* self);
 	bool HasPotion(int row, int col) const;
 
 private:
 	const int werewolvesCount;
 	const int vampiresCount;
 	const int turnsToDay = 15;
-	const int frameRate = 2;
+	const int frameRate = 5;
 	int turnsElapsed = 0;
 	bool isDay = true;
 	bool isPaused = false;

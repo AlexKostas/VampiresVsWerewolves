@@ -11,6 +11,7 @@ public:
 	virtual MapCellType GetCellType() = 0;
 	bool TryToApplyHealthkit();
 	void DoDamage(int myAttack);
+	void DisplayHealth();
 
 	int getRow() const;
 	int getColumn() const;
@@ -19,7 +20,7 @@ public:
 protected:
 	const int maxHealthKits = 2;
 	const int startingHealth = 5;
-	const int maxAttack = 3;
+	const int maxAttack = 3; // NEEDS TO BE HIGHER THAN MAX DEFENSE
 	const int maxDefense = 2;
 	int row, column;
 	int health, attack, defence, healthKits;

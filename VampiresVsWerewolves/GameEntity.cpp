@@ -1,6 +1,10 @@
 #include <cassert>
+#include <iostream>
 #include "GameEntity.h"
 #include "Utils.h"
+
+using std::cout;
+using std::endl;
 
 GameEntity::GameEntity(int row, int column, Game* game)
 {
@@ -14,7 +18,8 @@ GameEntity::GameEntity(int row, int column, Game* game)
 
 	this->healthKits = Utils::GetRandomNumberInRange(0, maxHealthKits + 1);
 	this->health = startingHealth;
-	this->attack = Utils::GetRandomNumberInRange(1, maxAttack + 1);
+	assert(maxDefense < maxAttack);
+	this->attack = Utils::GetRandomNumberInRange(maxDefense+1, maxAttack + 1);
 	this->defence = Utils::GetRandomNumberInRange(1, maxDefense + 1);
 }
 
@@ -33,11 +38,16 @@ bool GameEntity::TryToApplyHealthkit()
 void GameEntity::DoDamage(int myAttack)
 {
 	int damage = myAttack - defence;
-	assert(damage >= 0);
+	if (damage <= 0) return;
 
 	health -= damage;
 	if (health <= 0)
 		die();
+}
+
+void GameEntity::DisplayHealth()
+{
+	cout << health << endl;
 }
 
 int GameEntity::getRow() const
@@ -52,9 +62,13 @@ int GameEntity::getColumn() const
 
 bool GameEntity::CanAttack(int myAttack) const
 {
-	return myAttack > defence;
+	int chance = Utils::GetRandomNumberInRange(1, 101);
+	if (chance > 85) return true;
+
+	return myAttack > attack;
 }
 
 void GameEntity::die()
 {
+	game->OnEntityDied(this);
 }
