@@ -4,15 +4,7 @@
 #include "Vampire.h"
 #include "Utils.h"
 
-Vampire::Vampire(int row, int column, Game* game)
-{
-	assert(row >= 0);
-	assert(column >= 0);
-
-	this->row = row;
-	this->column = column;
-	this->game = game;
-}
+Vampire::Vampire(int row, int column, Game* game) : GameEntity(row, column, game){}
 
 void Vampire::update(){
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);

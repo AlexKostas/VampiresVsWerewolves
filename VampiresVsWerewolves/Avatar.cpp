@@ -3,19 +3,10 @@
 #include "Game.h"
 #include "Utils.h"
 
-Avatar::Avatar(int row, int column, Game* game, bool _supportsWerewolves) : supportsWerewolves(_supportsWerewolves) {
-	assert(row >= 0);
-	assert(column >= 0);
-	assert(game != NULL);
+Avatar::Avatar(int row, int column, Game* game, bool _supportsWerewolves) : GameEntity(row, column, game), 
+	supportsWerewolves(_supportsWerewolves){}
 
-	this->row = row;
-	this->column = column;
-	this->game = game;
-}
-
-void Avatar::update() {
-	
-}
+void Avatar::update() {}
 
 MapCellType Avatar::GetCellType() {
 	return MapCellType::avatar;
@@ -39,8 +30,7 @@ void Avatar::GoDown()
 			row++;
 			game->UpdateEntityPosition(row - 1, column, row, column, avatar);
 		}
-	}
-		
+	}		
 }
 
 void Avatar::GoUp()
@@ -82,7 +72,6 @@ void Avatar::GoRight()
 			game->UpdateEntityPosition(row , column-1, row, column, avatar);
 		}
 	}
-	
 }
 
 void Avatar::GoLeft()

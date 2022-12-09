@@ -2,16 +2,7 @@
 #include "Werewolf.h"
 #include "Utils.h"
 
-Werewolf::Werewolf(int row, int column, Game* game)
-{
-	//TODO: Maybe move this to parent's constructor
-	assert(row >= 0);
-	assert(column >= 0);
-
-	this->row = row;
-	this->column = column;
-	this->game = game;
-}
+Werewolf::Werewolf(int row, int column, Game* game) : GameEntity(row, column, game) {}
 
 void Werewolf::update() {
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
