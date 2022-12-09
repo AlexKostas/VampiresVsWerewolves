@@ -20,3 +20,8 @@ int Utils::GetRandomNumberInRange(int lowBound, int highBound) {
 
 	return num;
 }
+
+int Utils::ManhattanDistance(int x1, int x2, int y1, int y2)
+{
+	return abs(x2 - x1) + abs(y2 - y1);
+}
