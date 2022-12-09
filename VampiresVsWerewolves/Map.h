@@ -14,7 +14,7 @@ public:
 	void UpdateEntityPosition(int newRow, int newColumn, MapCellType entity);
 	vector<pair<int, int>> GetLegalNeighborCells(int row, int col) const;
 	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col) const;
-	bool IsGroundCell(int row, int column) const;
+	pair<int, int> GetRandomAvailableCell();
 	int GetRow() const;
 	int GetColumn() const;
 	bool HasPotion(int row,int col) const;

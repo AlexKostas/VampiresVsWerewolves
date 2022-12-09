@@ -40,7 +40,6 @@ private:
 	void createVampires();
 	void createWerewolves();
 	void createAvatar();
-	void getValidRandomCoordinates(int& row, int& column) const;
 	void update();
 	bool handleInput();
 	bool isOver();

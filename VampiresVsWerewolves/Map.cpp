@@ -103,9 +103,14 @@ vector<pair<int, int>> Map::GetAvailableDiagonalNeighboringCells(int row, int co
 	return result;
 }
 
-bool Map::IsGroundCell(int row, int column) const
+pair<int, int> Map::GetRandomAvailableCell()
 {
-	return board[row][column]==ground;
+	int x, y;
+	do {
+		Utils::GetRandomCoordinates(rows, columns, x, y);
+	} while (board[x][y] != ground);
+
+	return pair<int, int>(x, y);
 }
 
 int Map::GetRow() const
@@ -125,7 +130,6 @@ bool Map::HasPotion(int row, int col) const
 
 	return board[row][col]==potion;
 }
-
 
 void Map::populateMap()
 {
@@ -159,12 +163,8 @@ void Map::printCellRow(int row) const {
 void Map::placeElements(int elementCount, MapCellType element)
 {
 	for (int i = 0;i < elementCount;i++) {
-		 int x, y;
-		do {
-			Utils::GetRandomCoordinates(rows, columns, x, y);
-		} while (board[x][y] != ground);
-
-		board[x][y] = element;
+		pair<int, int> coordinates = GetRandomAvailableCell();
+		board[coordinates.first][coordinates.second] = element;
 	}
 }
 

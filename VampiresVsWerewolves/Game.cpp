@@ -199,13 +199,12 @@ bool Game::HasPotion(int row, int col) const
 void Game::createVampires()
 {
 	for (int i = 0; i < vampiresCount; i++) {
-		int row, column;
+		pair<int, int> coords = map->GetRandomAvailableCell();
+		int newRow = coords.first, newColumn = coords.second;
 
-		getValidRandomCoordinates(row, column);
+		Vampire* vampire = new Vampire(newRow, newColumn, this);
 
-		Vampire* vampire = new Vampire(row, column, this);
-
-		map->UpdateEntityPosition(row, column, MapCellType::vampire);
+		map->UpdateEntityPosition(newRow, newColumn, MapCellType::vampire);
 
 		vampires.push_back(vampire);
 		entities.push_back(vampire);
@@ -215,13 +214,12 @@ void Game::createVampires()
 void Game::createWerewolves()
 {
 	for (int i = 0; i < werewolvesCount; i++) {
-		int row, column;
+		pair<int, int> coords = map->GetRandomAvailableCell();
+		int newRow = coords.first, newColumn = coords.second;
 
-		getValidRandomCoordinates(row, column);
+		Werewolf* werewolf = new Werewolf(newRow, newColumn, this);
 
-		Werewolf* werewolf = new Werewolf(row, column, this);
-
-		map->UpdateEntityPosition(row, column, MapCellType::werewolf);
+		map->UpdateEntityPosition(newRow, newColumn, MapCellType::werewolf);
 
 		werewolves.push_back(werewolf);
 		entities.push_back(werewolf);
@@ -247,26 +245,13 @@ void Game::createAvatar()
 		}
 	} while (true);
 
-	int newRow, newColumn;
-
-	getValidRandomCoordinates(newRow, newColumn);
+	pair<int, int> coords = map->GetRandomAvailableCell();
+	int newRow = coords.first, newColumn = coords.second;
 
 	avatar = new Avatar(newRow, newColumn, this, supportsWerewolf);
 	entities.push_back(avatar);
 
 	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
-}
-
-void Game::getValidRandomCoordinates(int& row, int& column) const
-{
-	int tempRow, tempColumn;
-
-	do {
-		Utils::GetRandomCoordinates(map->GetRow(), map->GetColumn(), tempRow, tempColumn);	
-	}while(!map->IsGroundCell(tempRow,tempColumn));
-
-	row = tempRow;
-	column = tempColumn;
 }
 
 void Game::displayEndOfGameMessages() const
