@@ -34,8 +34,6 @@ void Avatar::GoDown()
 
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
 
-	
-
 	for (auto pair : legalCells) {
 		if(row+1 == pair.first && column == pair.second){
 			row++;

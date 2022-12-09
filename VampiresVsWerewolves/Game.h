@@ -16,11 +16,11 @@ public:
 	~Game();
 	void Run();
 	vector<pair<int, int>> GetAvailableNeighboringCells(int row, int col) const;
-	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col)const;
-	int GetRows();
-	int GetColumns();
+	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col) const;
+	int GetRows() const;
+	int GetColumns() const;
 	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);
-	bool HasPotion(int row, int col)const;
+	bool HasPotion(int row, int col) const;
 
 private:
 	const int werewolvesCount;
@@ -37,7 +37,12 @@ private:
 	vector<GameEntity*> entities;
 	Avatar* avatar;
 	
-	void getValidRandomCoordinates(int& row, int& column);
-	void Update();
-	bool IsOver();
+	void createVampires();
+	void createWerewolves();
+	void createAvatar();
+	void getValidRandomCoordinates(int& row, int& column) const;
+	void update();
+	bool handleInput();
+	bool isOver();
+	void displayEndOfGameMessages() const;
 };
