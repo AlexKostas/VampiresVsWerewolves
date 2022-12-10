@@ -5,7 +5,7 @@
 #include "Werewolf.h"
 #include "Utils.h"
 
-Vampire::Vampire(int row, int column, Game* game) : GameEntity(row, column, game){}
+Vampire::Vampire(int row, int column, Game* game) : Enemy(row, column, game){}
 
 void Vampire::update(){
 	vector<Vampire*> allies = game->GetNeighboringVampires(row, column);

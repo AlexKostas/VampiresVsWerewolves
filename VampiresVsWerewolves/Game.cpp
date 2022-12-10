@@ -151,9 +151,11 @@ bool Game::handleInput()
 			cout << "Number of Vampires: " << vampires.size() << endl;
 			cout << "Number of Werewolves: " << werewolves.size() << endl;
 
-			for (GameEntity* gameEntity : entities) {
-				gameEntity->DisplayHealth();
-			}
+			for (Vampire* vampire : vampires)
+				vampire->DisplayHealth();
+
+			for (Werewolf* werewolf : werewolves)
+				werewolf->DisplayHealth();
 
 			break;
 		}

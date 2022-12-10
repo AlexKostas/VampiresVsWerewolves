@@ -3,7 +3,7 @@
 #include "Vampire.h"
 #include "Utils.h"
 
-Werewolf::Werewolf(int row, int column, Game* game) : GameEntity(row, column, game) {}
+Werewolf::Werewolf(int row, int column, Game* game) : Enemy(row, column, game) {}
 
 void Werewolf::update() {
 	vector<Vampire*> enemies = game->GetNeighboringVampires(row, column);
