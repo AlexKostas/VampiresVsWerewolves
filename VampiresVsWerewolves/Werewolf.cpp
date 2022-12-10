@@ -21,7 +21,7 @@ void Werewolf::update() {
 		Vampire* enemyToAttack = enemies[enemyIndex];
 
 		if (enemyToAttack->CanAttack(attack)) {
-			DoDamage(attack);
+			enemyToAttack->DoDamage(attack);
 			return;
 		}
 

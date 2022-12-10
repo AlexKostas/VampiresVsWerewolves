@@ -11,6 +11,7 @@ void Vampire::update(){
 	vector<Vampire*> allies = game->GetNeighboringVampires(row, column);
 	vector<Werewolf*> enemies = game->GetNeighboringWerewolves(row, column);
 
+	// Try to heal ally
 	if (allies.size() > 0 && healthKits > 0) {
 		int allyIndex = Utils::GetRandomNumberInRange(0, allies.size());
 		if (allies[allyIndex]->TryToApplyHealthkit()) {
@@ -18,18 +19,18 @@ void Vampire::update(){
 			return;
 		}
 	}
-	else if (enemies.size() > 0) {
+	else if (enemies.size() > 0) { // Next, try to attack nearby enemy
 		int enemyIndex = Utils::GetRandomNumberInRange(0, enemies.size());
 		Werewolf* enemyToAttack = enemies[enemyIndex];
 
 		if (enemyToAttack->CanAttack(attack)) {
-			DoDamage(attack);
+			enemyToAttack->DoDamage(attack);
 			return;
 		}
 
 	}
 
-	// Try to move
+	// Finally, try to move
 	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
 	vector<pair<int, int>> diagonalCells = game->GetAvailableDiagonalNeighboringCells(row, column);
 
