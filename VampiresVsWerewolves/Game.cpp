@@ -179,11 +179,11 @@ vector<pair<int, int>> Game::GetAvailableDiagonalNeighboringCells(int row, int c
 	return map->GetAvailableDiagonalNeighboringCells(row, col);
 }
 
-vector<Werewolf*> Game::GetNeighboringWerewolves(int row, int col)
+vector<Enemy*> Game::GetNeighboringWerewolves(int row, int col)
 {
 	assert(row >= 0 && row < map->GetRow());
 	assert(col >= 0 && col < map->GetColumn());
-	vector<Werewolf*> result;
+	vector<Enemy*> result;
 
 	for (Werewolf* werewolf : werewolves)
 		if (Utils::ManhattanDistance(werewolf->getRow(), row, werewolf->getColumn(), col) == 1)
@@ -192,11 +192,11 @@ vector<Werewolf*> Game::GetNeighboringWerewolves(int row, int col)
 	return result;
 }
 
-vector<Vampire*> Game::GetNeighboringVampires(int row, int col)
+vector<Enemy*> Game::GetNeighboringVampires(int row, int col)
 {
 	assert(row >= 0 && row < map->GetRow());
 	assert(col >= 0 && col < map->GetColumn());
-	vector<Vampire*> result;
+	vector<Enemy*> result;
 
 	for (Vampire* vampire : vampires)
 		if (Utils::ManhattanDistance(vampire->getRow(), row, vampire->getColumn(), col) == 1)
@@ -222,6 +222,8 @@ void Game::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newCo
 
 void Game::OnEntityDied(GameEntity* self)
 {
+	map->UpdateEntityPosition(self->getRow(), self->getColumn(), ground);
+
 	for (auto entity = entities.begin(); entity != entities.end(); entity++)
 		if (*entity == self) {
 			entities.erase(entity);

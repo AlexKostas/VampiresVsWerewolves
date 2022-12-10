@@ -7,7 +7,7 @@ class Game;
 class Enemy : public GameEntity {
 public:
 	Enemy(int row, int col, Game* game);
-	virtual void update() = 0;
+	virtual void update();
 	virtual MapCellType GetCellType() = 0;
 
 	bool TryToApplyHealthkit();
@@ -22,4 +22,7 @@ protected:
 
 	int health, attack, defence, healthKits;
 	void die();
+	virtual vector<Enemy*> getEnemies() = 0;
+	virtual vector<Enemy*> getAllies() = 0;
+	virtual vector<pair<int, int>> getPossibleMovementCells() = 0;
 };

@@ -17,6 +17,48 @@ Enemy::Enemy(int row, int col, Game* game) : GameEntity(row, col, game)
 	this->defence = Utils::GetRandomNumberInRange(1, maxDefense + 1);
 }
 
+void Enemy::update()
+{
+	vector<Enemy*> allies = getAllies();
+	vector<Enemy*> enemies = getEnemies();
+
+	// Try to heal ally
+	if (allies.size() > 0 && healthKits > 0) {
+		int allyIndex = Utils::GetRandomNumberInRange(0, allies.size());
+		if (allies[allyIndex]->TryToApplyHealthkit()) {
+			healthKits--;
+			return;
+		}
+	}
+	else if (enemies.size() > 0) { // Next, try to attack nearby enemy
+		int enemyIndex = Utils::GetRandomNumberInRange(0, enemies.size());
+		Enemy* enemyToAttack = enemies[enemyIndex];
+
+		if (enemyToAttack->CanAttack(attack)) {
+			enemyToAttack->DoDamage(attack);
+			return;
+		}
+
+	}
+
+	// Finally, try to move
+	vector<pair<int, int>> possibleMovementCells = getPossibleMovementCells();
+	int legalCellCount = possibleMovementCells.size();
+
+	if (legalCellCount == 0)
+		return;
+
+	int randomIndex = Utils::GetRandomNumberInRange(0, legalCellCount + 1);
+	assert(randomIndex >= 0 && randomIndex <= legalCellCount);
+
+	if (randomIndex == legalCellCount) return;
+
+	pair<int, int> coords = possibleMovementCells[randomIndex];
+
+	row = coords.first;
+	column = coords.second;
+}
+
 /// <summary>
 /// Tries to apply a heath kit and returns true if it
 /// succeeds. Otherwise return false.
