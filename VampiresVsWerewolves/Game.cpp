@@ -16,6 +16,7 @@
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 #define ESC 27
+#define TAB 9
 #define MIN_BOARD_SIZE 4
 
 using std::cout;
@@ -122,26 +123,26 @@ bool Game::handleInput()
 		switch ((c = _getch())) {
 
 		case KEY_UP:
-			avatar->GoUp();
+			if(!isPaused) avatar->GoUp();
 			break;
 
 		case KEY_DOWN:
-			avatar->GoDown();
+			if (!isPaused) avatar->GoDown();
 			break;
 
 		case KEY_LEFT:
-			avatar->GoLeft();
+			if (!isPaused) avatar->GoLeft();
 			break;
 
 		case KEY_RIGHT:
-			avatar->GoRight();
+			if (!isPaused) avatar->GoRight();
 			break;
 
 		case ESC:
 			gameTerminatedByPlayer = true;
 			break;
 
-		case '\t':
+		case TAB:
 			isPaused = !isPaused;
 			cout << "\nGAME IS PAUSED! Press Tab to continue..." << endl;
 
