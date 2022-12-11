@@ -11,10 +11,6 @@ void Werewolf::Print()
 	std::cout << "W";
 }
 
-MapCellType Werewolf::GetCellType() {
-	return MapCellType::werewolf;
-}
-
 vector<Enemy*> Werewolf::getEnemies()
 {
 	return game->GetNeighboringVampires(row, column);

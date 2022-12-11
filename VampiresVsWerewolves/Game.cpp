@@ -84,7 +84,7 @@ void Game::update()
 		row = entity->getRow();
 		column = entity->getColumn();
 
-		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entity->GetCellType());
+		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entity);
 	}
 
 	turnsElapsed++;
@@ -216,14 +216,14 @@ int Game::GetColumns() const
 	return map->GetColumn();
 }
 
-void Game::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
+void Game::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, GameEntity* entity)
 {
 	map->UpdateEntityPosition(oldRow, oldColumn, newRow, newColumn, entity);
 }
 
 void Game::OnEntityDied(GameEntity* self)
 {
-	map->UpdateEntityPosition(self->getRow(), self->getColumn(), ground);
+	map->ClearCell(self->getRow(), self->getColumn());
 
 	for (auto entity = entities.begin(); entity != entities.end(); entity++)
 		if (*entity == self) {
@@ -257,7 +257,7 @@ void Game::createVampires()
 
 		Vampire* vampire = new Vampire(newRow, newColumn, this);
 
-		map->UpdateEntityPosition(newRow, newColumn, MapCellType::vampire);
+		map->UpdateEntityPosition(newRow, newColumn, vampire);
 
 		vampires.push_back(vampire);
 		entities.push_back(vampire);
@@ -272,7 +272,7 @@ void Game::createWerewolves()
 
 		Werewolf* werewolf = new Werewolf(newRow, newColumn, this);
 
-		map->UpdateEntityPosition(newRow, newColumn, MapCellType::werewolf);
+		map->UpdateEntityPosition(newRow, newColumn, werewolf);
 
 		werewolves.push_back(werewolf);
 		entities.push_back(werewolf);
@@ -304,7 +304,7 @@ void Game::createAvatar()
 	avatar = new Avatar(newRow, newColumn, this, supportsWerewolf);
 	entities.push_back(avatar);
 
-	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
+	map->UpdateEntityPosition(newRow, newColumn, avatar);
 }
 
 void Game::displayEndOfGameMessages() const

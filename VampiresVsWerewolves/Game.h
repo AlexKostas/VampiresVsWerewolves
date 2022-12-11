@@ -22,7 +22,7 @@ public:
 	vector<Enemy*> GetNeighboringVampires(int row, int col);
 	int GetRows() const;
 	int GetColumns() const;
-	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);
+	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, GameEntity* entity);
 	void OnEntityDied(GameEntity* self);
 	bool HasPotion(int row, int col) const;
 

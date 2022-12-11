@@ -8,7 +8,6 @@ class Enemy : public GameEntity {
 public:
 	Enemy(int row, int col, Game* game);
 	virtual void update();
-	virtual MapCellType GetCellType() = 0;
 
 	bool TryToApplyHealthkit();
 	bool CanAttack(int myAttack) const;

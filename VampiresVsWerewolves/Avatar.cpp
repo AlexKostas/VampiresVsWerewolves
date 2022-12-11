@@ -14,17 +14,13 @@ void Avatar::Print()
 	std::cout << "A";
 }
 
-MapCellType Avatar::GetCellType() {
-	return MapCellType::avatar;
-}
-
 void Avatar::GoDown()
 {
 	if (row >= game->GetRows() - 1) return;
 
 	if (game->HasPotion(row + 1, column)) {
 		gotPotion();
-		game->UpdateEntityPosition(row, column, row + 1, column, avatar);
+		game->UpdateEntityPosition(row, column, row + 1, column, this);
 		row++;
 		return;
 	}
@@ -34,7 +30,7 @@ void Avatar::GoDown()
 	for (auto pair : legalCells) {
 		if(row+1 == pair.first && column == pair.second){
 			row++;
-			game->UpdateEntityPosition(row - 1, column, row, column, avatar);
+			game->UpdateEntityPosition(row - 1, column, row, column, this);
 		}
 	}		
 }
@@ -45,7 +41,7 @@ void Avatar::GoUp()
 
 	if (game->HasPotion(row -1, column)) {
 		gotPotion();
-		game->UpdateEntityPosition(row, column, row -1, column, avatar);
+		game->UpdateEntityPosition(row, column, row -1, column, this);
 		row--;
 		return;
 	}
@@ -54,7 +50,7 @@ void Avatar::GoUp()
 	for (auto pair : legalCells) {
 		if (row - 1 == pair.first && column == pair.second) {
 			row--;
-			game->UpdateEntityPosition(row + 1, column, row, column, avatar);
+			game->UpdateEntityPosition(row + 1, column, row, column, this);
 		}
 	}
 }
@@ -65,7 +61,7 @@ void Avatar::GoRight()
 
 	if (game->HasPotion(row , column+1)) {
 		gotPotion();
-		game->UpdateEntityPosition(row, column, row, column+1, avatar);
+		game->UpdateEntityPosition(row, column, row, column+1, this);
 		column++;
 		return;
 	}
@@ -75,7 +71,7 @@ void Avatar::GoRight()
 	for (auto pair : legalCells) {
 		if (row == pair.first && column+1 == pair.second) {
 			column++;
-			game->UpdateEntityPosition(row , column-1, row, column, avatar);
+			game->UpdateEntityPosition(row , column-1, row, column, this);
 		}
 	}
 }
@@ -86,7 +82,7 @@ void Avatar::GoLeft()
 
 	if (game->HasPotion(row , column-1)) {
 		gotPotion();
-		game->UpdateEntityPosition(row, column, row , column-1, avatar);
+		game->UpdateEntityPosition(row, column, row , column-1, this);
 		column--;
 		return;
 	}
@@ -95,7 +91,7 @@ void Avatar::GoLeft()
 	for (auto pair : legalCells) {
 		if (row == pair.first && column -1 == pair.second) {
 			column--;
-			game->UpdateEntityPosition(row, column+1, row, column, avatar);
+			game->UpdateEntityPosition(row, column+1, row, column, this);
 		}
 	}
 }

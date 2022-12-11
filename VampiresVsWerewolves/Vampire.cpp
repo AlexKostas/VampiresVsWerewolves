@@ -8,10 +8,6 @@
 
 Vampire::Vampire(int row, int column, Game* game) : Enemy(row, column, game){}
 
-MapCellType Vampire::GetCellType() {
-	return MapCellType::vampire;
-}
-
 void Vampire::Print()
 {
 	std::cout << "V";

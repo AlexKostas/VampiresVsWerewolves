@@ -5,8 +5,7 @@ using std::cout;
 
 void Water::Print() const
 {
-	if (!isOccupied()) cout << "~";
-	else occupant->Print();
+	cout << "~";
 }
 
 bool Water::CanBeOccupied() const

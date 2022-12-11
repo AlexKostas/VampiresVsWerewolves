@@ -5,7 +5,6 @@
 class Vampire : public Enemy {
 public:
 	Vampire(int row, int column, Game* game);
-	virtual MapCellType GetCellType();
 	virtual void Print();
 
 private:

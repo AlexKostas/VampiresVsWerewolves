@@ -6,7 +6,6 @@ class Werewolf : public Enemy {
 public:
 	Werewolf( int row, int column, Game* game);
 	virtual void Print();
-	virtual MapCellType GetCellType();
 
 private:
 	virtual vector<Enemy*> getEnemies();

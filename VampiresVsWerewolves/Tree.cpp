@@ -5,8 +5,7 @@ using std::cout;
 
 void Tree::Print() const
 {
-	if (!isOccupied()) cout << "T";
-	else occupant->Print();
+	cout << "T";
 }
 
 bool Tree::CanBeOccupied() const
