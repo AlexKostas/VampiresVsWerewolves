@@ -28,6 +28,10 @@ Map::Map(int x, int y) {
 }
 
 Map::~Map() {
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < columns; j++)
+			delete board[i][j];
+
 	for (int i = 0;i < rows;i++)
 		delete[] board[i];
 
@@ -176,6 +180,7 @@ void Map::placeElements(int elementCount)
 {
 	for (int i = 0; i < elementCount; i++) {
 		pair<int, int> coordinates = GetRandomAvailableCell();
+		delete board[coordinates.first][coordinates.second];
 		board[coordinates.first][coordinates.second] = new TerrainElement();
 	}
 }
