@@ -15,14 +15,14 @@ class Game {
 public:
 	Game(int row, int column);
 	~Game();
+
 	void Run();
+
 	vector<Enemy*> GetNeighboringWerewolves(int row, int col);
 	vector<Enemy*> GetNeighboringVampires(int row, int col);
 	vector<MapElement*> GetNeighboringCells(int row, int column) const;
 	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
 
-	int GetRows() const;
-	int GetColumns() const;
 	void ClearCell(int row, int column);
 	void OnEntityDied(GameEntity* self);
 

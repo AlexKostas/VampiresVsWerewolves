@@ -46,17 +46,6 @@ void Map::Show() const {
 	printBorderRow();
 }
 
-void Map::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, GameEntity* entity)
-{
-	board[oldRow][oldColumn]->Clear();
-	UpdateEntityPosition(newRow, newColumn, entity);
-}
-
-void Map::UpdateEntityPosition(int newRow, int newColumn, GameEntity* entity)
-{
-	board[newRow][newColumn]->SetOccupant(entity);
-}
-
 void Map::ClearCell(int row, int col)
 {
 	assert(row >= 0 && row < rows);
@@ -108,40 +97,14 @@ vector<MapElement*> Map::GetNeighboringDiagonalCells(int row, int col) const
 	return result;
 }
 
-pair<int, int> Map::GetRandomAvailableCell()
+MapElement* Map::GetRandomAvailableCell()
 {
 	int x, y;
 	do {
 		Utils::GetRandomCoordinates(rows, columns, x, y);
 	} while (!board[x][y]->CanBeOccupied());
 
-	return pair<int, int>(x, y);
-}
-
-int Map::GetRow() const
-{
-	return rows;
-}
-
-int Map::GetColumn() const
-{
-	return columns;
-}
-
-bool Map::HasPotion(int row, int col) const
-{
-	assert(row >= 0 && row < rows);
-	assert(col >= 0 && col < columns);
-
-	return board[row][col]->HasPotion();
-}
-
-void Map::RemovePotion(int row, int col)
-{
-	assert(row >= 0 && row < rows);
-	assert(col >= 0 && col < columns);
-
-	board[row][col]->RemovePotion();
+	return board[x][y];
 }
 
 void Map::populateMap()
@@ -176,16 +139,19 @@ template <class TerrainElement>
 void Map::placeElements(int elementCount)
 {
 	for (int i = 0; i < elementCount; i++) {
-		pair<int, int> coordinates = GetRandomAvailableCell();
-		delete board[coordinates.first][coordinates.second];
-		board[coordinates.first][coordinates.second] = new TerrainElement(coordinates.first, coordinates.second);
+		MapElement* cell = GetRandomAvailableCell();
+		int row = cell->GetRow();
+		int col = cell->GetRow();
+
+		//delete cell;
+		board[row][col] = new TerrainElement(row, col);
 	}
 }
 
 void Map::placePotions() {
 	for (int i = 0; i < startingAmountOfPotions; i++) {
-		pair<int, int> coordinates = GetRandomAvailableCell();
-		board[coordinates.first][coordinates.second]->PlacePotion();
+		MapElement* cell = GetRandomAvailableCell();
+		cell->PlacePotion();
 	}
 }
 

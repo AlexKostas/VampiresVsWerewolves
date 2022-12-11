@@ -17,8 +17,6 @@ void Avatar::Print()
 
 void Avatar::GoDown()
 {
-	if (row >= game->GetRows() - 1) return;
-
 	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
 	for (auto cell : legalCells) {
@@ -39,8 +37,6 @@ void Avatar::GoDown()
 
 void Avatar::GoUp()
 {
-	if (row == 0) return;
-
 	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
 	for (auto cell : legalCells) {
@@ -61,8 +57,6 @@ void Avatar::GoUp()
 
 void Avatar::GoRight()
 {
-	if (column >= game->GetColumns() - 1) return;
-
 	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
 	for (auto cell : legalCells) {
@@ -83,8 +77,6 @@ void Avatar::GoRight()
 
 void Avatar::GoLeft()
 {
-	if (column == 0) return;
-
 	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
 	for (auto cell : legalCells) {

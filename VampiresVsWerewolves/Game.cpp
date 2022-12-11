@@ -9,6 +9,7 @@
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Avatar.h"
+#include "MapElement.h"
 #include "Utils.h"
 
 #define KEY_UP 72
@@ -162,8 +163,6 @@ bool Game::isOver()
 
 vector<Enemy*> Game::GetNeighboringWerewolves(int row, int col)
 {
-	assert(row >= 0 && row < map->GetRow());
-	assert(col >= 0 && col < map->GetColumn());
 	vector<Enemy*> result;
 
 	for (Werewolf* werewolf : werewolves)
@@ -175,8 +174,6 @@ vector<Enemy*> Game::GetNeighboringWerewolves(int row, int col)
 
 vector<Enemy*> Game::GetNeighboringVampires(int row, int col)
 {
-	assert(row >= 0 && row < map->GetRow());
-	assert(col >= 0 && col < map->GetColumn());
 	vector<Enemy*> result;
 
 	for (Vampire* vampire : vampires)
@@ -194,16 +191,6 @@ vector<MapElement*> Game::GetNeighboringCells(int row, int column) const
 vector<MapElement*> Game::GetNeighboringDiagonalCells(int row, int column) const
 {
 	return map->GetNeighboringDiagonalCells(row, column);
-}
-
-int Game::GetRows() const
-{
-	return map->GetRow();
-}
-
-int Game::GetColumns() const
-{
-	return map->GetColumn();
 }
 
 void Game::ClearCell(int row, int column)
@@ -237,12 +224,12 @@ void Game::OnEntityDied(GameEntity* self)
 void Game::createVampires()
 {
 	for (int i = 0; i < vampiresCount; i++) {
-		pair<int, int> coords = map->GetRandomAvailableCell();
-		int newRow = coords.first, newColumn = coords.second;
+		MapElement* cell = map->GetRandomAvailableCell();
+		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
 		Vampire* vampire = new Vampire(newRow, newColumn, this);
 
-		map->UpdateEntityPosition(newRow, newColumn, vampire);
+		cell->SetOccupant(vampire);
 
 		vampires.push_back(vampire);
 		entities.push_back(vampire);
@@ -252,12 +239,12 @@ void Game::createVampires()
 void Game::createWerewolves()
 {
 	for (int i = 0; i < werewolvesCount; i++) {
-		pair<int, int> coords = map->GetRandomAvailableCell();
-		int newRow = coords.first, newColumn = coords.second;
+		MapElement* cell = map->GetRandomAvailableCell();
+		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
 		Werewolf* werewolf = new Werewolf(newRow, newColumn, this);
 
-		map->UpdateEntityPosition(newRow, newColumn, werewolf);
+		cell->SetOccupant(werewolf);
 
 		werewolves.push_back(werewolf);
 		entities.push_back(werewolf);
@@ -283,13 +270,13 @@ void Game::createAvatar()
 		}
 	} while (true);
 
-	pair<int, int> coords = map->GetRandomAvailableCell();
-	int newRow = coords.first, newColumn = coords.second;
+	MapElement* cell = map->GetRandomAvailableCell();
+	int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
 	avatar = new Avatar(newRow, newColumn, this, supportsWerewolf);
 	entities.push_back(avatar);
 
-	map->UpdateEntityPosition(newRow, newColumn, avatar);
+	cell->SetOccupant(avatar);
 }
 
 void Game::displayEndOfGameMessages() const

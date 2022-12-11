@@ -14,21 +14,13 @@ public:
 	~Map();
 
 	void Show() const;
-
-	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, GameEntity* entity);
-	void UpdateEntityPosition(int newRow, int newColumn, GameEntity* entity);
 	void ClearCell(int row, int column);
 
 	vector<MapElement*> GetNeighboringCells(int row, int column) const;
 	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
 
-	pair<int, int> GetRandomAvailableCell();
+	MapElement* GetRandomAvailableCell();
 
-	int GetRow() const;
-	int GetColumn() const;
-
-	bool HasPotion(int row,int col) const;
-	void RemovePotion(int row, int col);
 private:
 	const int treeDensity=5;
 	const int waterDensity =5;
