@@ -23,5 +23,5 @@ protected:
 	void die();
 	virtual vector<Enemy*> getEnemies() = 0;
 	virtual vector<Enemy*> getAllies() = 0;
-	virtual vector<pair<int, int>> getPossibleMovementCells() = 0;
+	virtual vector<MapElement*> getPossibleMovementCells() = 0;
 };

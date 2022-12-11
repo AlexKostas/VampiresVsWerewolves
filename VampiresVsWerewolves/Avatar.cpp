@@ -2,6 +2,7 @@
 #include <cassert>
 #include "Avatar.h"
 #include "Game.h"
+#include "MapElement.h"
 #include "Utils.h"
 
 Avatar::Avatar(int row, int column, Game* game, bool _supportsWerewolves) : GameEntity(row, column, game), 
@@ -18,20 +19,20 @@ void Avatar::GoDown()
 {
 	if (row >= game->GetRows() - 1) return;
 
-	if (game->HasPotion(row + 1, column)) {
-		gotPotion();
-		game->RemovePotion(row + 1, column);
-		game->UpdateEntityPosition(row, column, row + 1, column, this);
-		row++;
-		return;
-	}
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-
-	for (auto pair : legalCells) {
-		if(row+1 == pair.first && column == pair.second){
+	for (auto cell : legalCells) {
+		if(row+1 == cell->GetRow() && column == cell->GetColumn() && cell->CanBeOccupied()) {
+			game->ClearCell(row, column);
 			row++;
-			game->UpdateEntityPosition(row - 1, column, row, column, this);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			break;
 		}
 	}		
 }
@@ -40,19 +41,20 @@ void Avatar::GoUp()
 {
 	if (row == 0) return;
 
-	if (game->HasPotion(row -1, column)) {
-		gotPotion();
-		game->RemovePotion(row-1, column);
-		game->UpdateEntityPosition(row, column, row -1, column, this);
-		row--;
-		return;
-	}
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	for (auto pair : legalCells) {
-		if (row - 1 == pair.first && column == pair.second) {
+	for (auto cell : legalCells) {
+		if (row - 1 == cell->GetRow() && column == cell->GetColumn() && cell->CanBeOccupied()) {
+			game->ClearCell(row, column);
 			row--;
-			game->UpdateEntityPosition(row + 1, column, row, column, this);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			break;
 		}
 	}
 }
@@ -61,20 +63,20 @@ void Avatar::GoRight()
 {
 	if (column >= game->GetColumns() - 1) return;
 
-	if (game->HasPotion(row , column+1)) {
-		gotPotion();
-		game->RemovePotion(row, column + 1);
-		game->UpdateEntityPosition(row, column, row, column+1, this);
-		column++;
-		return;
-	}
-	
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	for (auto pair : legalCells) {
-		if (row == pair.first && column+1 == pair.second) {
+	for (auto cell : legalCells) {
+		if (row == cell->GetRow() && column + 1 == cell->GetColumn() && cell->CanBeOccupied()) {
+			game->ClearCell(row, column);
 			column++;
-			game->UpdateEntityPosition(row , column-1, row, column, this);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			break;
 		}
 	}
 }
@@ -83,19 +85,20 @@ void Avatar::GoLeft()
 {
 	if (column == 0) return;
 
-	if (game->HasPotion(row , column-1)) {
-		gotPotion();
-		game->RemovePotion(row, column - 1);
-		game->UpdateEntityPosition(row, column, row , column-1, this);
-		column--;
-		return;
-	}
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	for (auto pair : legalCells) {
-		if (row == pair.first && column -1 == pair.second) {
+	for (auto cell : legalCells) {
+		if (row == cell->GetRow() && column - 1 == cell->GetColumn() && cell->CanBeOccupied()) {
+			game->ClearCell(row, column);
 			column--;
-			game->UpdateEntityPosition(row, column+1, row, column, this);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			break;
 		}
 	}
 }

@@ -16,5 +16,5 @@ void Ground::Print() const
 
 bool Ground::CanBeOccupied() const
 {
-	return !isOccupied() && !HasPotion();
+	return !isOccupied();
 }

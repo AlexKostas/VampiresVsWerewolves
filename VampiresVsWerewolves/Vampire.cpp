@@ -2,6 +2,7 @@
 #include <cassert>
 #include <vector>
 #include <utility>
+#include "MapElement.h"
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Utils.h"
@@ -23,14 +24,20 @@ vector<Enemy*> Vampire::getAllies()
 	return game->GetNeighboringVampires(row, column);
 }
 
-vector<pair<int, int>> Vampire::getPossibleMovementCells()
+vector<MapElement*> Vampire::getPossibleMovementCells()
 {
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-	vector<pair<int, int>> diagonalCells = game->GetAvailableDiagonalNeighboringCells(row, column);
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<MapElement*> diagonalNeighbors = game->GetNeighboringDiagonalCells(row, column);
 
 	// Join the two vectors of possible movement target cells
-	vector<pair<int, int>> possibleMovementCells = legalCells;
-	possibleMovementCells.insert(possibleMovementCells.end(), diagonalCells.begin(), diagonalCells.end());
+	vector<MapElement*> combinedNeighbors = neighbors;
+	combinedNeighbors.insert(combinedNeighbors.end(), diagonalNeighbors.begin(), diagonalNeighbors.end());
 
-	return possibleMovementCells;
+	vector<MapElement*> legalNeighbors;
+
+	for (MapElement* neighbor : neighbors)
+		if (neighbor->CanBeOccupied())
+			legalNeighbors.push_back(neighbor);
+
+	return legalNeighbors;
 }

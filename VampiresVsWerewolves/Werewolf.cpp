@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include "MapElement.h"
 #include "Werewolf.h"
 #include "Vampire.h"
 #include "Utils.h"
@@ -21,7 +22,14 @@ vector<Enemy*> Werewolf::getAllies()
 	return game->GetNeighboringWerewolves(row, column);
 }
 
-vector<pair<int, int>> Werewolf::getPossibleMovementCells()
+vector<MapElement*> Werewolf::getPossibleMovementCells()
 {
-	return game->GetAvailableNeighboringCells(row, column);
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<MapElement*> legalNeighbors;
+
+	for (MapElement* neighbor : neighbors)
+		if (neighbor->CanBeOccupied()) 
+			legalNeighbors.push_back(neighbor);
+
+	return legalNeighbors;
 }

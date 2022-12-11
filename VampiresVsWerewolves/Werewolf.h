@@ -10,5 +10,5 @@ public:
 private:
 	virtual vector<Enemy*> getEnemies();
 	virtual vector<Enemy*> getAllies();
-	virtual vector<pair<int, int>> getPossibleMovementCells();
+	virtual vector<MapElement*> getPossibleMovementCells();
 };

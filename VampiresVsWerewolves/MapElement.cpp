@@ -5,12 +5,12 @@ MapElement::MapElement(int row, int column)
 {
 	this->row = row;
 	this->column = column;
+	this->occupant = nullptr;
 }
 
 void MapElement::Clear()
 {
 	occupant = nullptr;
-	hasPotion = false;
 }
 
 void MapElement::SetOccupant(GameEntity* occupant)

@@ -64,56 +64,46 @@ void Map::ClearCell(int row, int col)
 	board[row][col]->Clear();
 }
 
-vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
+vector<MapElement*> Map::GetNeighboringCells(int row, int col) const
 {
 	assert(row >= 0 && row < rows);
 	assert(col >= 0 && col < columns);
 
-	vector<pair<int, int>> result;
+	vector<MapElement*> result;
 
-	if (cellAboveIsAvailable(row, col)) {
-		pair<int, int> coords(row - 1, col);
-		result.push_back(coords);
-	}
-	if (cellBelowIsAvailable(row, col)) {
-		pair<int, int> coords(row + 1, col);
-		result.push_back(coords);
-	}
-	if (cellLeftIsAvailable(row, col)) {
-		pair<int, int> coords(row, col - 1);
-		result.push_back(coords);
-	}
-	if(cellRightIsAvailable(row, col)) {
-		pair<int, int> coords(row, col + 1);
-		result.push_back(coords);
-	}
+	if (cellAboveIsAvailable(row, col))
+		result.push_back(board[row-1][col]);
+
+	if (cellBelowIsAvailable(row, col)) 
+		result.push_back(board[row+1][col]);
+	
+	if (cellLeftIsAvailable(row, col))
+		result.push_back(board[row][col-1]);
+
+	if (cellRightIsAvailable(row, col))
+		result.push_back(board[row][col + 1]);
 
 	return result;
 }
 
-vector<pair<int, int>> Map::GetAvailableDiagonalNeighboringCells(int row, int col) const
+vector<MapElement*> Map::GetNeighboringDiagonalCells(int row, int col) const
 {
 	assert(row >= 0 && row < rows);
 	assert(col >= 0 && col < columns);
 
-	vector<pair<int, int>> result;
+	vector<MapElement*> result;
 
-	if (cellAboveLeftIsAvailable(row, col)){
-		pair<int,int> coords(row-1,col-1);
-		result.push_back(coords);
-	}
-	if (cellAboveRightIsAvailable(row, col)) {
-		pair<int, int> coords(row - 1, col +1);
-		result.push_back(coords);
-	}
-	if (cellBelowLeftIsAvailable(row, col)) {
-		pair<int, int> coords(row +1, col - 1);
-		result.push_back(coords);
-	}
-	if (cellBelowRightIsAvailable(row, col)) {
-		pair<int, int> coords(row + 1, col +1);
-		result.push_back(coords);
-	}
+	if (cellAboveLeftIsAvailable(row, col)) 
+		result.push_back(board[row-1][col-1]);
+
+	if (cellAboveRightIsAvailable(row, col)) 
+		result.push_back(board[row-1][col+1]);
+
+	if (cellBelowLeftIsAvailable(row, col)) 
+		result.push_back(board[row+1][col-1]);
+
+	if (cellBelowRightIsAvailable(row, col)) 
+		result.push_back(board[row+1][col+1]);
 
 	return result;
 }
@@ -204,7 +194,7 @@ bool Map::cellBelowIsAvailable(int row, int column) const
 	if (row + 1 >= rows) return false;
 	assert(column >= 0 && column < columns);
 
-	return board[row+1][column]->CanBeOccupied();
+	return true;
 }
 
 bool Map::cellAboveIsAvailable(int row, int column) const
@@ -212,7 +202,7 @@ bool Map::cellAboveIsAvailable(int row, int column) const
 	if (row - 1 < 0) return false;
 	assert(columns >= 0 && column < columns);
 
-	return board[row-1][column]->CanBeOccupied();
+	return true;
 }
 
 bool Map::cellLeftIsAvailable(int row, int column) const
@@ -220,39 +210,36 @@ bool Map::cellLeftIsAvailable(int row, int column) const
 	if (column - 1 < 0) return false;
 	assert(row >= 0 && row < rows);
 
-	return board[row][column-1]->CanBeOccupied();
+	return true;
 }
 
 bool Map::cellRightIsAvailable(int row, int column) const
 {
 	if (column +1 >= columns) return false;
 	assert(row >= 0 && row < rows);
-
-	return board[row][column+1]->CanBeOccupied();
+	return true;
 }
 
 bool Map::cellAboveRightIsAvailable(int row, int column) const
 {
 	if(row<=0 || column >= columns-1) return false;
-
-	return board[row - 1][column + 1]->CanBeOccupied();
+	return true;
 }
 
 bool Map::cellAboveLeftIsAvailable(int row, int column) const
 {
 	if (row <= 0 || column <= 0) return false;
-
-	return board[row-1][column-1]->CanBeOccupied();
+	return true;
 }
 
 bool Map::cellBelowRightIsAvailable(int row, int column) const
 {
 	if (row >= rows - 1 || column >= columns - 1) return false;
-	return board[row+1][column+1]->CanBeOccupied();
+	return true;
 }
 
 bool Map::cellBelowLeftIsAvailable(int row, int column) const
 {
 	if (row >= rows - 1 || column <= 0) return false;
-	return board[row+1][column-1]->CanBeOccupied();
+	return true;
 }

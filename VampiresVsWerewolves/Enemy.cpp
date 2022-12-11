@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include "Game.h"
+#include "MapElement.h"
 #include "Enemy.h"
 #include "Utils.h"
 
@@ -42,7 +43,7 @@ void Enemy::update()
 	}
 
 	// Finally, try to move
-	vector<pair<int, int>> possibleMovementCells = getPossibleMovementCells();
+	vector<MapElement*> possibleMovementCells = getPossibleMovementCells();
 	int legalCellCount = possibleMovementCells.size();
 
 	if (legalCellCount == 0)
@@ -53,13 +54,13 @@ void Enemy::update()
 
 	if (randomIndex == legalCellCount) return;
 
-	pair<int, int> coords = possibleMovementCells[randomIndex];
-
 	int oldRow = row, oldColumn = column;
+	MapElement* targetMapCell = possibleMovementCells[randomIndex];
 
-	row = coords.first;
-	column = coords.second;
-	game->UpdateEntityPosition(oldRow, oldColumn, row, column, this);
+	row = targetMapCell->GetRow();
+	column = targetMapCell->GetColumn();
+	game->ClearCell(oldRow, oldColumn);
+	targetMapCell->SetOccupant(this);
 }
 
 /// <summary>

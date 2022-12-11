@@ -16,16 +16,15 @@ public:
 	Game(int row, int column);
 	~Game();
 	void Run();
-	vector<pair<int, int>> GetAvailableNeighboringCells(int row, int col) const;
-	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col) const;
 	vector<Enemy*> GetNeighboringWerewolves(int row, int col);
 	vector<Enemy*> GetNeighboringVampires(int row, int col);
+	vector<MapElement*> GetNeighboringCells(int row, int column) const;
+	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
+
 	int GetRows() const;
 	int GetColumns() const;
-	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, GameEntity* entity);
+	void ClearCell(int row, int column);
 	void OnEntityDied(GameEntity* self);
-	bool HasPotion(int row, int col) const;
-	void RemovePotion(int row, int col);
 
 private:
 	const int werewolvesCount;

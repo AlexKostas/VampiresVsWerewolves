@@ -19,8 +19,9 @@ public:
 	void UpdateEntityPosition(int newRow, int newColumn, GameEntity* entity);
 	void ClearCell(int row, int column);
 
-	vector<pair<int, int>> GetLegalNeighborCells(int row, int col) const;
-	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col) const;
+	vector<MapElement*> GetNeighboringCells(int row, int column) const;
+	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
+
 	pair<int, int> GetRandomAvailableCell();
 
 	int GetRow() const;

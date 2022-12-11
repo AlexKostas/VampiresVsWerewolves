@@ -160,16 +160,6 @@ bool Game::isOver()
 	return vampires.size() == 0 || werewolves.size() == 0;
 }
 
-vector<pair<int, int>> Game::GetAvailableNeighboringCells(int row, int col) const
-{
-	return map->GetLegalNeighborCells(row, col);
-}
-
-vector<pair<int, int>> Game::GetAvailableDiagonalNeighboringCells(int row, int col) const
-{
-	return map->GetAvailableDiagonalNeighboringCells(row, col);
-}
-
 vector<Enemy*> Game::GetNeighboringWerewolves(int row, int col)
 {
 	assert(row >= 0 && row < map->GetRow());
@@ -196,6 +186,16 @@ vector<Enemy*> Game::GetNeighboringVampires(int row, int col)
 	return result;
 }
 
+vector<MapElement*> Game::GetNeighboringCells(int row, int column) const
+{
+	return map->GetNeighboringCells(row, column);
+}
+
+vector<MapElement*> Game::GetNeighboringDiagonalCells(int row, int column) const
+{
+	return map->GetNeighboringDiagonalCells(row, column);
+}
+
 int Game::GetRows() const
 {
 	return map->GetRow();
@@ -206,9 +206,9 @@ int Game::GetColumns() const
 	return map->GetColumn();
 }
 
-void Game::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, GameEntity* entity)
+void Game::ClearCell(int row, int column)
 {
-	map->UpdateEntityPosition(oldRow, oldColumn, newRow, newColumn, entity);
+	map->ClearCell(row, column);
 }
 
 void Game::OnEntityDied(GameEntity* self)
@@ -232,16 +232,6 @@ void Game::OnEntityDied(GameEntity* self)
 			werewolves.erase(entity);
 			break;
 		}
-}
-
-bool Game::HasPotion(int row, int col) const
-{	
-	return map->HasPotion(row,col);
-}
-
-void Game::RemovePotion(int row, int col)
-{
-	map->RemovePotion(row, col);
 }
 
 void Game::createVampires()
