@@ -10,11 +10,11 @@ Ground::Ground(int row, int column) : MapElement(row, column){}
 void Ground::Print() const
 {
 	if (HasPotion()) cout << "P";
-	else if (!isOccupied()) cout << " ";
+	else if (!IsOccupied()) cout << " ";
 	else occupant->Print();
 }
 
 bool Ground::CanBeOccupied() const
 {
-	return !isOccupied();
+	return !IsOccupied();
 }

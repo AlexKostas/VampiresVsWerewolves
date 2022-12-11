@@ -4,8 +4,9 @@
 
 class Vampire : public Enemy {
 public:
-	Vampire(int row, int column, Game* game);
+	Vampire(int row, int column, Game* game, MapElement* cell);
 	virtual void Print();
+	virtual Team GetTeam();
 
 private:
 	virtual vector<Enemy*> getEnemies();

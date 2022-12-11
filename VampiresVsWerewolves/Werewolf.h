@@ -4,8 +4,9 @@
 
 class Werewolf : public Enemy {
 public:
-	Werewolf( int row, int column, Game* game);
+	Werewolf( int row, int column, Game* game, MapElement* cell);
 	virtual void Print();
+	virtual Team GetTeam();
 
 private:
 	virtual vector<Enemy*> getEnemies();

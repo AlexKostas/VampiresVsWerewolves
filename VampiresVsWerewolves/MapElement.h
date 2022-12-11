@@ -11,6 +11,7 @@ public:
 
 	void SetOccupant(GameEntity* occupant);
 	GameEntity* GetOccupant() const;
+	bool IsOccupied() const;
 
 	virtual bool CanBeOccupied() const = 0;
 
@@ -26,5 +27,4 @@ protected:
 	GameEntity* occupant;
 	bool hasPotion = false;
 
-	bool isOccupied() const;
 };

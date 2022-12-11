@@ -7,21 +7,46 @@
 #include "Werewolf.h"
 #include "Utils.h"
 
-Vampire::Vampire(int row, int column, Game* game) : Enemy(row, column, game){}
+Vampire::Vampire(int row, int column, Game* game, MapElement* cell) : Enemy(row, column, game, cell){}
 
 void Vampire::Print()
 {
 	std::cout << "V";
 }
 
+Team Vampire::GetTeam()
+{
+	return Vampires;
+}
+
 vector<Enemy*> Vampire::getEnemies()
 {
-	return game->GetNeighboringWerewolves(row, column);
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<Enemy*> enemies;
+
+	for (MapElement* neighbor : neighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Werewolves)
+			enemies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	return enemies;
 }
 
 vector<Enemy*> Vampire::getAllies()
 {
-	return game->GetNeighboringVampires(row, column);
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<Enemy*> allies;
+
+	for (MapElement* neighbor : neighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Vampires)
+			allies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	return allies;
 }
 
 vector<MapElement*> Vampire::getPossibleMovementCells()

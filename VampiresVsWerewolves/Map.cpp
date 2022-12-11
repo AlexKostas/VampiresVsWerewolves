@@ -46,13 +46,6 @@ void Map::Show() const {
 	printBorderRow();
 }
 
-void Map::ClearCell(int row, int col)
-{
-	assert(row >= 0 && row < rows);
-	assert(col >= 0 && col < columns);
-	board[row][col]->Clear();
-}
-
 vector<MapElement*> Map::GetNeighboringCells(int row, int col) const
 {
 	assert(row >= 0 && row < rows);

@@ -161,28 +161,6 @@ bool Game::isOver()
 	return vampires.size() == 0 || werewolves.size() == 0;
 }
 
-vector<Enemy*> Game::GetNeighboringWerewolves(int row, int col)
-{
-	vector<Enemy*> result;
-
-	for (Werewolf* werewolf : werewolves)
-		if (Utils::ManhattanDistance(werewolf->getRow(), row, werewolf->getColumn(), col) == 1)
-			result.push_back(werewolf);
-	
-	return result;
-}
-
-vector<Enemy*> Game::GetNeighboringVampires(int row, int col)
-{
-	vector<Enemy*> result;
-
-	for (Vampire* vampire : vampires)
-		if (Utils::ManhattanDistance(vampire->getRow(), row, vampire->getColumn(), col) == 1)
-			result.push_back(vampire);
-
-	return result;
-}
-
 vector<MapElement*> Game::GetNeighboringCells(int row, int column) const
 {
 	return map->GetNeighboringCells(row, column);
@@ -193,15 +171,8 @@ vector<MapElement*> Game::GetNeighboringDiagonalCells(int row, int column) const
 	return map->GetNeighboringDiagonalCells(row, column);
 }
 
-void Game::ClearCell(int row, int column)
-{
-	map->ClearCell(row, column);
-}
-
 void Game::OnEntityDied(GameEntity* self)
 {
-	map->ClearCell(self->getRow(), self->getColumn());
-
 	for (auto entity = entities.begin(); entity != entities.end(); entity++)
 		if (*entity == self) {
 			entities.erase(entity);
@@ -227,7 +198,7 @@ void Game::createVampires()
 		MapElement* cell = map->GetRandomAvailableCell();
 		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-		Vampire* vampire = new Vampire(newRow, newColumn, this);
+		Vampire* vampire = new Vampire(newRow, newColumn, this, cell);
 
 		cell->SetOccupant(vampire);
 
@@ -242,7 +213,7 @@ void Game::createWerewolves()
 		MapElement* cell = map->GetRandomAvailableCell();
 		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-		Werewolf* werewolf = new Werewolf(newRow, newColumn, this);
+		Werewolf* werewolf = new Werewolf(newRow, newColumn, this, cell);
 
 		cell->SetOccupant(werewolf);
 
@@ -273,7 +244,7 @@ void Game::createAvatar()
 	MapElement* cell = map->GetRandomAvailableCell();
 	int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-	avatar = new Avatar(newRow, newColumn, this, supportsWerewolf);
+	avatar = new Avatar(newRow, newColumn, this, cell, supportsWerewolf);
 	entities.push_back(avatar);
 
 	cell->SetOccupant(avatar);

@@ -18,12 +18,9 @@ public:
 
 	void Run();
 
-	vector<Enemy*> GetNeighboringWerewolves(int row, int col);
-	vector<Enemy*> GetNeighboringVampires(int row, int col);
 	vector<MapElement*> GetNeighboringCells(int row, int column) const;
 	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
 
-	void ClearCell(int row, int column);
 	void OnEntityDied(GameEntity* self);
 
 private:

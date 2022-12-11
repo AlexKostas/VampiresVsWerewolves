@@ -53,7 +53,7 @@ int MapElement::GetColumn() const
 	return column;
 }
 
-bool MapElement::isOccupied() const
+bool MapElement::IsOccupied() const
 {
 	return occupant != nullptr;
 }

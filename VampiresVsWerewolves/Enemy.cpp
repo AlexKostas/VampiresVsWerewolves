@@ -8,7 +8,7 @@
 using std::cout;
 using std::endl;
 
-Enemy::Enemy(int row, int col, Game* game) : GameEntity(row, col, game)
+Enemy::Enemy(int row, int col, Game* game, MapElement* cell) : GameEntity(row, col, game, cell)
 {
 	this->healthKits = Utils::GetRandomNumberInRange(0, maxHealthKits + 1);
 	this->health = startingHealth;
@@ -54,13 +54,14 @@ void Enemy::update()
 
 	if (randomIndex == legalCellCount) return;
 
-	int oldRow = row, oldColumn = column;
+	cell->Clear();
 	MapElement* targetMapCell = possibleMovementCells[randomIndex];
 
 	row = targetMapCell->GetRow();
 	column = targetMapCell->GetColumn();
-	game->ClearCell(oldRow, oldColumn);
+
 	targetMapCell->SetOccupant(this);
+	cell = targetMapCell;
 }
 
 /// <summary>
@@ -100,5 +101,6 @@ bool Enemy::CanAttack(int myAttack) const
 
 void Enemy::die()
 {
+	cell->Clear();
 	game->OnEntityDied(this);
 }

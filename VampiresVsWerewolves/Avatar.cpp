@@ -5,7 +5,7 @@
 #include "MapElement.h"
 #include "Utils.h"
 
-Avatar::Avatar(int row, int column, Game* game, bool _supportsWerewolves) : GameEntity(row, column, game), 
+Avatar::Avatar(int row, int column, Game* game, MapElement* cell, bool _supportsWerewolves) : GameEntity(row, column, game, cell), 
 	supportsWerewolves(_supportsWerewolves){}
 
 void Avatar::update() {}
@@ -15,13 +15,18 @@ void Avatar::Print()
 	std::cout << "A";
 }
 
+Team Avatar::GetTeam()
+{
+	return Neutral;
+}
+
 void Avatar::GoDown()
 {
 	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
 	for (auto cell : legalCells) {
 		if(row+1 == cell->GetRow() && column == cell->GetColumn() && cell->CanBeOccupied()) {
-			game->ClearCell(row, column);
+			this->cell->Clear();
 			row++;
 
 			if (cell->HasPotion()) {
@@ -30,6 +35,7 @@ void Avatar::GoDown()
 			}
 
 			cell->SetOccupant(this);
+			this->cell = cell;
 			break;
 		}
 	}		
@@ -41,7 +47,7 @@ void Avatar::GoUp()
 
 	for (auto cell : legalCells) {
 		if (row - 1 == cell->GetRow() && column == cell->GetColumn() && cell->CanBeOccupied()) {
-			game->ClearCell(row, column);
+			this->cell->Clear();
 			row--;
 
 			if (cell->HasPotion()) {
@@ -50,6 +56,7 @@ void Avatar::GoUp()
 			}
 
 			cell->SetOccupant(this);
+			this->cell = cell;
 			break;
 		}
 	}
@@ -61,7 +68,7 @@ void Avatar::GoRight()
 
 	for (auto cell : legalCells) {
 		if (row == cell->GetRow() && column + 1 == cell->GetColumn() && cell->CanBeOccupied()) {
-			game->ClearCell(row, column);
+			this->cell->Clear();
 			column++;
 
 			if (cell->HasPotion()) {
@@ -70,6 +77,7 @@ void Avatar::GoRight()
 			}
 
 			cell->SetOccupant(this);
+			this->cell = cell;
 			break;
 		}
 	}
@@ -81,7 +89,7 @@ void Avatar::GoLeft()
 
 	for (auto cell : legalCells) {
 		if (row == cell->GetRow() && column - 1 == cell->GetColumn() && cell->CanBeOccupied()) {
-			game->ClearCell(row, column);
+			this->cell->Clear();
 			column--;
 
 			if (cell->HasPotion()) {
@@ -90,6 +98,7 @@ void Avatar::GoLeft()
 			}
 
 			cell->SetOccupant(this);
+			this->cell = cell;
 			break;
 		}
 	}

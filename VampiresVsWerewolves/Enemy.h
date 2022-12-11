@@ -6,8 +6,9 @@ class Game;
 
 class Enemy : public GameEntity {
 public:
-	Enemy(int row, int col, Game* game);
+	Enemy(int row, int col, Game* game, MapElement* cell);
 	virtual void update();
+	virtual Team GetTeam() = 0;
 
 	bool TryToApplyHealthkit();
 	bool CanAttack(int myAttack) const;

@@ -14,7 +14,6 @@ public:
 	~Map();
 
 	void Show() const;
-	void ClearCell(int row, int column);
 
 	vector<MapElement*> GetNeighboringCells(int row, int column) const;
 	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
@@ -26,7 +25,7 @@ private:
 	const int waterDensity =5;
 	const int startingAmountOfPotions = 2;
 	int rows, columns;
-	MapElement*** board; 
+	MapElement*** board; //2D Array of pointers to MapElement
 
 	void populateMap();
 	void printBorderRow() const;
