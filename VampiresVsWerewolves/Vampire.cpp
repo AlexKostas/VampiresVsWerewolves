@@ -14,6 +14,11 @@ void Vampire::Print()
 	std::cout << "V";
 }
 
+void Vampire::DisplayInfo() const
+{
+	cout << "Vampire: Health = " << health << endl;
+}
+
 Team Vampire::GetTeam()
 {
 	return Vampires;

@@ -23,7 +23,7 @@
 using std::cout;
 using std::endl;
 
-Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
+Game::Game(int row, int column): startingWerewolves((row*column)/15), startingVampires((row*column)/15)
 {
 	if (row < MIN_BOARD_SIZE || column < MIN_BOARD_SIZE)
 		throw invalid_argument("Invalid Board Size\n");
@@ -140,14 +140,11 @@ bool Game::handleInput()
 			string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
 
 			cout << "You support " << team << "!" << endl;
-			cout << "Number of Vampires: " << vampires.size() << endl;
-			cout << "Number of Werewolves: " << werewolves.size() << endl;
+			cout << "Number of Vampires: " << numberOfVampires << endl;
+			cout << "Number of Werewolves: " << numberOfWerewolves << endl;
 
-			for (Vampire* vampire : vampires)
-				vampire->DisplayHealth();
-
-			for (Werewolf* werewolf : werewolves)
-				werewolf->DisplayHealth();
+			for (GameEntity* entity : entities)
+				entity->DisplayInfo();
 
 			break;
 		}
@@ -158,7 +155,7 @@ bool Game::handleInput()
 
 bool Game::isOver()
 {
-	return vampires.size() == 0 || werewolves.size() == 0;
+	return numberOfVampires == 0 || numberOfWerewolves == 0;
 }
 
 vector<MapElement*> Game::GetNeighboringCells(int row, int column) const
@@ -173,28 +170,21 @@ vector<MapElement*> Game::GetNeighboringDiagonalCells(int row, int column) const
 
 void Game::OnEntityDied(GameEntity* self)
 {
-	for (auto entity = entities.begin(); entity != entities.end(); entity++)
+	if (self->GetTeam() == Vampires) numberOfVampires--;
+	else if (self->GetTeam() == Werewolves) numberOfWerewolves--;
+	else assert(false);
+
+	for (auto entity = entities.begin(); entity != entities.end(); entity++) {
 		if (*entity == self) {
 			entities.erase(entity);
 			break;
 		}
-
-	for (auto entity = vampires.begin(); entity != vampires.end(); entity++)
-		if (*entity == self) {
-			vampires.erase(entity);
-			break;
-		}
-
-	for (auto entity = werewolves.begin(); entity != werewolves.end(); entity++)
-		if (*entity == self) {
-			werewolves.erase(entity);
-			break;
-		}
+	}
 }
 
 void Game::createVampires()
 {
-	for (int i = 0; i < vampiresCount; i++) {
+	for (int i = 0; i < startingVampires; i++) {
 		MapElement* cell = map->GetRandomAvailableCell();
 		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
@@ -202,14 +192,15 @@ void Game::createVampires()
 
 		cell->SetOccupant(vampire);
 
-		vampires.push_back(vampire);
 		entities.push_back(vampire);
 	}
+
+	numberOfVampires = startingVampires;
 }
 
 void Game::createWerewolves()
 {
-	for (int i = 0; i < werewolvesCount; i++) {
+	for (int i = 0; i < startingWerewolves; i++) {
 		MapElement* cell = map->GetRandomAvailableCell();
 		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
@@ -217,9 +208,10 @@ void Game::createWerewolves()
 
 		cell->SetOccupant(werewolf);
 
-		werewolves.push_back(werewolf);
 		entities.push_back(werewolf);
 	}
+
+	numberOfWerewolves = startingWerewolves;
 }
 
 void Game::createAvatar()
@@ -252,11 +244,11 @@ void Game::createAvatar()
 
 void Game::displayEndOfGameMessages() const
 {
-	if (werewolves.size() == 0 && vampires.size() == 0)
+	if (numberOfWerewolves == 0 && numberOfVampires == 0)
 		cout << endl << "ITS A DRAW!!";
-	else if (vampires.size() == 0)
+	else if (numberOfVampires == 0)
 		cout << endl << "WEREWOLVES WON!!" << endl;
-	else if (werewolves.size() == 0)
+	else if (numberOfWerewolves == 0)
 		cout << endl << "VAMPIRES WON!!" << endl;
 	else
 		cout << endl << "GAME TERMINATED EARLY" << endl;

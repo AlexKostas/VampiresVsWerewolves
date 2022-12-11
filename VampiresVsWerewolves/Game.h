@@ -24,17 +24,20 @@ public:
 	void OnEntityDied(GameEntity* self);
 
 private:
-	const int werewolvesCount;
-	const int vampiresCount;
+	const int startingWerewolves;
+	const int startingVampires;
 	const int turnsToDay = 15;
 	const int frameRate = 5;
+
+	int numberOfVampires = 0;
+	int numberOfWerewolves = 0;
+
 	int turnsElapsed = 0;
+
 	bool isDay = true;
 	bool isPaused = false;
 
 	Map* map;
-	vector<Werewolf*> werewolves;
-	vector<Vampire*> vampires;
 	vector<GameEntity*> entities;
 	Avatar* avatar;
 	

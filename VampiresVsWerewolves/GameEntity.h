@@ -10,6 +10,7 @@ public:
 	GameEntity(int row, int column, Game* game, MapElement* cell);
 	virtual void update() = 0;
 	virtual void Print() = 0;
+	virtual void DisplayInfo() const = 0;
 	virtual Team GetTeam() = 0;
 	
 	int getRow() const;

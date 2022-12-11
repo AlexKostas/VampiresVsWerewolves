@@ -7,6 +7,7 @@ public:
 	Avatar(int row, int column, Game* game, MapElement* cell, bool supportsWerewolves);
 	virtual void update();
 	virtual void Print();
+	void DisplayInfo() const;
 	virtual Team GetTeam();
 
 	void GoUp();

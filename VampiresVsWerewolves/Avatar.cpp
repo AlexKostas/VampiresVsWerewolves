@@ -15,6 +15,8 @@ void Avatar::Print()
 	std::cout << "A";
 }
 
+void Avatar::DisplayInfo() const{}
+
 Team Avatar::GetTeam()
 {
 	return Neutral;

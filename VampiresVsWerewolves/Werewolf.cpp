@@ -12,6 +12,11 @@ void Werewolf::Print()
 	std::cout << "W";
 }
 
+void Werewolf::DisplayInfo() const
+{
+	cout << "Werewolf: Health = " << health << endl;
+}
+
 Team Werewolf::GetTeam()
 {
 	return Werewolves;

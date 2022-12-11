@@ -6,6 +6,7 @@ class Werewolf : public Enemy {
 public:
 	Werewolf( int row, int column, Game* game, MapElement* cell);
 	virtual void Print();
+	virtual void DisplayInfo() const;
 	virtual Team GetTeam();
 
 private:
