@@ -27,10 +27,11 @@ public:
 	int GetColumn() const;
 
 	bool HasPotion(int row,int col) const;
+	void RemovePotion(int row, int col);
 private:
 	const int treeDensity=5;
 	const int waterDensity =5;
-	const int amountOfPotions = 2;
+	const int startingAmountOfPotions = 2;
 	int rows, columns;
 	MapElement*** board; 
 
@@ -40,6 +41,7 @@ private:
 
 	template <class TerrainElement>
 	void placeElements(int elementCount);
+	void placePotions();
 
 	bool cellAboveIsAvailable(int row, int column) const;
 	bool cellBelowIsAvailable(int row, int column) const;

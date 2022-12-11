@@ -55,8 +55,11 @@ void Enemy::update()
 
 	pair<int, int> coords = possibleMovementCells[randomIndex];
 
+	int oldRow = row, oldColumn = column;
+
 	row = coords.first;
 	column = coords.second;
+	game->UpdateEntityPosition(oldRow, oldColumn, row, column, this);
 }
 
 /// <summary>

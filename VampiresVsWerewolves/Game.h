@@ -25,6 +25,7 @@ public:
 	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, GameEntity* entity);
 	void OnEntityDied(GameEntity* self);
 	bool HasPotion(int row, int col) const;
+	void RemovePotion(int row, int col);
 
 private:
 	const int werewolvesCount;

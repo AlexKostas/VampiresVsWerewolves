@@ -142,9 +142,16 @@ bool Map::HasPotion(int row, int col) const
 {
 	assert(row >= 0 && row < rows);
 	assert(col >= 0 && col < columns);
-	return false;
 
-	//return board[row][col]==potion;
+	return board[row][col]->HasPotion();
+}
+
+void Map::RemovePotion(int row, int col)
+{
+	assert(row >= 0 && row < rows);
+	assert(col >= 0 && col < columns);
+
+	board[row][col]->RemovePotion();
 }
 
 void Map::populateMap()
@@ -154,7 +161,7 @@ void Map::populateMap()
 
 	placeElements<Tree>(numberOfTrees);
 	placeElements<Water>(numberOfWaterCells);
-	//placeElements(amountOfPotions);
+	placePotions();
 }
 
 void Map::printBorderRow() const {
@@ -182,6 +189,13 @@ void Map::placeElements(int elementCount)
 		pair<int, int> coordinates = GetRandomAvailableCell();
 		delete board[coordinates.first][coordinates.second];
 		board[coordinates.first][coordinates.second] = new TerrainElement();
+	}
+}
+
+void Map::placePotions() {
+	for (int i = 0; i < startingAmountOfPotions; i++) {
+		pair<int, int> coordinates = GetRandomAvailableCell();
+		board[coordinates.first][coordinates.second]->PlacePotion();
 	}
 }
 

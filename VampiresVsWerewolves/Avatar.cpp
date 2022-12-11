@@ -20,6 +20,7 @@ void Avatar::GoDown()
 
 	if (game->HasPotion(row + 1, column)) {
 		gotPotion();
+		game->RemovePotion(row + 1, column);
 		game->UpdateEntityPosition(row, column, row + 1, column, this);
 		row++;
 		return;
@@ -41,6 +42,7 @@ void Avatar::GoUp()
 
 	if (game->HasPotion(row -1, column)) {
 		gotPotion();
+		game->RemovePotion(row-1, column);
 		game->UpdateEntityPosition(row, column, row -1, column, this);
 		row--;
 		return;
@@ -61,6 +63,7 @@ void Avatar::GoRight()
 
 	if (game->HasPotion(row , column+1)) {
 		gotPotion();
+		game->RemovePotion(row, column + 1);
 		game->UpdateEntityPosition(row, column, row, column+1, this);
 		column++;
 		return;
@@ -82,6 +85,7 @@ void Avatar::GoLeft()
 
 	if (game->HasPotion(row , column-1)) {
 		gotPotion();
+		game->RemovePotion(row, column - 1);
 		game->UpdateEntityPosition(row, column, row , column-1, this);
 		column--;
 		return;

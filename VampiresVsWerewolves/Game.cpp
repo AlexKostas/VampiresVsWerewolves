@@ -74,17 +74,7 @@ void Game::Run()
 void Game::update()
 {
 	for (auto& entity : entities) {
-		int oldRow, oldColumn;
-		oldRow = entity->getRow();
-		oldColumn = entity->getColumn();
-
 		entity->update();
-
-		int row, column;
-		row = entity->getRow();
-		column = entity->getColumn();
-
-		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entity);
 	}
 
 	turnsElapsed++;
@@ -247,6 +237,11 @@ void Game::OnEntityDied(GameEntity* self)
 bool Game::HasPotion(int row, int col) const
 {	
 	return map->HasPotion(row,col);
+}
+
+void Game::RemovePotion(int row, int col)
+{
+	map->RemovePotion(row, col);
 }
 
 void Game::createVampires()
