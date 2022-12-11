@@ -1,6 +1,10 @@
+#include <iostream>
+#include <limits>
 #include <cstdlib>
 #include <cassert>
 #include "Utils.h"
+
+using std::cin;
 
 void Utils::GetRandomCoordinates(int maxX, int maxY, int& x, int& y)
 {
@@ -24,4 +28,18 @@ int Utils::GetRandomNumberInRange(int lowBound, int highBound) {
 int Utils::ManhattanDistance(int x1, int x2, int y1, int y2)
 {
 	return abs(x2 - x1) + abs(y2 - y1);
+}
+
+int Utils::ReadIntegerFromInput()
+{
+	int number = 0;
+	do {
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		cin >> number;
+
+		if (!cin) std::cout << "This is not an integer. Please type number again" << std::endl;
+	} while (!cin);
+
+	return number;
 }

@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <cassert>
+#include <limits>
 #include "Game.h"
+#include "Utils.h"
 
 using namespace std;
 
@@ -19,9 +21,12 @@ int main()
 
 void initializeGame(Game*& game) {
 	do {
-		cout << "Give row and column" << endl;
-		int row, column;
-		cin >> row >> column;
+		cout << "Give row!" << endl;
+		int row = Utils::ReadIntegerFromInput();
+
+		cout << "Give column!" << endl;
+		int column = Utils::ReadIntegerFromInput();
+
 		try {
 			game = new Game(row, column);
 			break;
