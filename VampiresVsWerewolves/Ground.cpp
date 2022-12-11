@@ -5,6 +5,8 @@
 
 using std::cout;
 
+Ground::Ground(int row, int column) : MapElement(row, column){}
+
 void Ground::Print() const
 {
 	if (HasPotion()) cout << "P";

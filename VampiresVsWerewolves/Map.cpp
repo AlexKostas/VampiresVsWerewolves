@@ -22,7 +22,7 @@ Map::Map(int x, int y) {
 
 	for (int i = 0;i < x;i++)
 		for (int j = 0;j < y;j++)
-			board[i][j] = new Ground();
+			board[i][j] = new Ground(i, j);
 
 	populateMap();
 }
@@ -188,7 +188,7 @@ void Map::placeElements(int elementCount)
 	for (int i = 0; i < elementCount; i++) {
 		pair<int, int> coordinates = GetRandomAvailableCell();
 		delete board[coordinates.first][coordinates.second];
-		board[coordinates.first][coordinates.second] = new TerrainElement();
+		board[coordinates.first][coordinates.second] = new TerrainElement(coordinates.first, coordinates.second);
 	}
 }
 

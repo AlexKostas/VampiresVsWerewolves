@@ -1,6 +1,12 @@
 #include <cassert>
 #include "MapElement.h"
 
+MapElement::MapElement(int row, int column)
+{
+	this->row = row;
+	this->column = column;
+}
+
 void MapElement::Clear()
 {
 	occupant = nullptr;
@@ -35,6 +41,16 @@ void MapElement::RemovePotion()
 bool MapElement::HasPotion() const
 {
 	return hasPotion;
+}
+
+int MapElement::GetRow() const
+{
+	return row;
+}
+
+int MapElement::GetColumn() const
+{
+	return column;
 }
 
 bool MapElement::isOccupied() const
