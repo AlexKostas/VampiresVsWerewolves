@@ -1,9 +1,15 @@
+#include <iostream>
 #include <cassert>
 #include "Werewolf.h"
 #include "Vampire.h"
 #include "Utils.h"
 
 Werewolf::Werewolf(int row, int column, Game* game) : Enemy(row, column, game) {}
+
+void Werewolf::Print()
+{
+	std::cout << "W";
+}
 
 MapCellType Werewolf::GetCellType() {
 	return MapCellType::werewolf;

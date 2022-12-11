@@ -6,6 +6,7 @@ class Avatar : public GameEntity {
 public:
 	Avatar(int row, int column, Game* game, bool supportsWerewolves);
 	virtual void update();
+	virtual void Print();
 	virtual MapCellType GetCellType();
 	void GoUp();
 	void GoDown();

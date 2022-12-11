@@ -8,7 +8,8 @@ class Enemy;
 class GameEntity {
 public:
 	GameEntity(int row, int column, Game* game);
-	virtual void update()=0;
+	virtual void update() = 0;
+	virtual void Print() = 0;
 	virtual MapCellType GetCellType() = 0;
 	
 	int getRow() const;

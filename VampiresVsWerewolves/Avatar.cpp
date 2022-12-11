@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cassert>
 #include "Avatar.h"
 #include "Game.h"
@@ -7,6 +8,11 @@ Avatar::Avatar(int row, int column, Game* game, bool _supportsWerewolves) : Game
 	supportsWerewolves(_supportsWerewolves){}
 
 void Avatar::update() {}
+
+void Avatar::Print()
+{
+	std::cout << "A";
+}
 
 MapCellType Avatar::GetCellType() {
 	return MapCellType::avatar;
