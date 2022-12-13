@@ -18,7 +18,7 @@ public:
 	vector<MapElement*> GetNeighboringCells(int row, int column) const;
 	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
 
-	MapElement* GetRandomAvailableCell();
+	MapElement* GetRandomAvailableCell() const;
 
 private:
 	const int treeDensity=5;

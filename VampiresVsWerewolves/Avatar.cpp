@@ -10,14 +10,14 @@ Avatar::Avatar(int row, int column, Game* game, MapElement* cell, bool _supports
 
 void Avatar::update() {}
 
-void Avatar::Print()
+void Avatar::Print() const
 {
 	std::cout << "\033[1;31mA\033[0m";
 }
 
 void Avatar::DisplayInfo() const{}
 
-Team Avatar::GetTeam()
+Team Avatar::GetTeam() const
 {
 	return Neutral;
 }

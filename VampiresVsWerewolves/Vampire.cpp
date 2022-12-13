@@ -9,22 +9,22 @@
 
 Vampire::Vampire(int row, int column, Game* game, MapElement* cell) : Enemy(row, column, game, cell){}
 
-void Vampire::Print()
+void Vampire::Print() const
 {
 	std::cout << "V";
 }
 
 void Vampire::DisplayInfo() const
 {
-	cout << "Vampire: Health = " << health << endl;
+	cout << "Vampire: Health = " << health << "/" << startingHealth << endl;
 }
 
-Team Vampire::GetTeam()
+Team Vampire::GetTeam() const
 {
 	return Vampires;
 }
 
-vector<Enemy*> Vampire::getEnemies()
+vector<Enemy*> Vampire::getEnemies() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
 	vector<Enemy*> enemies;
@@ -39,7 +39,7 @@ vector<Enemy*> Vampire::getEnemies()
 	return enemies;
 }
 
-vector<Enemy*> Vampire::getAllies()
+vector<Enemy*> Vampire::getAllies() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
 	vector<Enemy*> allies;
@@ -54,7 +54,7 @@ vector<Enemy*> Vampire::getAllies()
 	return allies;
 }
 
-vector<MapElement*> Vampire::getPossibleMovementCells()
+vector<MapElement*> Vampire::getPossibleMovementCells() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
 	vector<MapElement*> diagonalNeighbors = game->GetNeighboringDiagonalCells(row, column);

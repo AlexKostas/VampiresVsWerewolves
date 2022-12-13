@@ -6,9 +6,9 @@ class Avatar : public GameEntity {
 public:
 	Avatar(int row, int column, Game* game, MapElement* cell, bool supportsWerewolves);
 	virtual void update();
-	virtual void Print();
+	virtual void Print() const;
 	void DisplayInfo() const;
-	virtual Team GetTeam();
+	virtual Team GetTeam() const;
 
 	void GoUp();
 	void GoDown();

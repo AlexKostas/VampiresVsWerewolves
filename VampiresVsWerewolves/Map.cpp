@@ -90,7 +90,7 @@ vector<MapElement*> Map::GetNeighboringDiagonalCells(int row, int col) const
 	return result;
 }
 
-MapElement* Map::GetRandomAvailableCell()
+MapElement* Map::GetRandomAvailableCell() const
 {
 	int x, y;
 	do {

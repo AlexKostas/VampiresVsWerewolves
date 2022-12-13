@@ -8,7 +8,7 @@ class Enemy : public GameEntity {
 public:
 	Enemy(int row, int col, Game* game, MapElement* cell);
 	virtual void update();
-	virtual Team GetTeam() = 0;
+	virtual Team GetTeam() const = 0;
 
 	bool TryToApplyHealthkit();
 	bool CanAttack(int myAttack) const;
@@ -21,7 +21,7 @@ protected:
 
 	int health, attack, defence, healthKits;
 	void die();
-	virtual vector<Enemy*> getEnemies() = 0;
-	virtual vector<Enemy*> getAllies() = 0;
-	virtual vector<MapElement*> getPossibleMovementCells() = 0;
+	virtual vector<Enemy*> getEnemies() const = 0;
+	virtual vector<Enemy*> getAllies() const = 0;
+	virtual vector<MapElement*> getPossibleMovementCells() const = 0;
 };

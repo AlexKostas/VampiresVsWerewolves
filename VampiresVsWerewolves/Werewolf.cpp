@@ -7,22 +7,22 @@
 
 Werewolf::Werewolf(int row, int column, Game* game, MapElement* cell) : Enemy(row, column, game, cell) {}
 
-void Werewolf::Print()
+void Werewolf::Print() const
 {
 	std::cout << "W";
 }
 
 void Werewolf::DisplayInfo() const
 {
-	cout << "Werewolf: Health = " << health << endl;
+	cout << "Werewolf: Health = " << health << "/" << startingHealth << endl;
 }
 
-Team Werewolf::GetTeam()
+Team Werewolf::GetTeam() const
 {
 	return Werewolves;
 }
 
-vector<Enemy*> Werewolf::getEnemies()
+vector<Enemy*> Werewolf::getEnemies() const 
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
 	vector<Enemy*> enemies;
@@ -37,7 +37,7 @@ vector<Enemy*> Werewolf::getEnemies()
 	return enemies;
 }
 
-vector<Enemy*> Werewolf::getAllies()
+vector<Enemy*> Werewolf::getAllies() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
 	vector<Enemy*> allies;
@@ -52,7 +52,7 @@ vector<Enemy*> Werewolf::getAllies()
 	return allies;
 }
 
-vector<MapElement*> Werewolf::getPossibleMovementCells()
+vector<MapElement*> Werewolf::getPossibleMovementCells() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
 	vector<MapElement*> legalNeighbors;
