@@ -134,7 +134,7 @@ void Map::placeElements(int elementCount)
 	for (int i = 0; i < elementCount; i++) {
 		MapElement* cell = GetRandomAvailableCell();
 		int row = cell->GetRow();
-		int col = cell->GetRow();
+		int col = cell->GetColumn();
 
 		//delete cell;
 		board[row][col] = new TerrainElement(row, col);

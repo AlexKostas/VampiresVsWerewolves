@@ -85,20 +85,7 @@ void Game::update()
 	}
 
 	map->Show();
-	cout << endl;
-	if (isDay) {
-		cout << "Day" << endl;
-		cout << "Turns to night: " << turnsToDay - turnsElapsed << endl;
-	}
-	else {
-		cout << "Night" << endl;
-		cout << "Turns to day: " << turnsToDay - turnsElapsed << endl;
-	}
-
-	cout << "Potions: " << avatar->GetAmountOfPotions() << endl << endl;
-
-	cout << "Press Tab to pause or ESC to exit" << endl;
-	
+	displayFrameMessages();
 }
 
 /// <summary>
@@ -240,6 +227,23 @@ void Game::createAvatar()
 	entities.push_back(avatar);
 
 	cell->SetOccupant(avatar);
+}
+
+void Game::displayFrameMessages() const
+{
+	cout << endl;
+	if (isDay) {
+		cout << "Day" << endl;
+		cout << "Turns to night: " << turnsToDay - turnsElapsed << endl;
+	}
+	else {
+		cout << "Night" << endl;
+		cout << "Turns to day: " << turnsToDay - turnsElapsed << endl;
+	}
+
+	cout << "Potions: " << avatar->GetAmountOfPotions() << endl << endl;
+
+	cout << "Press Tab to pause or ESC to exit" << endl;
 }
 
 void Game::displayEndOfGameMessages() const
