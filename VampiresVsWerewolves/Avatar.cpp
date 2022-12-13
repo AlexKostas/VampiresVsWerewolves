@@ -12,7 +12,7 @@ void Avatar::update() {}
 
 void Avatar::Print()
 {
-	std::cout << "A";
+	std::cout << "\033[1;31mA\033[0m";
 }
 
 void Avatar::DisplayInfo() const{}

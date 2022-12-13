@@ -40,10 +40,10 @@ Map::~Map() {
 
 void Map::Show() const {	
 	for (int row = 0; row < rows; row++) {
-		printBorderRow();
+		//printBorderRow();
 		printCellRow(row);
 	}
-	printBorderRow();
+	//printBorderRow();
 }
 
 vector<MapElement*> Map::GetNeighboringCells(int row, int col) const
@@ -119,13 +119,13 @@ void Map::printBorderRow() const {
 
 void Map::printCellRow(int row) const {
 	for (int col = 0; col < columns; col++) {
-		cout << "|" << " ";
+		//cout << "|" << " ";
 
 		board[row][col]->Print();
 
-		cout << " ";
+		//cout << " ";
 	}
-	cout << "|" << endl;
+	cout << endl;
 }
 
 template <class TerrainElement>

@@ -28,7 +28,6 @@ GameEntity* MapElement::GetOccupant() const
 void MapElement::PlacePotion()
 {
 	assert(CanBeOccupied());
-	assert(!hasPotion);
 	hasPotion = true;
 }
 
