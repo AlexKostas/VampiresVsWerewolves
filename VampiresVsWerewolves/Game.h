@@ -48,5 +48,6 @@ private:
 	bool handleInput();
 	bool isOver();
 	void displayFrameMessages() const;
+	void displayPauseMessages() const;
 	void displayEndOfGameMessages() const;
 };

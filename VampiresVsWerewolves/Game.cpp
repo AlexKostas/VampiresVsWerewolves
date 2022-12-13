@@ -122,17 +122,7 @@ bool Game::handleInput()
 
 		case TAB:
 			isPaused = !isPaused;
-			cout << "\nGAME IS PAUSED! Press Tab to continue..." << endl;
-
-			string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
-
-			cout << "You support " << team << "!" << endl;
-			cout << "Number of Vampires: " << numberOfVampires << endl;
-			cout << "Number of Werewolves: " << numberOfWerewolves << endl;
-
-			for (GameEntity* entity : entities)
-				entity->DisplayInfo();
-
+			displayPauseMessages();
 			break;
 		}
 	}
@@ -244,6 +234,21 @@ void Game::displayFrameMessages() const
 	cout << "Potions: " << avatar->GetAmountOfPotions() << endl << endl;
 
 	cout << "Press Tab to pause or ESC to exit" << endl;
+}
+
+void Game::displayPauseMessages() const
+{
+	cout << "\nGAME IS PAUSED! Press Tab to continue..." << endl;
+
+	string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
+
+	cout << "You support " << team << "!" << endl;
+	cout << "Number of Vampires: " << numberOfVampires << endl;
+	cout << "Number of Werewolves: " << numberOfWerewolves << endl;
+
+	cout << endl;
+	for (GameEntity* entity : entities)
+		entity->DisplayInfo();
 }
 
 void Game::displayEndOfGameMessages() const
