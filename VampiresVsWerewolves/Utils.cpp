@@ -34,12 +34,13 @@ int Utils::ReadIntegerFromInput()
 {
 	int number = 0;
 	do {
+		cin >> number;
+		if (cin) break;
+
 		cin.clear();
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		cin >> number;
-
-		if (!cin) std::cout << "This is not an integer. Please type number again" << std::endl;
-	} while (!cin);
+		std::cout << "This is not an integer. Please type number again" << std::endl;
+	} while (true);
 
 	return number;
 }
