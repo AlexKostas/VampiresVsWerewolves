@@ -1,3 +1,3 @@
 #pragma once
 
-enum MapCellType { ground, tree, water, vampire, werewolf, avatar,potion};
+enum Team {Vampires, Werewolves, Neutral};

@@ -4,26 +4,34 @@
 #include <utility>
 #include "Utils.h"
 #include "Map.h"
+#include "MapElement.h"
+#include "Ground.h"
+#include "Water.h"
+#include "Tree.h"
 
 using namespace std;
 
-Map::Map( int x, int y) {
+Map::Map(int x, int y) {
 	this->rows = x;
 	this->columns = y;
 
-	board = new MapCellType* [x];
+	board = new MapElement** [x];
 
 	for (int i = 0;i < x;i++)
-		board[i] = new MapCellType[y];
+		board[i] = new MapElement*[y];
 
 	for (int i = 0;i < x;i++)
 		for (int j = 0;j < y;j++)
-			board[i][j] = ground;
+			board[i][j] = new Ground(i, j);
 
 	populateMap();
 }
 
 Map::~Map() {
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < columns; j++)
+			delete board[i][j];
+
 	for (int i = 0;i < rows;i++)
 		delete[] board[i];
 
@@ -32,103 +40,64 @@ Map::~Map() {
 
 void Map::Show() const {	
 	for (int row = 0; row < rows; row++) {
-		printBorderRow();
+		//printBorderRow();
 		printCellRow(row);
 	}
-	printBorderRow();
+	//printBorderRow();
 }
 
-void Map::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
-{
-	board[oldRow][oldColumn] = ground;
-	UpdateEntityPosition(newRow, newColumn, entity);
-}
-
-void Map::UpdateEntityPosition(int newRow, int newColumn, MapCellType entity)
-{
-	board[newRow][newColumn] = entity;
-}
-
-vector<pair<int, int>> Map::GetLegalNeighborCells(int row, int col) const
+vector<MapElement*> Map::GetNeighboringCells(int row, int col) const
 {
 	assert(row >= 0 && row < rows);
 	assert(col >= 0 && col < columns);
 
-	vector<pair<int, int>> result;
+	vector<MapElement*> result;
 
-	if (cellAboveIsAvailable(row, col)) {
-		pair<int, int> coords(row - 1, col);
-		result.push_back(coords);
-	}
-	if (cellBelowIsAvailable(row, col)) {
-		pair<int, int> coords(row + 1, col);
-		result.push_back(coords);
-	}
-	if (cellLeftIsAvailable(row, col)) {
-		pair<int, int> coords(row, col - 1);
-		result.push_back(coords);
-	}
-	if(cellRightIsAvailable(row, col)) {
-		pair<int, int> coords(row, col + 1);
-		result.push_back(coords);
-	}
+	if (cellAboveIsAvailable(row, col))
+		result.push_back(board[row-1][col]);
+
+	if (cellBelowIsAvailable(row, col)) 
+		result.push_back(board[row+1][col]);
+	
+	if (cellLeftIsAvailable(row, col))
+		result.push_back(board[row][col-1]);
+
+	if (cellRightIsAvailable(row, col))
+		result.push_back(board[row][col + 1]);
 
 	return result;
 }
 
-vector<pair<int, int>> Map::GetAvailableDiagonalNeighboringCells(int row, int col) const
+vector<MapElement*> Map::GetNeighboringDiagonalCells(int row, int col) const
 {
 	assert(row >= 0 && row < rows);
 	assert(col >= 0 && col < columns);
 
-	vector<pair<int, int>> result;
+	vector<MapElement*> result;
 
-	if (cellAboveLeftIsAvailable(row, col)){
-		pair<int,int> coords(row-1,col-1);
-		result.push_back(coords);
-	}
-	if (cellAboveRightIsAvailable(row, col)) {
-		pair<int, int> coords(row - 1, col +1);
-		result.push_back(coords);
-	}
-	if (cellBelowLeftIsAvailable(row, col)) {
-		pair<int, int> coords(row +1, col - 1);
-		result.push_back(coords);
-	}
-	if (cellBelowRightIsAvailable(row, col)) {
-		pair<int, int> coords(row + 1, col +1);
-		result.push_back(coords);
-	}
+	if (cellAboveLeftIsAvailable(row, col)) 
+		result.push_back(board[row-1][col-1]);
+
+	if (cellAboveRightIsAvailable(row, col)) 
+		result.push_back(board[row-1][col+1]);
+
+	if (cellBelowLeftIsAvailable(row, col)) 
+		result.push_back(board[row+1][col-1]);
+
+	if (cellBelowRightIsAvailable(row, col)) 
+		result.push_back(board[row+1][col+1]);
 
 	return result;
 }
 
-pair<int, int> Map::GetRandomAvailableCell()
+MapElement* Map::GetRandomAvailableCell() const
 {
 	int x, y;
 	do {
 		Utils::GetRandomCoordinates(rows, columns, x, y);
-	} while (board[x][y] != ground);
+	} while (!board[x][y]->CanBeOccupied());
 
-	return pair<int, int>(x, y);
-}
-
-int Map::GetRow() const
-{
-	return rows;
-}
-
-int Map::GetColumn() const
-{
-	return columns;
-}
-
-bool Map::HasPotion(int row, int col) const
-{
-	assert(row >= 0 && row < rows);
-	assert(col >= 0 && col < columns);
-
-	return board[row][col]==potion;
+	return board[x][y];
 }
 
 void Map::populateMap()
@@ -136,9 +105,9 @@ void Map::populateMap()
 	int numberOfTrees = round((rows * columns) * (treeDensity / 100.0));
 	int numberOfWaterCells = round((rows * columns) * (waterDensity / 100.0));
 
-	placeElements(numberOfTrees, tree);
-	placeElements(numberOfWaterCells, water);
-	placeElements(amountOfPotions, potion);
+	placeElements<Tree>(numberOfTrees);
+	placeElements<Water>(numberOfWaterCells);
+	placePotions();
 }
 
 void Map::printBorderRow() const {
@@ -150,61 +119,33 @@ void Map::printBorderRow() const {
 
 void Map::printCellRow(int row) const {
 	for (int col = 0; col < columns; col++) {
-		cout << "|" << " ";
+		//cout << "|" << " ";
 
-		char cellChar = getCellChar(row, col);
-		cout << cellChar;
+		board[row][col]->Print();
 
-		cout << " ";
+		//cout << " ";
 	}
-	cout << "|" << endl;
+	cout << endl;
 }
 
-void Map::placeElements(int elementCount, MapCellType element)
+template <class TerrainElement>
+void Map::placeElements(int elementCount)
 {
-	for (int i = 0;i < elementCount;i++) {
-		pair<int, int> coordinates = GetRandomAvailableCell();
-		board[coordinates.first][coordinates.second] = element;
+	for (int i = 0; i < elementCount; i++) {
+		MapElement* cell = GetRandomAvailableCell();
+		int row = cell->GetRow();
+		int col = cell->GetColumn();
+
+		//delete cell;
+		board[row][col] = new TerrainElement(row, col);
 	}
 }
 
-char Map::getCellChar(int row, int column) const
-{
-	assert(row >= 0 && row < rows);
-	assert(column >= 0 && column < columns);
-
-	char result = 0;
-
-	switch (board[row][column])
-	{
-		case ground:
-			result = ' ';
-			break;
-		case tree:
-			result = 'T';
-			break;
-		case water:
-			result = '~';
-			break;
-		case vampire:
-			result = 'V';
-			break;
-		case werewolf:
-			result = 'W';
-			break;
-		case avatar:
-			result = 'A';
-			break;
-		case potion:
-			result = 'P';
-			break;
-		default:
-			assert(false);
-			break;
+void Map::placePotions() {
+	for (int i = 0; i < startingAmountOfPotions; i++) {
+		MapElement* cell = GetRandomAvailableCell();
+		cell->PlacePotion();
 	}
-
-	assert(result != 0);
-	return result;
 }
 
 bool Map::cellBelowIsAvailable(int row, int column) const
@@ -212,7 +153,7 @@ bool Map::cellBelowIsAvailable(int row, int column) const
 	if (row + 1 >= rows) return false;
 	assert(column >= 0 && column < columns);
 
-	return (board[row+1][column] == ground);
+	return true;
 }
 
 bool Map::cellAboveIsAvailable(int row, int column) const
@@ -220,7 +161,7 @@ bool Map::cellAboveIsAvailable(int row, int column) const
 	if (row - 1 < 0) return false;
 	assert(columns >= 0 && column < columns);
 
-	return (board[row-1][column] == ground);
+	return true;
 }
 
 bool Map::cellLeftIsAvailable(int row, int column) const
@@ -228,39 +169,36 @@ bool Map::cellLeftIsAvailable(int row, int column) const
 	if (column - 1 < 0) return false;
 	assert(row >= 0 && row < rows);
 
-	return (board[row][column-1] == ground);
+	return true;
 }
 
 bool Map::cellRightIsAvailable(int row, int column) const
 {
 	if (column +1 >= columns) return false;
 	assert(row >= 0 && row < rows);
-
-	return board[row][column+1] == ground;
+	return true;
 }
 
 bool Map::cellAboveRightIsAvailable(int row, int column) const
 {
 	if(row<=0 || column >= columns-1) return false;
-
-	return board[row - 1][column + 1] == ground;
+	return true;
 }
 
 bool Map::cellAboveLeftIsAvailable(int row, int column) const
 {
 	if (row <= 0 || column <= 0) return false;
-
-	return board[row-1][column-1]==ground;
+	return true;
 }
 
 bool Map::cellBelowRightIsAvailable(int row, int column) const
 {
 	if (row >= rows - 1 || column >= columns - 1) return false;
-	return board[row+1][column+1]==ground;
+	return true;
 }
 
 bool Map::cellBelowLeftIsAvailable(int row, int column) const
 {
 	if (row >= rows - 1 || column <= 0) return false;
-	return board[row+1][column-1]==ground;
+	return true;
 }

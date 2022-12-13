@@ -1,25 +1,65 @@
+#include <iostream>
 #include <cassert>
+#include "MapElement.h"
 #include "Werewolf.h"
 #include "Vampire.h"
 #include "Utils.h"
 
-Werewolf::Werewolf(int row, int column, Game* game) : Enemy(row, column, game) {}
+Werewolf::Werewolf(int row, int column, Game* game, MapElement* cell) : Enemy(row, column, game, cell) {}
 
-MapCellType Werewolf::GetCellType() {
-	return MapCellType::werewolf;
+void Werewolf::Print() const
+{
+	std::cout << "W";
 }
 
-vector<Enemy*> Werewolf::getEnemies()
+void Werewolf::DisplayInfo() const
 {
-	return game->GetNeighboringVampires(row, column);
+	cout << "Werewolf: Health = " << health << "/" << startingHealth << endl;
 }
 
-vector<Enemy*> Werewolf::getAllies()
+Team Werewolf::GetTeam() const
 {
-	return game->GetNeighboringWerewolves(row, column);
+	return Werewolves;
 }
 
-vector<pair<int, int>> Werewolf::getPossibleMovementCells()
+vector<Enemy*> Werewolf::getEnemies() const 
 {
-	return game->GetAvailableNeighboringCells(row, column);
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<Enemy*> enemies;
+
+	for (MapElement* neighbor : neighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Vampires)
+			enemies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	return enemies;
+}
+
+vector<Enemy*> Werewolf::getAllies() const
+{
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<Enemy*> allies;
+
+	for (MapElement* neighbor : neighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Werewolves)
+			allies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	return allies;
+}
+
+vector<MapElement*> Werewolf::getPossibleMovementCells() const
+{
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<MapElement*> legalNeighbors;
+
+	for (MapElement* neighbor : neighbors)
+		if (neighbor->CanBeOccupied()) 
+			legalNeighbors.push_back(neighbor);
+
+	return legalNeighbors;
 }

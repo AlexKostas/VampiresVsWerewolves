@@ -9,6 +9,7 @@
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Avatar.h"
+#include "MapElement.h"
 #include "Utils.h"
 
 #define KEY_UP 72
@@ -18,11 +19,12 @@
 #define ESC 27
 #define TAB 9
 #define MIN_BOARD_SIZE 4
+#define POTION_KEY 107
 
 using std::cout;
 using std::endl;
 
-Game::Game(int row, int column): werewolvesCount((row*column)/15), vampiresCount((row*column)/15)
+Game::Game(int row, int column): startingWerewolves((row*column)/15), startingVampires((row*column)/15)
 {
 	if (row < MIN_BOARD_SIZE || column < MIN_BOARD_SIZE)
 		throw invalid_argument("Invalid Board Size\n");
@@ -74,17 +76,7 @@ void Game::Run()
 void Game::update()
 {
 	for (auto& entity : entities) {
-		int oldRow, oldColumn;
-		oldRow = entity->getRow();
-		oldColumn = entity->getColumn();
-
 		entity->update();
-
-		int row, column;
-		row = entity->getRow();
-		column = entity->getColumn();
-
-		map->UpdateEntityPosition(oldRow, oldColumn, row, column, entity->GetCellType());
 	}
 
 	turnsElapsed++;
@@ -94,20 +86,7 @@ void Game::update()
 	}
 
 	map->Show();
-	cout << endl;
-	if (isDay) {
-		cout << "Day" << endl;
-		cout << "Turns to night: " << turnsToDay - turnsElapsed << endl;
-	}
-	else {
-		cout << "Night" << endl;
-		cout << "Turns to day: " << turnsToDay - turnsElapsed << endl;
-	}
-
-	cout << "Potions: " << avatar->GetAmountOfPotions() << endl << endl;
-
-	cout << "Press Tab to pause or ESC to exit" << endl;
-	
+	displayFrameMessages();
 }
 
 /// <summary>
@@ -141,23 +120,13 @@ bool Game::handleInput()
 		case ESC:
 			gameTerminatedByPlayer = true;
 			break;
+		case POTION_KEY:
+			avatar->UsePotion();
+			break;
 
 		case TAB:
 			isPaused = !isPaused;
-			cout << "\nGAME IS PAUSED! Press Tab to continue..." << endl;
-
-			string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
-
-			cout << "You support " << team << "!" << endl;
-			cout << "Number of Vampires: " << vampires.size() << endl;
-			cout << "Number of Werewolves: " << werewolves.size() << endl;
-
-			for (Vampire* vampire : vampires)
-				vampire->DisplayHealth();
-
-			for (Werewolf* werewolf : werewolves)
-				werewolf->DisplayHealth();
-
+			displayPauseMessages();
 			break;
 		}
 	}
@@ -167,121 +136,79 @@ bool Game::handleInput()
 
 bool Game::isOver()
 {
-	return vampires.size() == 0 || werewolves.size() == 0;
+	return numberOfVampires == 0 || numberOfWerewolves == 0;
 }
 
-vector<pair<int, int>> Game::GetAvailableNeighboringCells(int row, int col) const
+vector<MapElement*> Game::GetNeighboringCells(int row, int column) const
 {
-	return map->GetLegalNeighborCells(row, col);
+	return map->GetNeighboringCells(row, column);
 }
 
-vector<pair<int, int>> Game::GetAvailableDiagonalNeighboringCells(int row, int col) const
+vector<MapElement*> Game::GetNeighboringDiagonalCells(int row, int column) const
 {
-	return map->GetAvailableDiagonalNeighboringCells(row, col);
+	return map->GetNeighboringDiagonalCells(row, column);
 }
 
-vector<Enemy*> Game::GetNeighboringWerewolves(int row, int col)
+vector<GameEntity*> Game::GetEntities() const
 {
-	assert(row >= 0 && row < map->GetRow());
-	assert(col >= 0 && col < map->GetColumn());
-	vector<Enemy*> result;
 
-	for (Werewolf* werewolf : werewolves)
-		if (Utils::ManhattanDistance(werewolf->getRow(), row, werewolf->getColumn(), col) == 1)
-			result.push_back(werewolf);
-	
-	return result;
-}
-
-vector<Enemy*> Game::GetNeighboringVampires(int row, int col)
-{
-	assert(row >= 0 && row < map->GetRow());
-	assert(col >= 0 && col < map->GetColumn());
-	vector<Enemy*> result;
-
-	for (Vampire* vampire : vampires)
-		if (Utils::ManhattanDistance(vampire->getRow(), row, vampire->getColumn(), col) == 1)
-			result.push_back(vampire);
-
-	return result;
-}
-
-int Game::GetRows() const
-{
-	return map->GetRow();
-}
-
-int Game::GetColumns() const
-{
-	return map->GetColumn();
-}
-
-void Game::UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity)
-{
-	map->UpdateEntityPosition(oldRow, oldColumn, newRow, newColumn, entity);
+	return entities;
 }
 
 void Game::OnEntityDied(GameEntity* self)
 {
-	map->UpdateEntityPosition(self->getRow(), self->getColumn(), ground);
+	if (self->GetTeam() == Vampires) numberOfVampires--;
+	else if (self->GetTeam() == Werewolves) numberOfWerewolves--;
+	else assert(false);
 
-	for (auto entity = entities.begin(); entity != entities.end(); entity++)
+	for (auto entity = entities.begin(); entity != entities.end(); entity++) {
 		if (*entity == self) {
 			entities.erase(entity);
 			break;
 		}
-
-	for (auto entity = vampires.begin(); entity != vampires.end(); entity++)
-		if (*entity == self) {
-			vampires.erase(entity);
-			break;
-		}
-
-	for (auto entity = werewolves.begin(); entity != werewolves.end(); entity++)
-		if (*entity == self) {
-			werewolves.erase(entity);
-			break;
-		}
+	}
 }
 
-bool Game::HasPotion(int row, int col) const
-{	
-	return map->HasPotion(row,col);
+bool Game::IsDay() const
+{
+	return isDay;
 }
 
 void Game::createVampires()
 {
-	for (int i = 0; i < vampiresCount; i++) {
-		pair<int, int> coords = map->GetRandomAvailableCell();
-		int newRow = coords.first, newColumn = coords.second;
+	for (int i = 0; i < startingVampires; i++) {
+		MapElement* cell = map->GetRandomAvailableCell();
+		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-		Vampire* vampire = new Vampire(newRow, newColumn, this);
+		Vampire* vampire = new Vampire(newRow, newColumn, this, cell);
 
-		map->UpdateEntityPosition(newRow, newColumn, MapCellType::vampire);
+		cell->SetOccupant(vampire);
 
-		vampires.push_back(vampire);
 		entities.push_back(vampire);
 	}
+
+	numberOfVampires = startingVampires;
 }
 
 void Game::createWerewolves()
 {
-	for (int i = 0; i < werewolvesCount; i++) {
-		pair<int, int> coords = map->GetRandomAvailableCell();
-		int newRow = coords.first, newColumn = coords.second;
+	for (int i = 0; i < startingWerewolves; i++) {
+		MapElement* cell = map->GetRandomAvailableCell();
+		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-		Werewolf* werewolf = new Werewolf(newRow, newColumn, this);
+		Werewolf* werewolf = new Werewolf(newRow, newColumn, this, cell);
 
-		map->UpdateEntityPosition(newRow, newColumn, MapCellType::werewolf);
+		cell->SetOccupant(werewolf);
 
-		werewolves.push_back(werewolf);
 		entities.push_back(werewolf);
 	}
+
+	numberOfWerewolves = startingWerewolves;
 }
 
 void Game::createAvatar()
 {
-	bool supportsWerewolf;
+	Team supportedTeam;
 	do {
 		cout << "Choose your team. V for vampires or W for werewolves" << endl;
 
@@ -289,31 +216,63 @@ void Game::createAvatar()
 		cin >> input;
 
 		if (input == "V" || input == "v") {
-			supportsWerewolf = false;
+			supportedTeam = Vampires;
 			break;
 		}
 		else if (input == "W" || input == "w") {
-			supportsWerewolf = true;
+			supportedTeam = Werewolves;
 			break;
 		}
 	} while (true);
 
-	pair<int, int> coords = map->GetRandomAvailableCell();
-	int newRow = coords.first, newColumn = coords.second;
+	MapElement* cell = map->GetRandomAvailableCell();
+	int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-	avatar = new Avatar(newRow, newColumn, this, supportsWerewolf);
+	avatar = new Avatar(newRow, newColumn, this, cell, supportedTeam);
 	entities.push_back(avatar);
 
-	map->UpdateEntityPosition(newRow, newColumn, MapCellType::avatar);
+	cell->SetOccupant(avatar);
+}
+
+void Game::displayFrameMessages() const
+{
+	cout << endl;
+	if (isDay) {
+		cout << "Day" << endl;
+		cout << "Turns to night: " << turnsToDay - turnsElapsed << endl;
+	}
+	else {
+		cout << "Night" << endl;
+		cout << "Turns to day: " << turnsToDay - turnsElapsed << endl;
+	}
+
+	cout << "Potions: " << avatar->GetAmountOfPotions() << endl << endl;
+
+	cout << "Press Tab to pause or ESC to exit" << endl;
+}
+
+void Game::displayPauseMessages() const
+{
+	cout << "\nGAME IS PAUSED! Press Tab to continue..." << endl;
+
+	string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
+
+	cout << "You support " << team << "!" << endl;
+	cout << "Number of Vampires: " << numberOfVampires << endl;
+	cout << "Number of Werewolves: " << numberOfWerewolves << endl;
+
+	cout << endl;
+	for (GameEntity* entity : entities)
+		entity->DisplayInfo();
 }
 
 void Game::displayEndOfGameMessages() const
 {
-	if (werewolves.size() == 0 && vampires.size() == 0)
+	if (numberOfWerewolves == 0 && numberOfVampires == 0)
 		cout << endl << "ITS A DRAW!!";
-	else if (vampires.size() == 0)
+	else if (numberOfVampires == 0)
 		cout << endl << "WEREWOLVES WON!!" << endl;
-	else if (werewolves.size() == 0)
+	else if (numberOfWerewolves == 0)
 		cout << endl << "VAMPIRES WON!!" << endl;
 	else
 		cout << endl << "GAME TERMINATED EARLY" << endl;

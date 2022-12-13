@@ -15,29 +15,31 @@ class Game {
 public:
 	Game(int row, int column);
 	~Game();
-	void Run();
-	vector<pair<int, int>> GetAvailableNeighboringCells(int row, int col) const;
-	vector<pair<int, int>> GetAvailableDiagonalNeighboringCells(int row, int col) const;
-	vector<Enemy*> GetNeighboringWerewolves(int row, int col);
-	vector<Enemy*> GetNeighboringVampires(int row, int col);
-	int GetRows() const;
-	int GetColumns() const;
-	void UpdateEntityPosition(int oldRow, int oldColumn, int newRow, int newColumn, MapCellType entity);
-	void OnEntityDied(GameEntity* self);
-	bool HasPotion(int row, int col) const;
 
+	void Run();
+
+	vector<MapElement*> GetNeighboringCells(int row, int column) const;
+	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
+	vector<GameEntity*> GetEntities()const;
+
+	void OnEntityDied(GameEntity* self);
+
+	bool IsDay() const;
 private:
-	const int werewolvesCount;
-	const int vampiresCount;
+	const int startingWerewolves;
+	const int startingVampires;
 	const int turnsToDay = 15;
 	const int frameRate = 5;
+
+	int numberOfVampires = 0;
+	int numberOfWerewolves = 0;
+
 	int turnsElapsed = 0;
+
 	bool isDay = true;
 	bool isPaused = false;
 
 	Map* map;
-	vector<Werewolf*> werewolves;
-	vector<Vampire*> vampires;
 	vector<GameEntity*> entities;
 	Avatar* avatar;
 	
@@ -47,5 +49,7 @@ private:
 	void update();
 	bool handleInput();
 	bool isOver();
+	void displayFrameMessages() const;
+	void displayPauseMessages() const;
 	void displayEndOfGameMessages() const;
 };
