@@ -7,8 +7,8 @@ GameEntity::GameEntity(int row, int column, Game* game, MapElement* cell)
 {
 	assert(row >= 0);
 	assert(column >= 0);
-	assert(game != NULL);
-	assert(cell != NULL);
+	assert(game != nullptr);
+	assert(cell != nullptr);
 
 	this->row = row;
 	this->column = column;

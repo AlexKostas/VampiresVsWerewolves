@@ -8,11 +8,11 @@ void initializeGame(Game*& game);
 
 int main()
 {	
-	Game* game = NULL;
+	Game* game = nullptr;
 	initializeGame(game);
-	assert(game != NULL);
+	assert(game != nullptr);
 	
-	//srand(time(nullptr));
+	//srand(time(nullptrptr));
 	game->Run();
 	delete game;
 }

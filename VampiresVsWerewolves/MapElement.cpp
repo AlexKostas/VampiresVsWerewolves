@@ -5,17 +5,17 @@ MapElement::MapElement(int row, int column)
 {
 	this->row = row;
 	this->column = column;
-	this->occupant = nullptr;
+	this->occupant = nullptrptr;
 }
 
 void MapElement::Clear()
 {
-	occupant = nullptr;
+	occupant = nullptrptr;
 }
 
 void MapElement::SetOccupant(GameEntity* occupant)
 {
-	assert(occupant != nullptr);
+	assert(occupant != nullptrptr);
 	assert(CanBeOccupied());
 	this->occupant = occupant;
 }
@@ -54,5 +54,5 @@ int MapElement::GetColumn() const
 
 bool MapElement::IsOccupied() const
 {
-	return occupant != nullptr;
+	return occupant != nullptrptr;
 }
