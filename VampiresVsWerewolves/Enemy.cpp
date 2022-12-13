@@ -86,6 +86,11 @@ void Enemy::DoDamage(int myAttack)
 		die();
 }
 
+void Enemy::RefillHealth()
+{
+	health = startingHealth;
+}
+
 bool Enemy::CanAttack(int myAttack) const
 {
 	int chance = Utils::GetRandomNumberInRange(1, 101);

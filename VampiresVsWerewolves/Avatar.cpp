@@ -1,12 +1,13 @@
 #include <iostream>
 #include <cassert>
 #include "Avatar.h"
+#include "Enemy.h"
 #include "Game.h"
 #include "MapElement.h"
 #include "Utils.h"
 
-Avatar::Avatar(int row, int column, Game* game, MapElement* cell, bool _supportsWerewolves) : GameEntity(row, column, game, cell), 
-	supportsWerewolves(_supportsWerewolves){}
+Avatar::Avatar(int row, int column, Game* game, MapElement* cell, Team _supportedTeam) : GameEntity(row, column, game, cell), 
+	supportedTeam(_supportedTeam){}
 
 void Avatar::update() {}
 
@@ -106,6 +107,26 @@ void Avatar::GoLeft()
 	}
 }
 
+void Avatar::UsePotion()
+{
+	if (!canUsePotion()) {
+		std::cout << "CAN NOT USE POTION" << std::endl;
+		return;
+	}
+
+	std::cout << "USED POTION" << std::endl;
+
+
+	vector <GameEntity*> entities = game->GetEntities();
+
+	for (GameEntity* entity:entities) {
+		if (entity->GetTeam() != supportedTeam) continue;
+
+		((Enemy*)entity)->RefillHealth();
+	}
+	potions--;
+}
+
 int Avatar::GetAmountOfPotions()
 {
 	return potions;
@@ -113,10 +134,19 @@ int Avatar::GetAmountOfPotions()
 
 bool Avatar::SupportsWerewolves()
 {
-	return supportsWerewolves;
+	return supportedTeam == Werewolves;
 }
 
 void Avatar::gotPotion()
 {
 	potions++;
+}
+
+bool Avatar::canUsePotion() const
+{
+	if (supportedTeam == Vampires && game->IsDay()) return false;
+
+	if (supportedTeam == Werewolves && !game->IsDay()) return false;
+
+	return (potions>0);
 }

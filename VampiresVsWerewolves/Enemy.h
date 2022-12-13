@@ -13,6 +13,7 @@ public:
 	bool TryToApplyHealthkit();
 	bool CanAttack(int myAttack) const;
 	void DoDamage(int myAttack);
+	void RefillHealth();
 protected:
 	const int maxHealthKits = 2;
 	const int startingHealth = 5;

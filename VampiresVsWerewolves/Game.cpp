@@ -19,6 +19,7 @@
 #define ESC 27
 #define TAB 9
 #define MIN_BOARD_SIZE 4
+#define POTION_KEY 107
 
 using std::cout;
 using std::endl;
@@ -119,6 +120,9 @@ bool Game::handleInput()
 		case ESC:
 			gameTerminatedByPlayer = true;
 			break;
+		case POTION_KEY:
+			avatar->UsePotion();
+			break;
 
 		case TAB:
 			isPaused = !isPaused;
@@ -145,6 +149,12 @@ vector<MapElement*> Game::GetNeighboringDiagonalCells(int row, int column) const
 	return map->GetNeighboringDiagonalCells(row, column);
 }
 
+vector<GameEntity*> Game::GetEntities() const
+{
+
+	return entities;
+}
+
 void Game::OnEntityDied(GameEntity* self)
 {
 	if (self->GetTeam() == Vampires) numberOfVampires--;
@@ -157,6 +167,11 @@ void Game::OnEntityDied(GameEntity* self)
 			break;
 		}
 	}
+}
+
+bool Game::IsDay() const
+{
+	return isDay;
 }
 
 void Game::createVampires()
@@ -193,7 +208,7 @@ void Game::createWerewolves()
 
 void Game::createAvatar()
 {
-	bool supportsWerewolf;
+	Team supportedTeam;
 	do {
 		cout << "Choose your team. V for vampires or W for werewolves" << endl;
 
@@ -201,11 +216,11 @@ void Game::createAvatar()
 		cin >> input;
 
 		if (input == "V" || input == "v") {
-			supportsWerewolf = false;
+			supportedTeam = Vampires;
 			break;
 		}
 		else if (input == "W" || input == "w") {
-			supportsWerewolf = true;
+			supportedTeam = Werewolves;
 			break;
 		}
 	} while (true);
@@ -213,7 +228,7 @@ void Game::createAvatar()
 	MapElement* cell = map->GetRandomAvailableCell();
 	int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-	avatar = new Avatar(newRow, newColumn, this, cell, supportsWerewolf);
+	avatar = new Avatar(newRow, newColumn, this, cell, supportedTeam);
 	entities.push_back(avatar);
 
 	cell->SetOccupant(avatar);

@@ -20,9 +20,11 @@ public:
 
 	vector<MapElement*> GetNeighboringCells(int row, int column) const;
 	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
+	vector<GameEntity*> GetEntities()const;
 
 	void OnEntityDied(GameEntity* self);
 
+	bool IsDay() const;
 private:
 	const int startingWerewolves;
 	const int startingVampires;
