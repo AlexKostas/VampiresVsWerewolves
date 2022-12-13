@@ -1,97 +1,130 @@
+#include <iostream>
 #include <cassert>
 #include "Avatar.h"
+#include "Enemy.h"
 #include "Game.h"
+#include "MapElement.h"
 #include "Utils.h"
 
-Avatar::Avatar(int row, int column, Game* game, bool _supportsWerewolves) : GameEntity(row, column, game), 
-	supportsWerewolves(_supportsWerewolves){}
+Avatar::Avatar(int row, int column, Game* game, MapElement* cell, Team _supportedTeam) : GameEntity(row, column, game, cell), 
+	supportedTeam(_supportedTeam){}
 
 void Avatar::update() {}
 
-MapCellType Avatar::GetCellType() {
-	return MapCellType::avatar;
+void Avatar::Print() const
+{
+	std::cout << "\033[1;31mA\033[0m";
+}
+
+void Avatar::DisplayInfo() const{}
+
+Team Avatar::GetTeam() const
+{
+	return Neutral;
 }
 
 void Avatar::GoDown()
 {
-	if (row >= game->GetRows() - 1) return;
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	if (game->HasPotion(row + 1, column)) {
-		gotPotion();
-		game->UpdateEntityPosition(row, column, row + 1, column, avatar);
-		row++;
-		return;
-	}
-
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-
-	for (auto pair : legalCells) {
-		if(row+1 == pair.first && column == pair.second){
+	for (auto cell : legalCells) {
+		if(row+1 == cell->GetRow() && column == cell->GetColumn() && cell->CanBeOccupied()) {
+			this->cell->Clear();
 			row++;
-			game->UpdateEntityPosition(row - 1, column, row, column, avatar);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			this->cell = cell;
+			break;
 		}
 	}		
 }
 
 void Avatar::GoUp()
 {
-	if (row == 0) return;
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	if (game->HasPotion(row -1, column)) {
-		gotPotion();
-		game->UpdateEntityPosition(row, column, row -1, column, avatar);
-		row--;
-		return;
-	}
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-
-	for (auto pair : legalCells) {
-		if (row - 1 == pair.first && column == pair.second) {
+	for (auto cell : legalCells) {
+		if (row - 1 == cell->GetRow() && column == cell->GetColumn() && cell->CanBeOccupied()) {
+			this->cell->Clear();
 			row--;
-			game->UpdateEntityPosition(row + 1, column, row, column, avatar);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			this->cell = cell;
+			break;
 		}
 	}
 }
 
 void Avatar::GoRight()
 {
-	if (column >= game->GetColumns() - 1) return;
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	if (game->HasPotion(row , column+1)) {
-		gotPotion();
-		game->UpdateEntityPosition(row, column, row, column+1, avatar);
-		column++;
-		return;
-	}
-	
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-
-	for (auto pair : legalCells) {
-		if (row == pair.first && column+1 == pair.second) {
+	for (auto cell : legalCells) {
+		if (row == cell->GetRow() && column + 1 == cell->GetColumn() && cell->CanBeOccupied()) {
+			this->cell->Clear();
 			column++;
-			game->UpdateEntityPosition(row , column-1, row, column, avatar);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			this->cell = cell;
+			break;
 		}
 	}
 }
 
 void Avatar::GoLeft()
 {
-	if (column == 0) return;
+	vector<MapElement*> legalCells = game->GetNeighboringCells(row, column);
 
-	if (game->HasPotion(row , column-1)) {
-		gotPotion();
-		game->UpdateEntityPosition(row, column, row , column-1, avatar);
-		column--;
-		return;
-	}
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-
-	for (auto pair : legalCells) {
-		if (row == pair.first && column -1 == pair.second) {
+	for (auto cell : legalCells) {
+		if (row == cell->GetRow() && column - 1 == cell->GetColumn() && cell->CanBeOccupied()) {
+			this->cell->Clear();
 			column--;
-			game->UpdateEntityPosition(row, column+1, row, column, avatar);
+
+			if (cell->HasPotion()) {
+				gotPotion();
+				cell->RemovePotion();
+			}
+
+			cell->SetOccupant(this);
+			this->cell = cell;
+			break;
 		}
 	}
+}
+
+void Avatar::UsePotion()
+{
+	if (!canUsePotion()) {
+		std::cout << "CAN NOT USE POTION" << std::endl;
+		return;
+	}
+
+	std::cout << "USED POTION" << std::endl;
+
+
+	vector <GameEntity*> entities = game->GetEntities();
+
+	for (GameEntity* entity:entities) {
+		if (entity->GetTeam() != supportedTeam) continue;
+
+		((Enemy*)entity)->RefillHealth();
+	}
+	potions--;
 }
 
 int Avatar::GetAmountOfPotions()
@@ -101,10 +134,19 @@ int Avatar::GetAmountOfPotions()
 
 bool Avatar::SupportsWerewolves()
 {
-	return supportsWerewolves;
+	return supportedTeam == Werewolves;
 }
 
 void Avatar::gotPotion()
 {
 	potions++;
+}
+
+bool Avatar::canUsePotion() const
+{
+	if (supportedTeam == Vampires && game->IsDay()) return false;
+
+	if (supportedTeam == Werewolves && !game->IsDay()) return false;
+
+	return (potions>0);
 }

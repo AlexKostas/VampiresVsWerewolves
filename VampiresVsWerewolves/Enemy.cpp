@@ -1,13 +1,14 @@
 #include <iostream>
 #include <cassert>
 #include "Game.h"
+#include "MapElement.h"
 #include "Enemy.h"
 #include "Utils.h"
 
 using std::cout;
 using std::endl;
 
-Enemy::Enemy(int row, int col, Game* game) : GameEntity(row, col, game)
+Enemy::Enemy(int row, int col, Game* game, MapElement* cell) : GameEntity(row, col, game, cell)
 {
 	this->healthKits = Utils::GetRandomNumberInRange(0, maxHealthKits + 1);
 	this->health = startingHealth;
@@ -42,7 +43,7 @@ void Enemy::update()
 	}
 
 	// Finally, try to move
-	vector<pair<int, int>> possibleMovementCells = getPossibleMovementCells();
+	vector<MapElement*> possibleMovementCells = getPossibleMovementCells();
 	int legalCellCount = possibleMovementCells.size();
 
 	if (legalCellCount == 0)
@@ -53,10 +54,14 @@ void Enemy::update()
 
 	if (randomIndex == legalCellCount) return;
 
-	pair<int, int> coords = possibleMovementCells[randomIndex];
+	cell->Clear();
+	MapElement* targetMapCell = possibleMovementCells[randomIndex];
 
-	row = coords.first;
-	column = coords.second;
+	row = targetMapCell->GetRow();
+	column = targetMapCell->GetColumn();
+
+	targetMapCell->SetOccupant(this);
+	cell = targetMapCell;
 }
 
 /// <summary>
@@ -81,9 +86,9 @@ void Enemy::DoDamage(int myAttack)
 		die();
 }
 
-void Enemy::DisplayHealth() const
+void Enemy::RefillHealth()
 {
-	cout << health << endl;
+	health = startingHealth;
 }
 
 bool Enemy::CanAttack(int myAttack) const
@@ -96,5 +101,6 @@ bool Enemy::CanAttack(int myAttack) const
 
 void Enemy::die()
 {
+	cell->Clear();
 	game->OnEntityDied(this);
 }

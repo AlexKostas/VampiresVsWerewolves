@@ -1,34 +1,73 @@
+#include <iostream>
 #include <cassert>
 #include <vector>
 #include <utility>
+#include "MapElement.h"
 #include "Vampire.h"
 #include "Werewolf.h"
 #include "Utils.h"
 
-Vampire::Vampire(int row, int column, Game* game) : Enemy(row, column, game){}
+Vampire::Vampire(int row, int column, Game* game, MapElement* cell) : Enemy(row, column, game, cell){}
 
-MapCellType Vampire::GetCellType() {
-	return MapCellType::vampire;
+void Vampire::Print() const
+{
+	std::cout << "V";
 }
 
-vector<Enemy*> Vampire::getEnemies()
+void Vampire::DisplayInfo() const
 {
-	return game->GetNeighboringWerewolves(row, column);
+	cout << "Vampire: Health = " << health << "/" << startingHealth << endl;
 }
 
-vector<Enemy*> Vampire::getAllies()
+Team Vampire::GetTeam() const
 {
-	return game->GetNeighboringVampires(row, column);
+	return Vampires;
 }
 
-vector<pair<int, int>> Vampire::getPossibleMovementCells()
+vector<Enemy*> Vampire::getEnemies() const
 {
-	vector<pair<int, int>> legalCells = game->GetAvailableNeighboringCells(row, column);
-	vector<pair<int, int>> diagonalCells = game->GetAvailableDiagonalNeighboringCells(row, column);
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<Enemy*> enemies;
+
+	for (MapElement* neighbor : neighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Werewolves)
+			enemies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	return enemies;
+}
+
+vector<Enemy*> Vampire::getAllies() const
+{
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<Enemy*> allies;
+
+	for (MapElement* neighbor : neighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Vampires)
+			allies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	return allies;
+}
+
+vector<MapElement*> Vampire::getPossibleMovementCells() const
+{
+	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<MapElement*> diagonalNeighbors = game->GetNeighboringDiagonalCells(row, column);
 
 	// Join the two vectors of possible movement target cells
-	vector<pair<int, int>> possibleMovementCells = legalCells;
-	possibleMovementCells.insert(possibleMovementCells.end(), diagonalCells.begin(), diagonalCells.end());
+	vector<MapElement*> combinedNeighbors = neighbors;
+	combinedNeighbors.insert(combinedNeighbors.end(), diagonalNeighbors.begin(), diagonalNeighbors.end());
 
-	return possibleMovementCells;
+	vector<MapElement*> legalNeighbors;
+
+	for (MapElement* neighbor : neighbors)
+		if (neighbor->CanBeOccupied())
+			legalNeighbors.push_back(neighbor);
+
+	return legalNeighbors;
 }
