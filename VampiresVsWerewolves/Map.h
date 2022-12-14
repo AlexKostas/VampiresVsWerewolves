@@ -28,7 +28,6 @@ private:
 	MapElement*** board; //2D Array of pointers to MapElement
 
 	void populateMap();
-	void printBorderRow() const;
 	void printCellRow(int row) const;
 
 	template <class TerrainElement>

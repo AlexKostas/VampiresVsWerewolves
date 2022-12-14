@@ -39,11 +39,10 @@ Map::~Map() {
 }
 
 void Map::Show() const {	
+	cout << "\033[1;1H"; // Move cursor to top left
 	for (int row = 0; row < rows; row++) {
-		//printBorderRow();
 		printCellRow(row);
 	}
-	//printBorderRow();
 }
 
 vector<MapElement*> Map::GetNeighboringCells(int row, int col) const
@@ -110,21 +109,9 @@ void Map::populateMap()
 	placePotions();
 }
 
-void Map::printBorderRow() const {
-	for (int col = 0; col < columns; col++)
-		cout << "+" << "===";		
-
-	cout << "+" << endl;
-}
-
 void Map::printCellRow(int row) const {
-	for (int col = 0; col < columns; col++) {
-		//cout << "|" << " ";
-
+	for (int col = 0; col < columns; col++)
 		board[row][col]->Print();
-
-		//cout << " ";
-	}
 	cout << endl;
 }
 
