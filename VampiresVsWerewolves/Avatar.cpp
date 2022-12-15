@@ -98,7 +98,8 @@ int Avatar::GetAmountOfPotions()
 
 void Avatar::PrintSupportedTeam()
 {
-	std::cout << (supportedTeam == Werewolves) ? "Werewolves" : "Vampires";
+	string supportedTeamText = (supportedTeam == Werewolves) ? "Werewolves" : "Vampires";
+	std::cout << supportedTeamText;
 }
 
 void Avatar::gotPotion()
