@@ -14,6 +14,11 @@ void Werewolf::Print() const
 
 void Werewolf::DisplayInfo() const
 {
+
+	if (health <= 2) {
+		cout << "Werewolf: Health = \033[1;31m" << health << "\033[0m/" << startingHealth << endl;
+		return;
+	}
 	cout << "Werewolf: Health = " << health << "/" << startingHealth << endl;
 }
 
