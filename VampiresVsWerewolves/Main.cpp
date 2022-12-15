@@ -17,6 +17,10 @@ int main()
 	//srand(time(nullptrptr));
 	game->Run();
 	delete game;
+
+	// Wait for user to input something to close window
+	string s;
+	cin >> s;
 }
 
 void initializeGame(Game*& game) {

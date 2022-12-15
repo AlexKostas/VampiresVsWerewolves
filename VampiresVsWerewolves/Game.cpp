@@ -75,9 +75,8 @@ void Game::Run()
 
 void Game::update()
 {
-	for (auto& entity : entities) {
+	for (auto& entity : entities) 
 		entity->update();
-	}
 
 	turnsElapsed++;
 	if (turnsElapsed >= turnsToDay) {
@@ -159,8 +158,9 @@ void Game::OnEntityDied(GameEntity* self)
 {
 	if (self->GetTeam() == Vampires) numberOfVampires--;
 	else if (self->GetTeam() == Werewolves) numberOfWerewolves--;
-	else assert(false);
+	else assert(false); // There is an error if dead entity isn't vampire or werewolf
 
+	// Remove dead entity from entities list
 	for (auto entity = entities.begin(); entity != entities.end(); entity++) {
 		if (*entity == self) {
 			entities.erase(entity);

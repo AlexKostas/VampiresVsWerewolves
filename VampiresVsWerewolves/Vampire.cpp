@@ -27,9 +27,17 @@ Team Vampire::GetTeam() const
 vector<Enemy*> Vampire::getEnemies() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<MapElement*> diagonalNeighbors = game->GetNeighboringDiagonalCells(row, column);
 	vector<Enemy*> enemies;
 
 	for (MapElement* neighbor : neighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Werewolves)
+			enemies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	for (MapElement* neighbor : diagonalNeighbors) {
 		if (!neighbor->IsOccupied()) continue;
 
 		if (neighbor->GetOccupant()->GetTeam() == Werewolves)
@@ -42,12 +50,20 @@ vector<Enemy*> Vampire::getEnemies() const
 vector<Enemy*> Vampire::getAllies() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
+	vector<MapElement*> diagonalNeighbors = game->GetNeighboringDiagonalCells(row, column);
 	vector<Enemy*> allies;
 
 	for (MapElement* neighbor : neighbors) {
 		if (!neighbor->IsOccupied()) continue;
 
 		if (neighbor->GetOccupant()->GetTeam() == Vampires)
+			allies.push_back((Enemy*)neighbor->GetOccupant());
+	}
+
+	for (MapElement* neighbor : diagonalNeighbors) {
+		if (!neighbor->IsOccupied()) continue;
+
+		if (neighbor->GetOccupant()->GetTeam() == Werewolves)
 			allies.push_back((Enemy*)neighbor->GetOccupant());
 	}
 
