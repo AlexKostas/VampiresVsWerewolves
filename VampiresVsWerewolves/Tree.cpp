@@ -7,6 +7,7 @@ Tree::Tree(int row, int column): MapElement(row, column){}
 
 void Tree::Print() const
 {
+	// Print with yellow background
 	std::cout << "\033[1;30;43m T \033[0m";
 }
 

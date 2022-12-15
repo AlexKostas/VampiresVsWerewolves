@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 #include <cassert>
-#include <limits>
 #include "Game.h"
 #include "Utils.h"
 
@@ -8,19 +7,23 @@ using namespace std;
 
 void initializeGame(Game*& game);
 
-int main()
+int main(void)
 {	
 	Game* game = nullptr;
 	initializeGame(game);
 	assert(game != nullptr);
 	
-	//srand(time(nullptrptr));
+	srand(time(nullptr));
 	game->Run();
 	delete game;
 
 	// Wait for user to input something to close window
+
+	cout << "Give me an input to exit" << endl;
 	string s;
 	cin >> s;
+
+	return 0;
 }
 
 void initializeGame(Game*& game) {
@@ -39,7 +42,7 @@ void initializeGame(Game*& game) {
 			cout << "Invalid board size. Try again..." << endl;
 		}
 		catch (...) {
-			cout << "An error occured. Please try again" << endl;
+			cout << "An error occured. Please try again" << endl;//if an unknown error occured
 		}
 	} while (true);
 }

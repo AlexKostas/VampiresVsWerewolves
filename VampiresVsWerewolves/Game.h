@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <utility>
 #include "Map.h"
 
 using namespace std;
@@ -20,7 +19,7 @@ public:
 
 	vector<MapElement*> GetNeighboringCells(int row, int column) const;
 	vector<MapElement*> GetNeighboringDiagonalCells(int row, int column) const;
-	vector<GameEntity*> GetEntities()const;
+	vector<GameEntity*> GetEntities() const;
 
 	void OnEntityDied(GameEntity* self);
 
@@ -43,12 +42,13 @@ private:
 	vector<GameEntity*> entities;
 	Avatar* avatar;
 	
-	void createVampires();
-	void createWerewolves();
+	template <class EntityType>
+	void createEntity(int numberOfEntities);
 	void createAvatar();
 	void update();
 	bool handleInput();
 	bool isOver();
+	Team readTeamChoiceFromInput() const;
 	void displayFrameMessages() const;
 	void displayPauseMessages() const;
 	void displayEndOfGameMessages() const;

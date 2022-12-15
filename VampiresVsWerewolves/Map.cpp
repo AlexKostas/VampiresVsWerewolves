@@ -1,7 +1,6 @@
 #include <iostream>
 #include <math.h>
 #include <cassert>
-#include <utility>
 #include "Utils.h"
 #include "Map.h"
 #include "MapElement.h"
@@ -11,15 +10,14 @@
 
 using namespace std;
 
-Map::Map(int x, int y) {
-	this->rows = x;
-	this->columns = y;
-
+Map::Map(int x, int y) : rows(x), columns(y) {
+	// Create 2D dynamic array of pointers to Map Element object
 	board = new MapElement** [x];
 
 	for (int i = 0;i < x;i++)
 		board[i] = new MapElement*[y];
 
+	// Initialize whole board with ground
 	for (int i = 0;i < x;i++)
 		for (int j = 0;j < y;j++)
 			board[i][j] = new Ground(i, j);
@@ -28,21 +26,24 @@ Map::Map(int x, int y) {
 }
 
 Map::~Map() {
+	// Delete map elements
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < columns; j++)
 			delete board[i][j];
 
+	// Delete 2D array
 	for (int i = 0;i < rows;i++)
 		delete[] board[i];
 
 	delete[] board;
 }
 
-void Map::Show() const {	
+void Map::Show() const {
+	system("cls");
 	cout << "\033[1;1H"; // Move cursor to top left
-	for (int row = 0; row < rows; row++) {
+
+	for (int row = 0; row < rows; row++) 
 		printCellRow(row);
-	}
 }
 
 vector<MapElement*> Map::GetNeighboringCells(int row, int col) const
@@ -92,7 +93,9 @@ vector<MapElement*> Map::GetNeighboringDiagonalCells(int row, int col) const
 MapElement* Map::GetRandomAvailableCell() const
 {
 	int x, y;
+	// Try random coordinates until an available cell is found
 	do {
+		// Writes results into x and y
 		Utils::GetRandomCoordinates(rows, columns, x, y);
 	} while (!board[x][y]->CanBeOccupied());
 

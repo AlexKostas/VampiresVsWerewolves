@@ -23,9 +23,10 @@ public:
 private:
 	const int treeDensity=5;
 	const int waterDensity =5;
-	const int startingAmountOfPotions = 2;
+	const int startingAmountOfPotions = 1;
+
 	int rows, columns;
-	MapElement*** board; //2D Array of pointers to MapElement
+	MapElement*** board; //2D Array of pointers to MapElement objects
 
 	void populateMap();
 	void printCellRow(int row) const;

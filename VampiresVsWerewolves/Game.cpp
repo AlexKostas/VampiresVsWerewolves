@@ -19,7 +19,7 @@
 #define ESC 27
 #define TAB 9
 #define MIN_BOARD_SIZE 4
-#define POTION_KEY 107
+#define POTION_KEY 107 //it is the key k of english
 
 using std::cout;
 using std::endl;
@@ -31,8 +31,12 @@ Game::Game(int row, int column): startingWerewolves((row*column)/15), startingVa
 	
 	map = new Map(row, column);
 
-	createWerewolves();
-	createVampires();
+	createEntity<Werewolf>(startingWerewolves);
+	numberOfWerewolves = startingWerewolves;
+
+	createEntity<Vampire>(startingVampires);
+	numberOfVampires = startingVampires;
+
 	createAvatar();
 }
 
@@ -64,10 +68,8 @@ void Game::Run()
 
 		// Update the state of the game as long
 		// as it is not paused
-		if (!isPaused) { 
-			system("cls");
+		if (!isPaused) 
 			update(); 
-		}
 	}
 
 	displayEndOfGameMessages();
@@ -75,7 +77,7 @@ void Game::Run()
 
 void Game::update()
 {
-	for (auto& entity : entities) 
+	for (GameEntity* entity : entities) 
 		entity->update();
 
 	turnsElapsed++;
@@ -96,7 +98,9 @@ bool Game::handleInput()
 {
 	bool gameTerminatedByPlayer = false;
 
+	// If there is at least one character in input buffer
 	if (_kbhit()) {
+		//this is for the inputs  from keybord
 		int c;
 		switch ((c = _getch())) {
 
@@ -150,7 +154,6 @@ vector<MapElement*> Game::GetNeighboringDiagonalCells(int row, int column) const
 
 vector<GameEntity*> Game::GetEntities() const
 {
-
 	return entities;
 }
 
@@ -164,7 +167,7 @@ void Game::OnEntityDied(GameEntity* self)
 	for (auto entity = entities.begin(); entity != entities.end(); entity++) {
 		if (*entity == self) {
 			entities.erase(entity);
-			break;
+			break; // We exit loop because there can't be another entity of this type in the list
 		}
 	}
 }
@@ -174,39 +177,35 @@ bool Game::IsDay() const
 	return isDay;
 }
 
-void Game::createVampires()
-{
-	for (int i = 0; i < startingVampires; i++) {
+template <class EntityType>
+void Game::createEntity(int numberOfEntities) {
+	for (int i = 0; i < numberOfEntities; i++) {
 		MapElement* cell = map->GetRandomAvailableCell();
 		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
 
-		Vampire* vampire = new Vampire(newRow, newColumn, this, cell);
+		EntityType* entity = new EntityType(newRow, newColumn, this, cell);
 
-		cell->SetOccupant(vampire);
+		cell->SetOccupant(entity);
 
-		entities.push_back(vampire);
+		entities.push_back(entity);
 	}
-
-	numberOfVampires = startingVampires;
-}
-
-void Game::createWerewolves()
-{
-	for (int i = 0; i < startingWerewolves; i++) {
-		MapElement* cell = map->GetRandomAvailableCell();
-		int newRow = cell->GetRow(), newColumn = cell->GetColumn();
-
-		Werewolf* werewolf = new Werewolf(newRow, newColumn, this, cell);
-
-		cell->SetOccupant(werewolf);
-
-		entities.push_back(werewolf);
-	}
-
-	numberOfWerewolves = startingWerewolves;
 }
 
 void Game::createAvatar()
+{
+	Team supportedTeam = readTeamChoiceFromInput();
+
+	MapElement* cell = map->GetRandomAvailableCell();
+	assert(cell->CanBeOccupied());
+	int newRow = cell->GetRow(), newColumn = cell->GetColumn();
+
+	avatar = new Avatar(newRow, newColumn, this, cell, supportedTeam);
+	entities.push_back(avatar);
+
+	cell->SetOccupant(avatar);
+}
+
+Team Game::readTeamChoiceFromInput() const
 {
 	Team supportedTeam;
 	do {
@@ -225,13 +224,7 @@ void Game::createAvatar()
 		}
 	} while (true);
 
-	MapElement* cell = map->GetRandomAvailableCell();
-	int newRow = cell->GetRow(), newColumn = cell->GetColumn();
-
-	avatar = new Avatar(newRow, newColumn, this, cell, supportedTeam);
-	entities.push_back(avatar);
-
-	cell->SetOccupant(avatar);
+	return supportedTeam;
 }
 
 void Game::displayFrameMessages() const
@@ -255,9 +248,10 @@ void Game::displayPauseMessages() const
 {
 	cout << "\nGAME IS PAUSED! Press Tab to continue..." << endl;
 
-	string team = (avatar->SupportsWerewolves()) ? "Werewolves" : "Vampires";
 
-	cout << "You support " << team << "!" << endl;
+	cout << "You support ";
+	avatar->PrintSupportedTeam();
+	cout << "!" << endl;
 	cout << "Number of Vampires: " << numberOfVampires << endl;
 	cout << "Number of Werewolves: " << numberOfWerewolves << endl;
 

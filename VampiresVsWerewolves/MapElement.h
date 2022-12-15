@@ -26,5 +26,4 @@ protected:
 	int row, column;
 	GameEntity* occupant;
 	bool hasPotion = false;
-
 };

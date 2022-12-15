@@ -25,20 +25,17 @@ int Utils::GetRandomNumberInRange(int lowBound, int highBound) {
 	return num;
 }
 
-int Utils::ManhattanDistance(int x1, int x2, int y1, int y2)
-{
-	return abs(x2 - x1) + abs(y2 - y1);
-}
-
 int Utils::ReadIntegerFromInput()
 {
 	int number = 0;
 	do {
 		cin >> number;
-		if (cin) break;
+		if (cin) break; //exit if read was successful
 
+		//Clear input buffer 
 		cin.clear();
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
 		std::cout << "This is not an integer. Please type number again" << std::endl;
 	} while (true);
 
