@@ -12,22 +12,18 @@ void Werewolf::Print() const
 	std::cout << "W";
 }
 
-void Werewolf::DisplayInfo() const
-{
-
-	if (health <= 2) {
-		cout << "Werewolf: Health = \033[1;31m" << health << "\033[0m/" << startingHealth << endl;
-		return;
-	}
-	cout << "Werewolf: Health = " << health << "/" << startingHealth << endl;
-}
 
 Team Werewolf::GetTeam() const
 {
 	return Werewolves;
 }
 
-vector<Enemy*> Werewolf::getEnemies() const 
+string Werewolf::getName() const
+{
+	return "Werewolf";
+}
+
+vector<Enemy*> Werewolf::getEnemies() const
 {
 	vector<MapElement*> neighbors = game->GetNeighboringCells(row, column);
 	vector<Enemy*> enemies;

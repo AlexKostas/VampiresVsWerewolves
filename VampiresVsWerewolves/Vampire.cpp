@@ -14,18 +14,15 @@ void Vampire::Print() const
 	std::cout << "V";
 }
 
-void Vampire::DisplayInfo() const
-{
-	if (health <= 2) {
-		cout << "Vampire: Health = \033[1;31m" << health << "\033[0m/" << startingHealth << endl;
-		return;
-	}
-	cout << "Vampire: Health = " << health << "/" << startingHealth << endl;
-}
 
 Team Vampire::GetTeam() const
 {
 	return Vampires;
+}
+
+string Vampire::getName() const
+{
+	return "Vampire";
 }
 
 vector<Enemy*> Vampire::getEnemies() const

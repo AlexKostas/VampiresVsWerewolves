@@ -104,3 +104,13 @@ void Enemy::die()
 	cell->Clear();
 	game->OnEntityDied(this);
 }
+
+
+void Enemy::DisplayInfo() const
+{
+	if (health <= 2) {
+		cout << getName()<<": Health = \033[1;31m" << health << "\033[0m/" << startingHealth << endl;
+		return;
+	}
+	cout << getName() << ": Health = " << health << "/" << startingHealth << endl;
+}
