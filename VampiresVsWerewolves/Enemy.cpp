@@ -18,7 +18,7 @@ Enemy::Enemy(int row, int col, Game* game, MapElement* cell) : GameEntity(row, c
 	this->defence = Utils::GetRandomNumberInRange(1, maxDefense + 1);
 }
 
-void Enemy::update()
+void Enemy::Update()
 {
 	vector<Enemy*> allies = getAllies();
 	vector<Enemy*> enemies = getEnemies();

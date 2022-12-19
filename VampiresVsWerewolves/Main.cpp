@@ -18,8 +18,7 @@ int main(void)
 	delete game;
 
 	// Wait for user to input something to close window
-
-	cout << "Give me an input to exit" << endl;
+	cout << "Give an input to close the window!" << endl;
 	string s;
 	cin >> s;
 

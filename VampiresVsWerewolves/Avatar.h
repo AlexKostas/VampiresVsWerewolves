@@ -6,7 +6,7 @@ class Avatar : public GameEntity {
 public:
 	Avatar(int row, int column, Game* game, MapElement* cell, Team supportedTeam);
 
-	virtual void update();
+	virtual void Update();
 
 	virtual void Print() const;
 	void DisplayInfo() const;

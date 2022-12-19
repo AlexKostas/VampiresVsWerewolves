@@ -78,7 +78,7 @@ void Game::Run()
 void Game::update()
 {
 	for (GameEntity* entity : entities) 
-		entity->update();
+		entity->Update();
 
 	turnsElapsed++;
 	if (turnsElapsed >= turnsToDay) {
@@ -241,7 +241,7 @@ void Game::displayFrameMessages() const
 
 	cout << "Potions: " << avatar->GetAmountOfPotions() << endl << endl;
 
-	cout << "Press Tab to pause or ESC to exit" << endl;
+	cout << "Press Tab to pause or ESC to exit. Press k to use potion" << endl;
 }
 
 void Game::displayPauseMessages() const

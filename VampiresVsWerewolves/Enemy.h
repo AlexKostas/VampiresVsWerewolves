@@ -8,7 +8,7 @@ class Enemy : public GameEntity {
 public:
 	Enemy(int row, int col, Game* game, MapElement* cell);
 
-	virtual void update();
+	virtual void Update();
 	virtual Team GetTeam() const = 0;
 	virtual void DisplayInfo() const;
 

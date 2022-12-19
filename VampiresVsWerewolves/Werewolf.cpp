@@ -12,7 +12,6 @@ void Werewolf::Print() const
 	std::cout << "W";
 }
 
-
 Team Werewolf::GetTeam() const
 {
 	return Werewolves;

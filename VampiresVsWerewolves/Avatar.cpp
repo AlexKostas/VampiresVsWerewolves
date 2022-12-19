@@ -9,7 +9,7 @@
 Avatar::Avatar(int row, int column, Game* game, MapElement* cell, Team _supportedTeam) : GameEntity(row, column, game, cell), 
 	supportedTeam(_supportedTeam){}
 
-void Avatar::update() {
+void Avatar::Update() {
 	// Update does nothing for this assignment since avatar is only moved when 
 	// player asks to. If he was moving independently from the player, then this
 	// logic would be placed here.

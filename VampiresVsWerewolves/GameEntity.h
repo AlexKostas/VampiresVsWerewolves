@@ -9,7 +9,7 @@ class GameEntity {
 public:
 	GameEntity(int row, int column, Game* game, MapElement* cell);
 
-	virtual void update() = 0;
+	virtual void Update() = 0;
 
 	virtual void Print() const = 0;
 	virtual void DisplayInfo() const = 0;
