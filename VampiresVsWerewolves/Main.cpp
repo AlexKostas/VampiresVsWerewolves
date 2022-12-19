@@ -13,7 +13,7 @@ int main(void)
 	initializeGame(game);
 	assert(game != nullptr);
 	
-	srand(time(nullptr));
+	Utils::InitializeRandomNumGenerator();
 	game->Run();
 	delete game;
 

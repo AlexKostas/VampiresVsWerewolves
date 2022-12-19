@@ -41,3 +41,8 @@ int Utils::ReadIntegerFromInput()
 
 	return number;
 }
+
+void Utils::InitializeRandomNumGenerator()
+{
+	srand(time(nullptr));
+}
