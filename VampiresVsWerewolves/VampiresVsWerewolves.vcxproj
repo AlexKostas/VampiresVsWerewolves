@@ -156,6 +156,10 @@
     <ClInclude Include="Water.h" />
     <ClInclude Include="Werewolf.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\reports\project_report.pdf" />
+    <None Include="..\reports\Προσχέδιο σχεδίασης του λογισμικού.pdf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

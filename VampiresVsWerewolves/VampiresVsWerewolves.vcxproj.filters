@@ -96,4 +96,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\reports\project_report.pdf" />
+    <None Include="..\reports\Προσχέδιο σχεδίασης του λογισμικού.pdf" />
+  </ItemGroup>
 </Project>
