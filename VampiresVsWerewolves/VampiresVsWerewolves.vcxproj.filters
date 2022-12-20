@@ -99,5 +99,6 @@
   <ItemGroup>
     <None Include="..\reports\project_report.pdf" />
     <None Include="..\reports\Προσχέδιο σχεδίασης του λογισμικού.pdf" />
+    <None Include="..\reports\Προσχέδιο υλοποίησης του λογισμικού.pdf" />
   </ItemGroup>
 </Project>
