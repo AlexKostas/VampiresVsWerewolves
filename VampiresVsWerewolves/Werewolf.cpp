@@ -58,7 +58,7 @@ vector<MapElement*> Werewolf::getPossibleMovementCells() const
 	vector<MapElement*> legalNeighbors;
 
 	for (MapElement* neighbor : neighbors)
-		if (neighbor->CanBeOccupied()) 
+		if (neighbor->CanBeOccupied() && neighbor->HasPotion()==false) 
 			legalNeighbors.push_back(neighbor);
 
 	return legalNeighbors;
