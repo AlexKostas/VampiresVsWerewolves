@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,34 +129,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Avatar.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameEntity.cpp" />
-    <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MapElement.cpp" />
-    <ClCompile Include="Tree.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Vampire.cpp" />
-    <ClCompile Include="Water.cpp" />
-    <ClCompile Include="Werewolf.cpp" />
+    <ClCompile Include="src\Avatar.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameEntity.cpp" />
+    <ClCompile Include="src\Ground.cpp" />
+    <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\MapElement.cpp" />
+    <ClCompile Include="src\Tree.cpp" />
+    <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="src\Vampire.cpp" />
+    <ClCompile Include="src\Water.cpp" />
+    <ClCompile Include="src\Werewolf.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Avatar.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Enums.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameEntity.h" />
-    <ClInclude Include="Ground.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="MapElement.h" />
-    <ClInclude Include="Tree.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="Vampire.h" />
-    <ClInclude Include="Water.h" />
-    <ClInclude Include="Werewolf.h" />
+    <ClInclude Include="include\Avatar.h" />
+    <ClInclude Include="include\Enemy.h" />
+    <ClInclude Include="include\Enums.h" />
+    <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\GameEntity.h" />
+    <ClInclude Include="include\Ground.h" />
+    <ClInclude Include="include\Map.h" />
+    <ClInclude Include="include\MapElement.h" />
+    <ClInclude Include="include\Tree.h" />
+    <ClInclude Include="include\Utils.h" />
+    <ClInclude Include="include\Vampire.h" />
+    <ClInclude Include="include\Water.h" />
+    <ClInclude Include="include\Werewolf.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\reports\project_report.pdf" />
