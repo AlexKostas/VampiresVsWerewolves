@@ -18,60 +18,60 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Map.cpp">
+    <ClCompile Include="src\map\Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameEntity.cpp">
+    <ClCompile Include="src\entities\GameEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Werewolf.cpp">
+    <ClCompile Include="src\entities\Werewolf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Vampire.cpp">
+    <ClCompile Include="src\entities\Vampire.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Avatar.cpp">
+    <ClCompile Include="src\entities\Avatar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Enemy.cpp">
+    <ClCompile Include="src\entities\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MapElement.cpp">
+    <ClCompile Include="src\map\MapElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ground.cpp">
+    <ClCompile Include="src\map\Ground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Water.cpp">
+    <ClCompile Include="src\map\Water.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tree.cpp">
+    <ClCompile Include="src\map\Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Map.h">
+    <ClInclude Include="include\map\Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GameEntity.h">
+    <ClInclude Include="include\entities\GameEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Werewolf.h">
+    <ClInclude Include="include\entities\Werewolf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Vampire.h">
+    <ClInclude Include="include\entities\Vampire.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Avatar.h">
+    <ClInclude Include="include\entities\Avatar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Utils.h">
@@ -80,19 +80,19 @@
     <ClInclude Include="include\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Enemy.h">
+    <ClInclude Include="include\entities\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\MapElement.h">
+    <ClInclude Include="include\map\MapElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Ground.h">
+    <ClInclude Include="include\map\Ground.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Water.h">
+    <ClInclude Include="include\map\Water.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Tree.h">
+    <ClInclude Include="include\map\Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
