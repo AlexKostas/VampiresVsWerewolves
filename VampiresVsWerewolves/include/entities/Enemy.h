@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "Enums.h"
 #include "GameEntity.h"
 
@@ -23,6 +24,9 @@ protected:
 	const int maxDefense = 2;
 
 	int health, attack, defence, healthKits;
+	bool tryToHealAlly();
+	bool tryToAttack();
+	bool tryToMove();
 	void die();
 	virtual string getName() const =0;
 	virtual vector<Enemy*> getEnemies() const = 0;
